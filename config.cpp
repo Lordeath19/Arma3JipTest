@@ -22,9 +22,6 @@ class CfgPatches {
 	};
 };
 
-
-
-
 class CfgFunctions {
 	
 	class GOM
@@ -35,17 +32,27 @@ class CfgFunctions {
 		};
 	};
 	
-	class PA 
+	class PA
 	{
-		class PersonalArsenal 
+		class init 
 		{
-			class PA_arsenal 
-			{
-				file = "\PA\init.sqf";
-				postInit = 1;
-			};
+			file = "\PA\init.sqf";
+			postInit = 1;
 		};
-		
+	};
+	
+	class Replacement
+	{
+		tag = "RPL";
+		class MarkFunctions
+		{
+			file = "\PA\replacement";
+			class garage {};
+		};
+	};
+	
+	class Weaponry
+	{
 		tag = "WPN";
 		class functions 
 		{			
@@ -60,28 +67,43 @@ class CfgFunctions {
 		};
 	};
 	
-	class A3_Mark
+	class Loiter
 	{
-		class Vehicles
-		{
-			delete garage;
-		};
-		
-		class Achilles
-		{
-			delete garage;
-		};
-		
-		class AAAAAPersonalArsenal
-		{
-			file = "\PA\replacement";
-			class garage {};
+		tag = "LIT";
+		class functions 
+		{			
+			file = "\PA\Loiter\functions";	
+			
+			class execute {};
+			class open {};
+			class sliderChanged {};
+
 		};
 	};
 	
+	class Assist
+	{
+		tag = "ASS";
+		class functions 
+		{			
+			file = "\PA";	
+			
+			class disableDriverAssist {};
+			class enableDriverAssist {};
+
+		};
+	};
+	
+	class R3F_LOG
+	{
+		class init
+		{
+			file = "\PA\R3F_LOG\init.sqf";
+			postInit = 1;
+		};
+	};
 
 };
-
 
 class Mode_SemiAuto;
 class manual;
@@ -257,7 +279,6 @@ class CfgAmmo {
 	
 };
 
-
 class CfgMagazines {
 	
 	class 1000Rnd_20mm_shells;
@@ -269,12 +290,11 @@ class CfgMagazines {
 
 };
 
-class DefaultVehicleSystemsDisplayManagerLeft
-{
+class DefaultVehicleSystemsDisplayManagerLeft {
 	class components;
 };
-class DefaultVehicleSystemsDisplayManagerRight
-{
+
+class DefaultVehicleSystemsDisplayManagerRight {
 	class components;
 };
 
@@ -811,8 +831,7 @@ class CfgVehicles {
 	
 };
 
-class CfgInventoryGlobalVariable
-{
+class CfgInventoryGlobalVariable {
 	maxSoldierLoad = 9999000;
 };
 
@@ -825,4 +844,3 @@ class CfgInventoryGlobalVariable
 #include "Main\dialogs\dialog.hpp"
 
 #include "R3F_LOG\desc_include.h"
-
