@@ -36,8 +36,7 @@ class CfgFunctions {
 	{
 		class init 
 		{
-			file = "\PA\init.sqf";
-			postInit = 1;
+			class personalArsenalInit {file = "\PA\init.sqf";preInit = 1;};
 		};
 	};
 	
@@ -99,7 +98,7 @@ class CfgFunctions {
 		class init
 		{
 			file = "\PA\R3F_LOG\init.sqf";
-			postInit = 1;
+			preInit = 1;
 		};
 	};
 

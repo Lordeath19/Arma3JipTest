@@ -1,4 +1,5 @@
 //Replace the dummy launcher for the actual one when using the pylon from GOM
+
 [] spawn {
 	while {true} do {
 
@@ -12,10 +13,6 @@
 	sleep 2;
 	};
 };
-
-if (isDedicated) exitWith {};
-if !(hasinterface) exitwith {};
-
 //Initialize GOM and start listening
 private["_keyDown"];
 [] spawn {
@@ -41,13 +38,12 @@ private["_keyDown"];
 
 };
 
-
 //Disable stamina and add action to vehicle the player enters (kh-55sm and 9m79)
 
 player enablefatigue false;
 
 
-player setVariable ["ControlPanelID",
+player setVariable ["ControlPanelID",[
 	player addAction  
 	[
 		"Open control panel",  
@@ -61,7 +57,7 @@ player setVariable ["ControlPanelID",
 		true,  
 		"", 
 		"currentWeapon vehicle player isEqualTo 'rhs_weap_kh55sm_Launcher'" 
-	];
+	],
    
 	player addAction  
 	[
@@ -76,18 +72,17 @@ player setVariable ["ControlPanelID",
 		true,  
 		"", 
 		"currentWeapon vehicle player isEqualTo 'RHS_9M79_1Launcher'" 
-	];
+	]]
 ];
 
 
 //Disable stamina and add action to vehicle the player enters (kh-55sm and 9m79) after respawn
 
-
 player addEventhandler ["Respawn", {
 	
 	player enableFatigue false;
 
-	player setVariable ["ControlPanelID",
+	player setVariable ["ControlPanelID",[
 
 		player addAction  
 		[ 
@@ -102,7 +97,7 @@ player addEventhandler ["Respawn", {
 			true,  
 			"", 
 			"currentWeapon vehicle player isEqualTo 'rhs_weap_kh55sm_Launcher'" 
-		];
+		],
 
 
 		player addAction  
@@ -118,10 +113,9 @@ player addEventhandler ["Respawn", {
 			true,  
 			"", 
 			"currentWeapon vehicle player isEqualTo 'RHS_9M79_1Launcher'" 
-		];
+		]]
 	];
 }];
-
 player addEventHandler ["GetInMan", {
 	params ["_vehicle", "_role", "_unit", "_turret"];
 	
