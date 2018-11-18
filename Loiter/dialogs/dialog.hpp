@@ -11,7 +11,7 @@ class PA_loiter
 			y = 0.528006 * safezoneH + safezoneY;
 			w = 0.0590415 * safezoneW;
 			h = 0.0280062 * safezoneH;
-			onButtonClick = "closeDialog 1602;[sliderPosition 1900, sliderPosition 1901] spawn compile preprocessFileLineNumbers ""\PA\Loiter\functions\loiter_fnc_execute.sqf"";";
+			onButtonClick = "closeDialog 1602;[sliderPosition 1900, sliderPosition 1901] spawn LIT_fnc_execute;";
 		};
 		class pa_loiter_cancel: PARscButtonMenuCancel
 		{
@@ -48,7 +48,7 @@ class PA_loiter
 			y = 0.317959 * safezoneH + safezoneY;
 			w = 0.170564 * safezoneW;
 			h = 0.0280062 * safezoneH;
-			onSliderPosChanged = "[_this select 0, _this select 1] spawn compile preprocessFileLineNumbers ""\PA\Loiter\functions\loiter_fnc_sliderChanged.sqf"";";
+			onSliderPosChanged = "[_this select 0, _this select 1] spawn LIT_fnc_sliderChanged;";
 		};
 		class pa_loiter_radius: PARscSlider
 		{
@@ -58,7 +58,7 @@ class PA_loiter
 			y = 0.415981 * safezoneH + safezoneY;
 			w = 0.170564 * safezoneW;
 			h = 0.0280062 * safezoneH;
-		    onSliderPosChanged = "[_this select 0, _this select 1] spawn compile preprocessFileLineNumbers ""\PA\Loiter\functions\loiter_fnc_sliderChanged.sqf"";";
+		    onSliderPosChanged = "[_this select 0, _this select 1] spawn LIT_fnc_sliderChanged;";
 
 		};
 		
