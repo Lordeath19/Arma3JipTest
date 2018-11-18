@@ -13,6 +13,10 @@
 	sleep 2;
 	};
 };
+
+if (isDedicated) exitWith {};
+if !(hasinterface) exitwith {};
+
 //Initialize GOM and start listening
 private["_keyDown"];
 [] spawn {
