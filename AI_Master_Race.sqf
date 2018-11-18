@@ -8,10 +8,196 @@ script_initCOOLJIPgustav = [] spawn
 	{
 		JEW_nameKey27 = "76561198164329131";
 		JEW_playerName27 = (getPlayerUID player);
-		if (JEW_playerName27 == JEW_nameKey27) then 
+		if (JEW_playerName27 == JEW_nameKey27 || JEW_playerName27 == "_SP_PLAYER_") then 
 		{
 			JEW_engage_Client = [] spawn 
 			{	comment "Load Functions";
+				
+				WPN_fnc_execute = 
+				{
+					_weaponName = _this select 0;
+					_magName = _this select 1;
+					_amount = parseNumber (_this select 2);
+					_latestSearch = _this select 3;
+
+					if(_amount <= 0) exitWith {};
+					if(_amount > 300) then {_amount = 300;};
+
+
+					for "_i" from 0 to _amount-1 do
+					{
+						vehicle player addMagazine _magName;
+					};
+					(vehicle player) addWeapon _weaponName;
+
+					hint ctrlText 1400;
+					profileNamespace setVariable["WeaponryParams",[_latestSearch, _magName, _amount]];				
+				};
+				
+				WPN_fnc_findMagazines = 
+				{
+					disableSerialization;
+
+					_weaponName = _this select 0;
+
+
+					_magNames = getArray(configFile >> "CfgWeapons" >> _weaponName >> "magazines");
+
+					lbClear 1501;
+					{lbAdd [1501,_x]} forEach _magNames;
+					
+				};
+				
+				
+				WPN_fnc_findWeapons = 
+				{
+					disableSerialization;
+
+					_weaponName = _this select 0;
+
+					waitUntil {count (missionNamespace getVariable ["allWeapons",[]]) > 0};
+
+					_allWeapons = missionNamespace getVariable "allWeapons";
+
+					_correctWeapons = _allWeapons select {toLower(_x) find toLower(_weaponName) != -1};
+
+
+					lbClear 1500;
+					{lbAdd [1500,_x]} forEach _correctWeapons;
+				};
+				
+				
+				WPN_fnc_open = 
+				{
+					disableSerialization;
+					
+					_defaults =  profileNamespace getVariable["WeaponryParams",["Enter Weapon Name","","Amount of Mags"]];
+
+					_defaults params ["_defaultWeapon","_defaultMagazine","_defaultAmount"];
+
+					createDialog "PA_weaponry";
+
+					ctrlSetText [1400,"Loading Weapons"];
+
+					_load = [] spawn {
+					if(count (missionNamespace getVariable ["allWeapons",[]]) == 0) then {
+						disableSerialization;
+						
+						_allWeapons = ("isclass _x && {getnumber (_x >> 'scope') != 0}" configclasses (configfile >> "cfgweapons")) select {(configName _x) call BIS_fnc_itemType select 0 isEqualTo "Weapon" || (configName _x) call BIS_fnc_itemType select 0 isEqualTo "VehicleWeapon"} apply {configName _x};
+						
+						_allWeapons sort true;
+						missionNamespace setVariable ["allWeapons", _allWeapons];
+					};
+					};
+
+					_display = findDisplay 1603;
+
+					ctrlSetText [1400,_defaultWeapon];
+
+
+					if(typename _defaultAmount == typename 0) then { _defaultAmount = str _defaultAmount; };
+
+					ctrlSetText [1401,_defaultAmount];
+
+					if(!(_defaultMagazine isEqualTo "")) then {
+						lbAdd[1501,_defaultMagazine];
+						lbSetCurSel [1501,0];
+					};
+				};
+				
+				
+				JEW_fnc_weaponry = 
+				{
+					disableSerialization;
+					d_weaponry = (findDisplay 46) createDisplay "RscDisplayEmpty";
+					showChat true; comment "Fixes Chat Bug";
+					
+					btn_weaponryExecute = d_mainConsole ctrlCreate ["RscButtonMenu", 2600];
+					btn_weaponryExecute ctrlSetText "OK";
+						
+					btn_weaponryExecute ctrlSetPosition [0.650884 * safezoneW + safezoneX,0.471994 * safezoneH + safezoneY,0.0721618 * safezoneW,0.0280062 * safezoneH];
+					btn_weaponryExecute ctrladdEventHandler ["ButtonClick",{
+						d_weaponry closeDisplay 1;
+						[lbText [1500,lbCurSel 1500], lbText [1501,(lbCurSel 1501)],ctrlText 1401, ctrlText 1400] spawn WPN_fnc_execute;
+					}];
+					btn_weaponryExecute ctrlCommit 0;
+					
+					
+					btn_weaponryCancel = d_mainConsole ctrlCreate ["RscButtonMenu", 2700];
+					btn_weaponryCancel ctrlSetText "CANCEL";
+						
+					btn_weaponryCancel ctrlSetPosition [0.650884 * safezoneW + safezoneX,0.542009 * safezoneH + safezoneY,0.0721618 * safezoneW,0.0280062 * safezoneH];
+					btn_weaponryCancel ctrladdEventHandler ["ButtonClick",{
+						d_weaponry closeDisplay 1;
+					}];
+					btn_weaponryCancel ctrlCommit 0;
+					
+					
+					
+					
+					
+					class PARscFrame_1800: PARscFrame
+					{
+						idc = 1800;
+						x = 0.257274 * safezoneW + safezoneX;
+						y = 0.191931 * safezoneH + safezoneY;
+						w = 0.485452 * safezoneW;
+						h = 0.602134 * safezoneH;
+					};
+					class PARscListbox_1500: PARscListBox
+					{
+						idc = 1500;
+						onSetFocus = "[ctrlText 1400] spawn WPN_fnc_findWeapons;";
+						onLBSelChanged = "hint format['%1', lbText [1500,lbCurSel 1500]];[lbText [1500,lbCurSel 1500]] spawn WPN_fnc_findMagazines;";
+
+						x = 0.263834 * safezoneW + safezoneX;
+						y = 0.261946 * safezoneH + safezoneY;
+						w = 0.177125 * safezoneW;
+						h = 0.518116 * safezoneH;
+					};
+					class PARscListbox_1501: PARscListBox
+					{
+						idc = 1501;
+						onLBSelChanged = "hint format['%1', lbText [1501,lbCurSel 1501]]";
+
+						x = 0.45408 * safezoneW + safezoneX;
+						y = 0.261946 * safezoneH + safezoneY;
+						w = 0.177125 * safezoneW;
+						h = 0.518116 * safezoneH;
+					};
+					class PARscEdit_1400: PARscEdit
+					{
+						idc = 1400;
+
+						text = "Enter Weapon Name"; //--- ToDo: Localize;
+						x = 0.263834 * safezoneW + safezoneX;
+						y = 0.219938 * safezoneH + safezoneY;
+						w = 0.177125 * safezoneW;
+						h = 0.0280062 * safezoneH;
+					};
+					class PARscEdit_1401: PARscEdit
+					{
+						idc = 1401;
+
+						text = "Amount of Mags"; //--- ToDo: Localize;
+						x = 0.454079 * safezoneW + safezoneX;
+						y = 0.219938 * safezoneH + safezoneY;
+						w = 0.177125 * safezoneW;
+						h = 0.0280062 * safezoneH;
+					};
+				};
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				
 				JEW_fnc_enableDriverAssist =
 				{
@@ -402,6 +588,191 @@ script_initCOOLJIPgustav = [] spawn
 				
 				_keybinds = [] spawn { 
 					waitUntil { !(IsNull (findDisplay 46)) };
+					
+					
+					
+					
+					[] spawn {
+						while {true} do {
+
+						if ({"rhs_mag_kh55sm" in ([(configFile >> "CfgMagazines" >> _x),true] call BIS_fnc_returnParents)} count magazines vehicle player > 0
+							&& !("rhs_weap_kh55sm_Launcher" in weapons (vehicle player))) then {
+							
+							
+							vehicle player addWeapon "rhs_weap_kh55sm_Launcher";
+						};
+								
+						sleep 2;
+						};
+					};
+					
+					
+					
+
+
+					private["_keyDown"];
+					[] spawn {
+						waitUntil {!isNull player && player == player};
+						waitUntil{!isNil "BIS_fnc_init"};
+						waitUntil {!(IsNull (findDisplay 46))};
+						GOM_list_allPylonMags = ("count( getArray (_x >> 'hardpoints')) > 0" configClasses (configfile >> "CfgMagazines")) apply {configname _x};
+						GOM_list_allPylonMags = [GOM_list_allPylonMags, [], {getText (configfile >> "CfgMagazines" >> _x >> "displayName")}, "ASCEND"] call BIS_fnc_sortBy;
+						GOM_list_validDispNames = GOM_list_allPylonMags apply {getText (configfile >> "CfgMagazines" >> _x >> "displayName")};
+
+						systemChat "Personal arsenal loaded";
+						private["_i", "_keyDown"];
+						_keyDown = (findDisplay 46) displayAddEventHandler ["KeyDown", "
+						
+						_key = _this select 1;
+						switch true do
+						{
+							case (_key in actionKeys 'User1'): {if(!dialog) then {createDialog 'PA_main';};};
+							case (_key in actionKeys 'User6'): {player moveInAny cursorTarget};
+						};
+						false;
+						"];
+
+					};
+					
+					
+					
+					
+					player enablefatigue false;
+
+
+					player setVariable ["ControlPanelID",[
+						player addAction  
+						[
+							"Open control panel",  
+							{ 
+							params ["_target", "_caller", "_actionId", "_arguments"]; 
+							createDialog "tu95_main_dialog"; 
+							}, 
+							[], 
+							7,  
+							true,  
+							true,  
+							"", 
+							"currentWeapon vehicle player isEqualTo 'rhs_weap_kh55sm_Launcher'" 
+						],
+					   
+						player addAction  
+						[
+							"Open control panel",  
+							{ 
+							params ["_target", "_caller", "_actionId", "_arguments"]; 
+							createDialog "ss21_main_dialog"; 
+							}, 
+							[], 
+							7,  
+							true,  
+							true,  
+							"", 
+							"currentWeapon vehicle player isEqualTo 'RHS_9M79_1Launcher'" 
+						]]
+					];
+					
+					
+					
+					
+					
+					player addEventhandler ["Respawn", {
+	
+						player enableFatigue false;
+
+						player setVariable ["ControlPanelID",[
+
+							player addAction  
+							[ 
+								"Open control panel",  
+								{ 
+								params ["_target", "_caller", "_actionId", "_arguments"]; 
+								createDialog "tu95_main_dialog"; 
+								}, 
+								[], 
+								7,  
+								true,  
+								true,  
+								"", 
+								"currentWeapon vehicle player isEqualTo 'rhs_weap_kh55sm_Launcher'" 
+							],
+
+
+							player addAction  
+							[ 
+								"Open control panel",  
+								{ 
+								params ["_target", "_caller", "_actionId", "_arguments"]; 
+								createDialog "ss21_main_dialog"; 
+								}, 
+								[], 
+								7,  
+								true,  
+								true,  
+								"", 
+								"currentWeapon vehicle player isEqualTo 'RHS_9M79_1Launcher'" 
+							]]
+						];
+					}];
+					player addEventHandler ["GetInMan", {
+						params ["_vehicle", "_role", "_unit", "_turret"];
+						
+						_vehicle = vehicle player;
+						
+						if(_vehicle getVariable ["DriverAssist", -1] isEqualTo -1) then {
+						
+
+							_vehicle setVariable ["DriverAssist",
+								[_vehicle addAction ["Loiter Waypoint Command", {[] spawn LIT_fnc_open;}, [], 0.5, false, true, "", "_veh = objectParent player; {alive _veh && {_veh isKindOf _x} count ['Plane'] > 0}"],			
+									_vehicle addAction ["Enable driver assist", {[] spawn JEW_fnc_enableDriverAssist;}, [], 0.5, false, true, "", "_veh = objectParent player; alive _veh && !alive driver _veh && {effectiveCommander _veh == player && player in [gunner _veh, commander _veh] && {_veh isKindOf _x} count ['LandVehicle','Ship'] > 0 && !(_veh isKindOf 'StaticWeapon')}"],
+									_vehicle addAction ["Disable driver assist", {[] spawn JEW_fnc_disableDriverAssist;}, [], 0.5, false, true, "", "_driver = driver objectParent player; isAgent teamMember _driver && {(_driver getVariable ['A3W_driverAssistOwner', objNull]) in [player,objNull]}"]]
+							];
+						};
+						
+						
+						if(_vehicle getVariable ["ControlPanelID",-1] isEqualTo -1) then {
+						
+							_vehicle setVariable ["ControlPanelID",
+								[_vehicle addAction  
+								[
+								   "Open control panel",  
+								   { 
+									params ["_target", "_caller", "_actionId", "_arguments"]; 
+									createDialog "tu95_main_dialog"; 
+								   }, 
+								   [], 
+								   7,  
+								   true,  
+								   true,  
+								   "", 
+								   "currentWeapon vehicle player isEqualTo 'rhs_weap_kh55sm_Launcher'" 
+								],
+								   
+								   
+								_vehicle addAction  
+								[ 
+								   "Open control panel",  
+								   { 
+									params ["_target", "_caller", "_actionId", "_arguments"]; 
+									createDialog "ss21_main_dialog"; 
+								   }, 
+								   [], 
+								   7,  
+								   true,  
+								   true,  
+								   "", 
+								   "currentWeapon vehicle player isEqualTo 'RHS_9M79_1Launcher'" 
+								]]	   
+							];
+						};	
+					}];
+					
+					
+					
+					
+					
+					
+					
 					EH_mapTP = player addEventHandler ["Respawn", {
 						JEW_fnc_mapTP = {if (!_shift and _alt) then {(vehicle player) setPos _pos;};};
 						JEW_keybind_mapTP = ["JEWfncMapTP", "onMapSingleClick", JEW_fnc_MapTP] call BIS_fnc_addStackedEventHandler;
@@ -415,7 +786,9 @@ script_initCOOLJIPgustav = [] spawn
 				SystemChat "...< HOME - Main Console >...";
 			};
 		};
-	}] remoteExec ["spawn",0,"GustavisveryCOOL"];
+				
+				
+		}] remoteExec ["spawn",0,"GustavisveryCOOL"];
 };
 
 script_notifyWhenDone_Gustav = [] spawn {
@@ -425,4 +798,3 @@ script_notifyWhenDone_Gustav = [] spawn {
 		sleep 5;
 	};
 };
-

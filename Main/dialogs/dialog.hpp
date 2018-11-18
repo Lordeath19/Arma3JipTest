@@ -5,7 +5,7 @@ class PA_main
 
 	class controls
 	{
-		class pa_main_frame: RscFrame
+		class pa_main_frame: PARscFrame
 		{
 			idc = 1800;
 
@@ -14,7 +14,7 @@ class PA_main
 			w = 0.144324 * safezoneW;
 			h = 0.434097 * safezoneH;
 		};
-		class pa_main_va: RscButton
+		class pa_main_va: PARscButton
 		{
 			idc = 1600;
 			onButtonClick = "closeDialog 1609;['Open', true] call BIS_fnc_arsenal";
@@ -25,17 +25,17 @@ class PA_main
 			w = 0.0918423 * safezoneW;
 			h = 0.0420094 * safezoneH;
 		};
-		class pa_main_vs: RscButton
+		class pa_main_vs: PARscButton
 		{
 			idc = 1601;
-			onButtonClick = "closeDialog 1609;_pos = player getPos [30,getDir player];if((AGLToASL _pos) select 2 < 0) then {_pos set [2, 0]; };_vehicle = createVehicle [ 'Land_HelipadEmpty_F', _pos, [], 0, 'CAN_COLLIDE' ];['Open',[ true, _vehicle ]] spawn ([RPL_fnc_garage,RPL_fnc_garageAchilles] select 0);";
+			onButtonClick = "closeDialog 1609;_pos = player getPos [30,getDir player];if((AGLToASL _pos) select 2 < 0) then {_pos set [2, 0]; };_vehicle = createVehicle [ 'Land_HelipadEmpty_F', _pos, [], 0, 'CAN_COLLIDE' ];['Open',[ true, _vehicle ]] execVM '\PA\replacement\fn_garage.sqf';";
 			text = "Virtual Garage"; //--- ToDo: Localize;
 			x = 0.454079 * safezoneW + safezoneX;
 			y = 0.345966 * safezoneH + safezoneY;
 			w = 0.0918423 * safezoneW;
 			h = 0.0420094 * safezoneH;
 		};
-		class pa_main_goml: RscButton
+		class pa_main_goml: PARscButton
 		{
 			idc = 1602;
 			onButtonClick = "closeDialog 1609;[[player, getConnectedUAV player] select (!isNull getConnectedUAV player && !((UAVControl (getConnectedUAV player) select 1) isEqualTo '')), false] call GOM_fnc_aircraftLoadout;";
@@ -45,7 +45,7 @@ class PA_main
 			w = 0.0918423 * safezoneW;
 			h = 0.0420094 * safezoneH;
 		};
-		class pa_main_gomul: RscButton
+		class pa_main_gomul: PARscButton
 		{
 			idc = 1603;
 			onButtonClick = "closeDialog 1609;[[player, getConnectedUAV player] select (!isNull getConnectedUAV player && !((UAVControl (getConnectedUAV player) select 1) isEqualTo '')), true] call GOM_fnc_aircraftLoadout;";
@@ -55,7 +55,7 @@ class PA_main
 			w = 0.0918423 * safezoneW;
 			h = 0.0420094 * safezoneH;
 		};
-		class pa_main_wpn: RscButton
+		class pa_main_wpn: PARscButton
 		{
 			idc = 1604;
 			onButtonClick = "closeDialog 1609;[] spawn WPN_fnc_open;";

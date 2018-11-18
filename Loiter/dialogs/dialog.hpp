@@ -5,15 +5,15 @@ class PA_loiter
 	
 	class controls
 	{		
-		class pa_loiter_ok: RscButtonMenuOK
+		class pa_loiter_ok: PARscButtonMenuOK
 		{
 			x = 0.408158 * safezoneW + safezoneX;
 			y = 0.528006 * safezoneH + safezoneY;
 			w = 0.0590415 * safezoneW;
 			h = 0.0280062 * safezoneH;
-			onButtonClick = "closeDialog 1602;[sliderPosition 1900, sliderPosition 1901] spawn LIT_fnc_execute"";";
+			onButtonClick = "closeDialog 1602;[sliderPosition 1900, sliderPosition 1901] spawn LIT_fnc_execute;";
 		};
-		class pa_loiter_cancel: RscButtonMenuCancel
+		class pa_loiter_cancel: PARscButtonMenuCancel
 		{
 			x = 0.519681 * safezoneW + safezoneX;
 			y = 0.528006 * safezoneH + safezoneY;
@@ -22,7 +22,7 @@ class PA_loiter
 			onButtonClick = "closeDialog 1602;";
 		};
 
-		class pa_loiter_frame: RscFrame
+		class pa_loiter_frame: PARscFrame
 		{
 			idc = 1800;
 			x = 0.375357 * safezoneW + safezoneX;
@@ -31,7 +31,7 @@ class PA_loiter
 			h = 0.294066 * safezoneH;
 		};
 		
-		class pa_loiter_back: IGUIBack
+		class pa_loiter_back: PAIGUIBack
 		{
 			idc = 2200;
 			x = 0.375357 * safezoneW + safezoneX;
@@ -40,7 +40,7 @@ class PA_loiter
 			h = 0.294066 * safezoneH;
 		};
 
-		class  pa_loiter_altitude: RscSlider
+		class  pa_loiter_altitude: PARscSlider
 		{
 			idc = 1900;
 			text="Altitude";
@@ -48,9 +48,9 @@ class PA_loiter
 			y = 0.317959 * safezoneH + safezoneY;
 			w = 0.170564 * safezoneW;
 			h = 0.0280062 * safezoneH;
-			onSliderPosChanged = "[_this select 0, _this select 1] spawn LIT_fnc_sliderChanged"";";
+			onSliderPosChanged = "[_this select 0, _this select 1] spawn LIT_fnc_sliderChanged;";
 		};
-		class pa_loiter_radius: RscSlider
+		class pa_loiter_radius: PARscSlider
 		{
 			idc = 1901;
 			text="Radius";
@@ -58,11 +58,11 @@ class PA_loiter
 			y = 0.415981 * safezoneH + safezoneY;
 			w = 0.170564 * safezoneW;
 			h = 0.0280062 * safezoneH;
-		    onSliderPosChanged = "[_this select 0, _this select 1] spawn LIT_fnc_sliderChanged"";";
+		    onSliderPosChanged = "[_this select 0, _this select 1] spawn LIT_fnc_sliderChanged;";
 
 		};
 		
-		class pa_loiter_altitude_text: RscStructuredText
+		class pa_loiter_altitude_text: PARscStructuredText
 		{
 			idc = 1000;
 			tooltip = "Altitude";
@@ -72,7 +72,7 @@ class PA_loiter
 			w = 0.170564 * safezoneW;
 			h = 0.0280062 * safezoneH;
 		};
-		class pa_loiter_radius_text: RscStructuredText
+		class pa_loiter_radius_text: PARscStructuredText
 		{
 			idc = 1001;
 			tooltip = "Radius";

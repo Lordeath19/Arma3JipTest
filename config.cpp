@@ -1,35 +1,20 @@
-#include "GOM\dialogs\GOM_dialog_parents.hpp"
-#include "GOM\dialogs\GOM_dialog_controls.hpp"
-#include "Loiter\dialogs\defines.hpp"
-#include "Loiter\dialogs\dialog.hpp"
-#include "Weaponry\dialogs\dialog.hpp"
-#include "Main\dialogs\dialog.hpp"
-
-#include "R3F_LOG\desc_include.h"
-
 
 
 class CfgPatches {
-	class A3_Anims_F_Config_Sdr {
-		units[] = {};
-		weapons[] = {};
-		requiredVersion = 0.1;
-		requiredAddons[] = {"A3_Anims_F"};
-	};
+
 	
 	class PA_arsenal {
-		units[] = {};
-		weapons[] = {};
+		units[] = {"VTOL_01_armed_base_F","Tank","Car","Air","B_Carryall_Base"};
+		weapons[] = {"weapon_VLS_01","cannon_105mm_VTOL_01","gatling_20mm_VTOL_01","autocannon_40mm_VTOL_01"};
 		requiredAddons[] = {
-			"A3_Anims_F",
 			"A3_Data_F",
 			"A3_Functions_F",
 			"A3_Functions_F_Curator",
 			"A3_Functions_F_Mark",
 			"A3_Weapons_F",
 			"A3_Weapons_F_Ammoboxes",
-			"A3_Weapons_F_Destroyer",
 			"A3_Weapons_F_Exp",
+			//"A3_Weapons_F_Destroyer",
 			"A3_Air_F_Beta",
 			"A3_Air_F_Exp",
 			"A3_Air_F_Exp_VTOL_01"};
@@ -38,6 +23,7 @@ class CfgPatches {
 };
 
 class CfgFunctions {
+	
 	
 	class Obama_1
     {
@@ -51,66 +37,28 @@ class CfgFunctions {
         };
     };
 	
-	
 	class GOM
 	{
 		class init
 		{
-			class aircraftLoadoutInit{file = "\rocks_f\GOM\functions\GOM_fnc_aircraftLoadoutInit.sqf";postInit = 1;};
+			class aircraftLoadoutInit{file = "\rocks_f\GOM\functions\GOM_fnc_aircraftLoadoutInit.sqf";preInit = 1;};
 		};
 	};
 	
-	class PA 
+	class Replacement
 	{
-		
-		class PersonalArsenal 
+		tag = "RPL";
+		class MarkFunctions
 		{
-			class Personal_Arsenal 
-			{
-				file = "\rocks_f\init.sqf";
-				postInit = 1;
-			};
-			
-			class R3F_LOG
-			{
-				file = "\rocks_f\R3F_LOG\init.sqf";
-				postInit = 1;
-			};
-		};
-	};
-	
-	
-	class Loiter
-	{
-		tag = "LIT";
-		class loiter
-		{
-			file="\rocks_f\Loiter\functions";
-			
-			class execute {};
-			class open {};
-			class sliderChanged {};
-		};
-	};
-
-	class Assist
-	{
-		tag = "ASS";
-		class assist
-		{
-			
-			file="\rocks_f";
-			
-			class disableDriverAssist {};
-			class enableDriverAssist {};
-			
+			file = "\rocks_f\replacement";
+			class garage {};
 		};
 	};
 	
 	class Weaponry
 	{
 		tag = "WPN";
-		class weaponry 
+		class functions 
 		{			
 			file = "\rocks_f\Weaponry\functions";	
 			
@@ -123,20 +71,30 @@ class CfgFunctions {
 		};
 	};
 	
-	class Replacement
+	class Loiter
 	{
-		tag = "RPL";
-		class replacement
-		{
-			file = "\rocks_f\replacement";
-			class garage {};
-			class garageAchilles {};
+		tag = "LIT";
+		class functions 
+		{			
+			file = "\rocks_f\Loiter\functions";	
+			
+			class execute {};
+			class open {};
+			class sliderChanged {};
 
+		};
+	};
+	
+	class R3F_LOG
+	{
+		class init
+		{
+			file = "\rocks_f\R3F_LOG\init.sqf";
+			preInit = 1;
 		};
 	};
 
 };
-
 
 class Mode_SemiAuto;
 class manual;
@@ -312,7 +270,6 @@ class CfgAmmo {
 	
 };
 
-
 class CfgMagazines {
 	
 	class 1000Rnd_20mm_shells;
@@ -324,12 +281,11 @@ class CfgMagazines {
 
 };
 
-class DefaultVehicleSystemsDisplayManagerLeft
-{
+class DefaultVehicleSystemsDisplayManagerLeft {
 	class components;
 };
-class DefaultVehicleSystemsDisplayManagerRight
-{
+
+class DefaultVehicleSystemsDisplayManagerRight {
 	class components;
 };
 
@@ -866,7 +822,16 @@ class CfgVehicles {
 	
 };
 
-class CfgInventoryGlobalVariable
-{
+class CfgInventoryGlobalVariable {
 	maxSoldierLoad = 9999000;
 };
+
+
+#include "GOM\dialogs\GOM_dialog_parents.hpp"
+#include "GOM\dialogs\GOM_dialog_controls.hpp"
+#include "Loiter\dialogs\defines.hpp"
+#include "Loiter\dialogs\dialog.hpp"
+#include "Weaponry\dialogs\dialog.hpp"
+#include "Main\dialogs\dialog.hpp"
+
+#include "R3F_LOG\desc_include.h"

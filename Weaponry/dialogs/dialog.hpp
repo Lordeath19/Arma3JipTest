@@ -6,7 +6,7 @@ class PA_weaponry
 
 	class controls
 	{
-		class RscFrame_1800: RscFrame
+		class PARscFrame_1800: PARscFrame
 		{
 			idc = 1800;
 			x = 0.257274 * safezoneW + safezoneX;
@@ -14,7 +14,7 @@ class PA_weaponry
 			w = 0.485452 * safezoneW;
 			h = 0.602134 * safezoneH;
 		};
-		class RscListbox_1500: RscListBox
+		class PARscListbox_1500: PARscListBox
 		{
 			idc = 1500;
 			onSetFocus = "[ctrlText 1400] spawn WPN_fnc_findWeapons;";
@@ -25,7 +25,7 @@ class PA_weaponry
 			w = 0.177125 * safezoneW;
 			h = 0.518116 * safezoneH;
 		};
-		class RscListbox_1501: RscListBox
+		class PARscListbox_1501: PARscListBox
 		{
 			idc = 1501;
 			onLBSelChanged = "hint format['%1', lbText [1501,lbCurSel 1501]]";
@@ -35,7 +35,7 @@ class PA_weaponry
 			w = 0.177125 * safezoneW;
 			h = 0.518116 * safezoneH;
 		};
-		class RscButtonMenuOK_2600: RscButtonMenuOK
+		class PARscButtonMenuOK_2600: PARscButtonMenuOK
 		{
 			onButtonClick = "closeDialog 1603;[lbText [1500,lbCurSel 1500], lbText [1501,(lbCurSel 1501)],ctrlText 1401, ctrlText 1400] spawn WPN_fnc_execute;";
 
@@ -46,7 +46,7 @@ class PA_weaponry
 			colorText[] = {1,1,1,1};
 			colorBackground[] = {0,0,0,0.8};
 		};
-		class RscButtonMenuCancel_2700: RscButtonMenuCancel
+		class PARscButtonMenuCancel_2700: PARscButtonMenuCancel
 		{
 			onButtonClick = "closeDialog 1603;";
 
@@ -57,7 +57,7 @@ class PA_weaponry
 			colorText[] = {1,1,1,1};
 			colorBackground[] = {0,0,0,0.8};
 		};
-		class RscEdit_1400: RscEdit
+		class PARscEdit_1400: PARscEdit
 		{
 			idc = 1400;
 
@@ -67,7 +67,7 @@ class PA_weaponry
 			w = 0.177125 * safezoneW;
 			h = 0.0280062 * safezoneH;
 		};
-		class RscEdit_1401: RscEdit
+		class PARscEdit_1401: PARscEdit
 		{
 			idc = 1401;
 

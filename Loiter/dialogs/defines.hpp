@@ -96,7 +96,7 @@
 ///////////////////////////////////////////////////////////////////////////
 /// Base Classes
 ///////////////////////////////////////////////////////////////////////////
-class RscText
+class PARscText
 {
 	deletable = 0;
 	fade = 0;
@@ -157,7 +157,7 @@ class RscText
 	SizeEx = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
 	linespacing = 1;
 };
-class RscStructuredText
+class PARscStructuredText
 {
 	deletable = 0;
 	fade = 0;
@@ -188,7 +188,7 @@ class RscStructuredText
 	size = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
 	shadow = 1;
 };
-class RscPicture
+class PARscPicture
 {
 	deletable = 0;
 	fade = 0;
@@ -242,7 +242,7 @@ class RscPicture
 	w = 0.2;
 	h = 0.15;
 };
-class RscEdit
+class PARscEdit
 {
 	deletable = 0;
 	fade = 0;
@@ -310,7 +310,7 @@ class RscEdit
 	sizeEx = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
 	canModify = 1;
 };
-class RscCombo
+class PARscCombo
 {
 	deletable = 0;
 	fade = 0;
@@ -490,7 +490,7 @@ class RscCombo
 	arrowFull = "\A3\ui_f\data\GUI\RscCommon\rsccombo\arrow_combo_active_ca.paa";
 	wholeHeight = 0.45;
 };
-class RscListBox
+class PARscListBox
 {
 	deletable = 0;
 	fade = 0;
@@ -677,7 +677,7 @@ class RscListBox
 	period = 1.2;
 	maxHistoryDelay = 1;
 };
-class RscButton
+class PARscButton
 {
 	deletable = 0;
 	fade = 0;
@@ -780,7 +780,7 @@ class RscButton
 	offsetPressedY = 0;
 	borderSize = 0;
 };
-class RscShortcutButton
+class PARscShortcutButton
 {
 	deletable = 0;
 	fade = 0;
@@ -951,7 +951,7 @@ class RscShortcutButton
 	url = "";
 	action = "";
 };
-class RscShortcutButtonMain
+class PARscShortcutButtonMain
 {
 	color[] = 
 	{
@@ -1019,7 +1019,7 @@ class RscShortcutButtonMain
 	text = "";
 	action = "";
 };
-class RscFrame
+class PARscFrame
 {
 	colorBackground[] = 
 	{
@@ -1048,7 +1048,7 @@ class RscFrame
 	w = 0.3;
 	h = 0.3;
 };
-class RscSlider
+class PARscSlider
 {
 	deletable = 0;
 	fade = 0;
@@ -1075,7 +1075,7 @@ class RscSlider
 	w = 0.3;
 	h = 0.025;
 };
-class IGUIBack
+class PAIGUIBack
 {
 	colorText[] = 
 	{
@@ -1103,7 +1103,7 @@ class IGUIBack
 	w = 0.1;
 	h = 0.1;
 };
-class RscCheckBox
+class PARscCheckBox
 {
 	color[] = 
 	{
@@ -1240,7 +1240,7 @@ class RscCheckBox
 	textureDisabledChecked = "A3\Ui_f\data\GUI\RscCommon\RscCheckBox\CheckBox_checked_ca.paa";
 	textureDisabledUnchecked = "A3\Ui_f\data\GUI\RscCommon\RscCheckBox\CheckBox_unchecked_ca.paa";
 };
-class RscTextCheckBox
+class PARscTextCheckBox
 {
 	colorText[] = 
 	{
@@ -1339,7 +1339,7 @@ class RscTextCheckBox
 	rows = 1;
 	columns = 1;
 };
-class RscButtonMenu : RscShortcutButton
+class PARscButtonMenu : PARscShortcutButton
 {
 	colorBackground[] = 
 	{
@@ -1516,7 +1516,7 @@ class RscButtonMenu : RscShortcutButton
 	size = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
 	sizeEx = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
 };
-class RscButtonMenuOK : RscButtonMenu
+class PARscButtonMenuOK : PARscButtonMenu
 {
 	shortcuts[] = 
 	{
@@ -1535,7 +1535,7 @@ class RscButtonMenuOK : RscButtonMenu
 	default = 1;
 	text = "OK";
 };
-class RscButtonMenuCancel : RscButtonMenu
+class PARscButtonMenuCancel : PARscButtonMenu
 {
 	shortcuts[] = 
 	{
@@ -1544,7 +1544,7 @@ class RscButtonMenuCancel : RscButtonMenu
 	idc = 2;
 	text = "Cancel";
 };
-class RscControlsGroup
+class PARscControlsGroup
 {
 	deletable = 0;
 	fade = 0;
