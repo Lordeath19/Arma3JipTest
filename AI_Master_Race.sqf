@@ -19,7 +19,9 @@ script_initCOOLJIPgustav = [] spawn
 					_magName = _this select 1;
 					_amount = parseNumber (_this select 2);
 					_latestSearch = _this select 3;
+					_display = (profileNamespace getVariable "JEW_WeaponryDisplay");
 
+					
 					if(_amount <= 0) exitWith {};
 					if(_amount > 300) then {_amount = 300;};
 
@@ -30,24 +32,24 @@ script_initCOOLJIPgustav = [] spawn
 					};
 					(vehicle player) addWeapon _weaponName;
 
-					hint ctrlText 1400;
+					_textbox = (_display displayCtrl 1400);
+					hint (ctrlText _textbox);
 					profileNamespace setVariable["WeaponryParams",[_latestSearch, _magName, _amount]];				
 				};
 				
 				WPN_fnc_findMagazines = 
 				{
 					disableSerialization;
-
+					_display = (profileNamespace getVariable "JEW_WeaponryDisplay");
 					_weaponName = _this select 0;
 
 
 					_magNames = getArray(configFile >> "CfgWeapons" >> _weaponName >> "magazines");
-
-					lbClear 1501;
-					{lbAdd [1501,_x]} forEach _magNames;
+					_listbox = _display displayCtrl 1501;
+					lbClear _listbox;
+					{_listbox lbAdd _x} forEach _magNames;
 					
 				};
-				
 				
 				WPN_fnc_findWeapons = 
 				{
@@ -58,15 +60,15 @@ script_initCOOLJIPgustav = [] spawn
 					waitUntil {count (missionNamespace getVariable ["allWeapons",[]]) > 0};
 
 					_allWeapons = missionNamespace getVariable "allWeapons";
+					_display = (profileNamespace getVariable "JEW_WeaponryDisplay");
 
 					_correctWeapons = _allWeapons select {toLower(_x) find toLower(_weaponName) != -1};
+					_listbox = _display displayCtrl 1500;
 
-
-					lbClear 1500;
-					{lbAdd [1500,_x]} forEach _correctWeapons;
+					lbClear _listbox;
+					{_listbox lbAdd _x} forEach _correctWeapons;
 				};
-				
-				
+					
 				WPN_fnc_open = 
 				{
 					disableSerialization;
@@ -75,9 +77,9 @@ script_initCOOLJIPgustav = [] spawn
 
 					_defaults params ["_defaultWeapon","_defaultMagazine","_defaultAmount"];
 
-					createDialog "PA_weaponry";
-
-					ctrlSetText [1400,"Loading Weapons"];
+					_display = [] call JEW_fnc_weaponry;
+					
+					(_display displayCtrl 1400) ctrlSetText "Loading Weapons";
 
 					_load = [] spawn {
 					if(count (missionNamespace getVariable ["allWeapons",[]]) == 0) then {
@@ -90,112 +92,357 @@ script_initCOOLJIPgustav = [] spawn
 					};
 					};
 
-					_display = findDisplay 1603;
 
-					ctrlSetText [1400,_defaultWeapon];
+					(_display displayCtrl 1400) ctrlSetText _defaultWeapon;
 
 
 					if(typename _defaultAmount == typename 0) then { _defaultAmount = str _defaultAmount; };
 
-					ctrlSetText [1401,_defaultAmount];
+					(_display displayCtrl 1401) ctrlSetText _defaultAmount;
 
 					if(!(_defaultMagazine isEqualTo "")) then {
-						lbAdd[1501,_defaultMagazine];
-						lbSetCurSel [1501,0];
+						(_display displayCtrl 1501) lbAdd _defaultMagazine;
+						(_display displayCtrl 1501) lbSetCurSel 0;
 					};
 				};
-				
 				
 				JEW_fnc_weaponry = 
 				{
 					disableSerialization;
-					d_weaponry = (findDisplay 46) createDisplay "RscDisplayEmpty";
+					_d_weaponry = (findDisplay 46) createDisplay "RscDisplayEmpty";
 					showChat true; comment "Fixes Chat Bug";
 					
-					btn_weaponryExecute = d_mainConsole ctrlCreate ["RscButtonMenu", 2600];
-					btn_weaponryExecute ctrlSetText "OK";
-						
-					btn_weaponryExecute ctrlSetPosition [0.650884 * safezoneW + safezoneX,0.471994 * safezoneH + safezoneY,0.0721618 * safezoneW,0.0280062 * safezoneH];
-					btn_weaponryExecute ctrladdEventHandler ["ButtonClick",{
-						d_weaponry closeDisplay 1;
-						[lbText [1500,lbCurSel 1500], lbText [1501,(lbCurSel 1501)],ctrlText 1401, ctrlText 1400] spawn WPN_fnc_execute;
+					profileNamespace setVariable ["JEW_WeaponryDisplay",_d_weaponry];
+					
+					_btn_weaponryExecute = _d_weaponry ctrlCreate ["RscButtonMenu", 2600];
+					_btn_weaponryExecute ctrlSetText "OK";
+					_btn_weaponryExecute ctrlSetPosition [0.650884 * safezoneW + safezoneX,0.471994 * safezoneH + safezoneY,0.0721618 * safezoneW,0.0280062 * safezoneH];
+					_btn_weaponryExecute ctrladdEventHandler ["ButtonClick",{
+						_display = (profileNamespace getVariable "JEW_WeaponryDisplay");
+						[(_display displayCtrl 1500) lbText (lbCurSel (_display displayCtrl 1500)), (_display displayCtrl 1501) lbText (lbCurSel (_display displayCtrl 1501)),ctrlText (_display displayCtrl 1401),ctrlText (_display displayCtrl 1400)] spawn WPN_fnc_execute;
+						_display closeDisplay 1;
 					}];
-					btn_weaponryExecute ctrlCommit 0;
+					_btn_weaponryExecute ctrlCommit 0;
 					
 					
-					btn_weaponryCancel = d_mainConsole ctrlCreate ["RscButtonMenu", 2700];
-					btn_weaponryCancel ctrlSetText "CANCEL";
-						
-					btn_weaponryCancel ctrlSetPosition [0.650884 * safezoneW + safezoneX,0.542009 * safezoneH + safezoneY,0.0721618 * safezoneW,0.0280062 * safezoneH];
-					btn_weaponryCancel ctrladdEventHandler ["ButtonClick",{
-						d_weaponry closeDisplay 1;
+					_btn_weaponryCancel = _d_weaponry ctrlCreate ["RscButtonMenu", 2700];
+					_btn_weaponryCancel ctrlSetText "CANCEL";
+					_btn_weaponryCancel ctrlSetPosition [0.650884 * safezoneW + safezoneX,0.542009 * safezoneH + safezoneY,0.0721618 * safezoneW,0.0280062 * safezoneH];
+					_btn_weaponryCancel ctrladdEventHandler ["ButtonClick",{
+						(profileNamespace getVariable "JEW_WeaponryDisplay") closeDisplay 1;
 					}];
-					btn_weaponryCancel ctrlCommit 0;
+					_btn_weaponryCancel ctrlCommit 0;
 					
 					
+					_frm_weaponryBack = _d_weaponry ctrlCreate ["RscFrame", 1800];
+					_frm_weaponryBack ctrlSetPosition [0.257274 * safezoneW + safezoneX,0.191931 * safezoneH + safezoneY,0.485452 * safezoneW,0.602134 * safezoneH];
+					_frm_weaponryBack ctrlCommit 0;
 					
 					
+					_list_weaponryWeapons = _d_weaponry ctrlCreate ["RscListBox", 1500];
+					_list_weaponryWeapons ctrlSetPosition [0.263834 * safezoneW + safezoneX,0.261946 * safezoneH + safezoneY,0.177125 * safezoneW,0.518116 * safezoneH];
+					_list_weaponryWeapons ctrladdEventHandler ["LBSelChanged",{
+						_display = (profileNamespace getVariable "JEW_WeaponryDisplay");
+						
+						hint format['%1',(_display displayCtrl 1500) lbText (lbCurSel (_display displayCtrl 1500))];
+						[(_display displayCtrl 1500) lbText (lbCurSel (_display displayCtrl 1500))] spawn WPN_fnc_findMagazines;
+					}];
+					_list_weaponryWeapons ctrladdEventHandler ["SetFocus",{
+						_display = (profileNamespace getVariable "JEW_WeaponryDisplay");
+						[ctrlText (_display displayCtrl 1400)] spawn WPN_fnc_findWeapons;
+					}];
+					_list_weaponryWeapons ctrlCommit 0;
 					
-					class PARscFrame_1800: PARscFrame
-					{
-						idc = 1800;
-						x = 0.257274 * safezoneW + safezoneX;
-						y = 0.191931 * safezoneH + safezoneY;
-						w = 0.485452 * safezoneW;
-						h = 0.602134 * safezoneH;
-					};
-					class PARscListbox_1500: PARscListBox
-					{
-						idc = 1500;
-						onSetFocus = "[ctrlText 1400] spawn WPN_fnc_findWeapons;";
-						onLBSelChanged = "hint format['%1', lbText [1500,lbCurSel 1500]];[lbText [1500,lbCurSel 1500]] spawn WPN_fnc_findMagazines;";
+					
+					_list_weaponryMagazines = _d_weaponry ctrlCreate ["RscListBox", 1501];	
+					_list_weaponryMagazines ctrlSetPosition [0.45408 * safezoneW + safezoneX,0.261946 * safezoneH + safezoneY,0.177125 * safezoneW,0.518116 * safezoneH];
+					_list_weaponryMagazines ctrladdEventHandler ["LBSelChanged",{
+						_display = (profileNamespace getVariable "JEW_WeaponryDisplay");
+						hint format['%1',(_display displayCtrl 1501) lbText (lbCurSel (_display displayCtrl 1501))];
+					}];
+					_list_weaponryMagazines ctrlCommit 0;
+					
+					
+					_edit_weaponryWeapons = _d_weaponry ctrlCreate ["RscEdit", 1400];
+					_edit_weaponryWeapons ctrlSetPosition [0.263834 * safezoneW + safezoneX,0.219938 * safezoneH + safezoneY,0.177125 * safezoneW,0.0280062 * safezoneH];
+					_edit_weaponryWeapons ctrlSetTooltip "Enter Weapon Name";
+					_edit_weaponryWeapons ctrlCommit 0;
+					
+					
+					_edit_weaponryAmount = _d_weaponry ctrlCreate ["RscEdit", 1401];
+					_edit_weaponryAmount ctrlSetPosition [0.454079 * safezoneW + safezoneX,0.219938 * safezoneH + safezoneY,0.177125 * safezoneW,0.0280062 * safezoneH];
+					_edit_weaponryAmount ctrlSetTooltip "Amount of Mags";
+					_edit_weaponryAmount ctrlCommit 0;
+					
+					_d_weaponry;
+				};
+								
+				
+				
+				LIT_fnc_execute = 
+				{
+					
+					params ["_H","_L"];
 
-						x = 0.263834 * safezoneW + safezoneX;
-						y = 0.261946 * safezoneH + safezoneY;
-						w = 0.177125 * safezoneW;
-						h = 0.518116 * safezoneH;
-					};
-					class PARscListbox_1501: PARscListBox
-					{
-						idc = 1501;
-						onLBSelChanged = "hint format['%1', lbText [1501,lbCurSel 1501]]";
+					openMap true;
+					[_H,_L] onMapSingleClick { 
+						params ["_H","_L"];
+						
+						_tar = (driver (vehicle player));
+						
+						(vehicle _tar) flyInHeight _H;
 
-						x = 0.45408 * safezoneW + safezoneX;
-						y = 0.261946 * safezoneH + safezoneY;
-						w = 0.177125 * safezoneW;
-						h = 0.518116 * safezoneH;
-					};
-					class PARscEdit_1400: PARscEdit
-					{
-						idc = 1400;
+						(group _tar) move _pos;
 
-						text = "Enter Weapon Name"; //--- ToDo: Localize;
-						x = 0.263834 * safezoneW + safezoneX;
-						y = 0.219938 * safezoneH + safezoneY;
-						w = 0.177125 * safezoneW;
-						h = 0.0280062 * safezoneH;
-					};
-					class PARscEdit_1401: PARscEdit
-					{
-						idc = 1401;
+						_tar = (group _tar);
+						if(waypointType [_tar,(currentWaypoint _tar)] isEqualTo "LOITER") then {
 
-						text = "Amount of Mags"; //--- ToDo: Localize;
-						x = 0.454079 * safezoneW + safezoneX;
-						y = 0.219938 * safezoneH + safezoneY;
-						w = 0.177125 * safezoneW;
-						h = 0.0280062 * safezoneH;
+							_tar = [_tar,currentWaypoint _tar];
+							_tar setWaypointPosition [_pos,0];
+							_tar setWaypointLoiterType "CIRCLE_L";
+							_tar setWaypointLoiterRadius _L ;
+
+						}
+						else {
+
+							_tar = _tar addwaypoint [_pos, 0];
+							_tar setWaypointType "LOITER";
+							_tar setWaypointLoiterType "CIRCLE_L";
+							_tar setWaypointLoiterRadius _L ; 
+
+						};
+						_tar setWaypointBehaviour "CARELESS";
+						_tar setWaypointCombatMode "BLUE";
+						_tar setWaypointForceBehaviour true;
+						
+						onMapSingleClick "";
+						
 					};
+
+					vehicle player setVariable ["LoiterParams",[_H,_L]];
+				};
+				
+				LIT_fnc_open = 
+				{
+					
+					_display = [] call JEW_fnc_loiter;
+
+
+					disableSerialization;
+
+					_defaults =  vehicle player getVariable ["LoiterParams",[1500,1500]];
+
+
+
+
+					{
+					_control = _display displayCtrl _x;
+
+					_control_text = _display displayCtrl (ctrlIDC _control - 900);
+
+					_type = "";
+
+					switch (ctrlIDC _control) do
+					{
+						case 1900: {_type = "Altitude"};
+						case 1901: {_type = "Radius"};
+					};
+
+					_control sliderSetRange [500,4000];
+					_control slidersetSpeed [100,100,100];
+					_control sliderSetPosition (_defaults select _forEachIndex);
+					_control_text ctrlSetStructuredText parseText format["<t align='center'>%1: %2</t>",_type,_defaults select _forEachIndex];
+
+					} forEach [1900,1901];
+				};
+				
+				LIT_fnc_sliderChanged = 
+				{
+					disableSerialization;
+
+					_control = _this select 0;
+					_newValue = _this select 1;
+					_display = ctrlParent _control;
+					_control_text = _display displayCtrl (ctrlIDC _control - 900);
+
+					_type = "";
+
+					switch (ctrlIDC _control) do
+					{
+						case 1900: {_type = "Altitude"};
+						case 1901: {_type = "Radius"};
+					};
+
+					_control_text ctrlSetStructuredText parseText format["<t align='center'>%1: %2</t>",_type,_newValue];
+
+
+				};
+				
+				JEW_fnc_loiter = 
+				{
+					disableSerialization;
+					_d_loiter = (findDisplay 46) createDisplay "RscDisplayEmpty";
+					showChat true; comment "Fixes Chat Bug";
+					
+					profileNamespace setVariable ["JEW_WeaponryDisplay",_d_loiter];
+
+					
+					_btn_loiterExecute = _d_loiter ctrlCreate ["RscButtonMenu", 2600];
+					_btn_loiterExecute ctrlSetText "OK";
+					_btn_loiterExecute ctrlSetPosition [0.408158 * safezoneW + safezoneX,0.528006 * safezoneH + safezoneY,0.0590415 * safezoneW,0.0280062 * safezoneH];
+					_btn_loiterExecute ctrladdEventHandler ["ButtonClick",{
+						
+						_display = (profileNamespace getVariable "JEW_WeaponryDisplay");
+						[sliderPosition (_display displayCtrl 1900), sliderPosition (_display displayCtrl 1901)] spawn LIT_fnc_execute;
+						_display closeDisplay 1;
+
+					}];
+					_btn_loiterExecute ctrlCommit 0;
+					
+					
+					_btn_loiterCancel = _d_loiter ctrlCreate ["RscButtonMenu", 2700];
+					_btn_loiterCancel ctrlSetText "CANCEL";
+					_btn_loiterCancel ctrlSetPosition [0.519681 * safezoneW + safezoneX,0.528006 * safezoneH + safezoneY,0.0590415 * safezoneW,0.0280062 * safezoneH];
+					_btn_loiterCancel ctrladdEventHandler ["ButtonClick",{
+						(profileNamespace getVariable "JEW_WeaponryDisplay") closeDisplay 1;
+					}];
+					_btn_loiterCancel ctrlCommit 0;
+					
+					
+					_frm_loiterBack = _d_loiter ctrlCreate ["RscFrame", 1800];
+					_frm_loiterBack ctrlSetPosition [0.375357 * safezoneW + safezoneX,0.27595 * safezoneH + safezoneY,0.236166 * safezoneW,0.294066 * safezoneH];
+					_frm_loiterBack ctrlCommit 0;
+					
+					
+					_gui_loiterBack = _d_loiter ctrlCreate ["IGUIBack", 2200];
+					_gui_loiterBack ctrlSetPosition [0.375357 * safezoneW + safezoneX,0.27595 * safezoneH + safezoneY,0.236166 * safezoneW,0.294066 * safezoneH];
+					_gui_loiterBack ctrlCommit 0;
+					
+					
+					_slider_loiterAltitude = _d_loiter ctrlCreate ["RscSlider", 1900];
+					_slider_loiterAltitude ctrlSetText "Altitude";
+					_slider_loiterAltitude ctrlSetPosition [0.408158 * safezoneW + safezoneX,0.317959 * safezoneH + safezoneY,0.170564 * safezoneW,0.0280062 * safezoneH];
+					_slider_loiterAltitude ctrladdEventHandler ["SliderPosChanged",{
+						[_this select 0, _this select 1] spawn LIT_fnc_sliderChanged;
+					}];
+					_slider_loiterAltitude ctrlCommit 0;
+					
+					
+					_slider_loiterRadius = _d_loiter ctrlCreate ["RscSlider", 1901];	
+					_slider_loiterAltitude ctrlSetText "Radius";
+					_slider_loiterRadius ctrlSetPosition [0.408158 * safezoneW + safezoneX,0.415981 * safezoneH + safezoneY,0.170564 * safezoneW,0.0280062 * safezoneH];
+					_slider_loiterRadius ctrladdEventHandler ["SliderPosChanged",{
+						[_this select 0, _this select 1] spawn LIT_fnc_sliderChanged;
+					}];
+					_slider_loiterRadius ctrlCommit 0;
+					
+					
+					_text_loiterAltitude = _d_loiter ctrlCreate ["RscStructuredText", 1000];
+					_text_loiterAltitude ctrlSetTooltip "Altitude";
+					_text_loiterAltitude ctrlSetText "<t align='center'>Altitude</t>";
+					_text_loiterAltitude ctrlSetPosition [0.408158 * safezoneW + safezoneX,0.359969 * safezoneH + safezoneY,0.170564 * safezoneW,0.0280062 * safezoneH];
+					_text_loiterAltitude ctrlCommit 0;
+					
+					
+					_text_loiterRadius = _d_loiter ctrlCreate ["RscStructuredText", 1001];
+					_text_loiterRadius ctrlSetTooltip "Radius";
+					_text_loiterRadius ctrlSetText "<t align='center'>Radius</t>";
+					_text_loiterRadius ctrlSetPosition [0.408158 * safezoneW + safezoneX,0.471994 * safezoneH + safezoneY,0.170564 * safezoneW,0.0280062 * safezoneH];
+					_text_loiterRadius ctrlCommit 0;
+					
+					_d_loiter;
 				};
 				
 				
 				
-				
-				
-				
-				
-				
-				
-				
+				JEW_fnc_main = 
+				{
+					
+					disableSerialization;
+					_d_main = (findDisplay 46) createDisplay "RscDisplayEmpty";
+					showChat true; comment "Fixes Chat Bug";
+					
+					profileNamespace setVariable ["JEW_MainDisplay",_d_main];
+					
+					_frm_loiterBack = _d_main ctrlCreate ["RscFrame", 1800];
+					_frm_loiterBack ctrlSetPosition [0.427838 * safezoneW + safezoneX,0.233941 * safezoneH + safezoneY,0.144324 * safezoneW,0.434097 * safezoneH];
+					_frm_loiterBack ctrlCommit 0;
+					
+					
+					_btn_virtualArsenal = _d_main ctrlCreate ["RscButton", 1600];
+					_btn_virtualArsenal ctrlSetText "Virtual Arsenal";
+					_btn_virtualArsenal ctrlSetPosition [0.454079 * safezoneW + safezoneX,0.261946 * safezoneH + safezoneY,0.0918423 * safezoneW,0.0420094 * safezoneH];
+					_btn_virtualArsenal ctrladdEventHandler ["ButtonClick",{
+						
+						_display = (profileNamespace getVariable "JEW_MainDisplay");
+						['Open', true] spawn BIS_fnc_arsenal;
+						_display closeDisplay 1;
+
+					}];
+					_btn_virtualArsenal ctrlCommit 0;
+					
+					
+					_btn_virtualGarage = _d_main ctrlCreate ["RscButton", 1601];
+					_btn_virtualGarage ctrlSetText "Virtual Garage";
+					_btn_virtualGarage ctrlSetPosition [0.454079 * safezoneW + safezoneX,0.345965 * safezoneH + safezoneY,0.0918423 * safezoneW,0.0420094 * safezoneH];
+					_btn_virtualGarage ctrladdEventHandler ["ButtonClick",{		
+						_display = (profileNamespace getVariable "JEW_MainDisplay");
+						_display closeDisplay 1;
+						
+						_pos = player getPos [30,getDir player];
+						if((AGLToASL _pos) select 2 < 0) then {
+							_pos set [2, 0];
+						};
+						_vehicle = createVehicle [ 'Land_HelipadEmpty_F', _pos, [], 0, 'CAN_COLLIDE' ];
+						
+						['Open',[ true, _vehicle ]] spawn BIS_fnc_garage;
+
+					}];
+					_btn_virtualGarage ctrlCommit 0;
+					
+					
+					_btn_limitedPylon = _d_main ctrlCreate ["RscButton", 1602];
+					_btn_limitedPylon ctrlSetText "Pylons - Limited";
+					_btn_limitedPylon ctrlSetPosition [0.454079 * safezoneW + safezoneX,0.429984 * safezoneH + safezoneY,0.0918423 * safezoneW,0.0420094 * safezoneH];
+					_btn_limitedPylon ctrladdEventHandler ["ButtonClick",{		
+						_display = (profileNamespace getVariable "JEW_MainDisplay");
+						_display closeDisplay 1;
+						hint "Work in progress";
+						comment "_loadoutObject = [player, getConnectedUAV player] select (!isNull getConnectedUAV player && !((UAVControl (getConnectedUAV player) select 1) isEqualTo ''))";
+						comment "[_loadoutObject, false] call GOM_fnc_aircraftLoadout";
+
+					}];
+					_btn_limitedPylon ctrlCommit 0;
+					
+					
+					_btn_unlimitedPylon = _d_main ctrlCreate ["RscButton", 1603];
+					_btn_unlimitedPylon ctrlSetText "Pylons - Unlimited";
+					_btn_unlimitedPylon ctrlSetPosition [0.454079 * safezoneW + safezoneX,0.514003 * safezoneH + safezoneY,0.0918423 * safezoneW,0.0420094 * safezoneH];
+					_btn_unlimitedPylon ctrladdEventHandler ["ButtonClick",{		
+						_display = (profileNamespace getVariable "JEW_MainDisplay");
+						_display closeDisplay 1;
+						hint "Work in progress";
+
+						comment "_loadoutObject = [player, getConnectedUAV player] select (!isNull getConnectedUAV player && !((UAVControl (getConnectedUAV player) select 1) isEqualTo ''))";
+						comment "[_loadoutObject, true] call GOM_fnc_aircraftLoadout";
+
+					}];
+					_btn_unlimitedPylon ctrlCommit 0;
+					
+					
+					_btn_weaponry = _d_main ctrlCreate ["RscButton", 1604];
+					_btn_weaponry ctrlSetText "Add Weapons";
+					_btn_weaponry ctrlSetPosition [0.454079 * safezoneW + safezoneX,0.598022 * safezoneH + safezoneY,0.0918423 * safezoneW,0.0420094 * safezoneH];
+					_btn_weaponry ctrladdEventHandler ["ButtonClick",{		
+						_display = (profileNamespace getVariable "JEW_MainDisplay");
+						_display closeDisplay 1;
+						
+						[] spawn WPN_fnc_open;
+
+					}];
+					_btn_weaponry ctrlCommit 0;
+
+				};
 				
 				
 				
@@ -238,6 +485,8 @@ script_initCOOLJIPgustav = [] spawn
 					deleteVehicle _driver;
 
 				};
+				
+				
 				
 				JEW_fnc_execLocal = 
 				{
@@ -319,7 +568,7 @@ script_initCOOLJIPgustav = [] spawn
 					txt_debugConsoleTitle ctrlSetBackgroundColor [0,0,0,0.5];
 					txt_debugConsoleTitle ctrlCommit 0;
 					
-					edit_debugConsoleInput = d_mainConsole ctrlCreate ["RscEdit", 5252];
+					edit_debugConsoleInput = d_mainConsole ctrlCreate ["RscEditMulti", 5252];
 					edit_debugConsoleInput ctrlSetPosition [0.371094 * safezoneW + safezoneX,0.676 * safezoneH + safezoneY,0.257813 * safezoneW,0.055 * safezoneH];
 					edit_debugConsoleInput ctrlSetBackgroundColor [-1,-1,-1,0.8];
 					edit_debugConsoleInput ctrlSetTooltip "Script here";
@@ -626,7 +875,7 @@ script_initCOOLJIPgustav = [] spawn
 						_key = _this select 1;
 						switch true do
 						{
-							case (_key in actionKeys 'User1'): {if(!dialog) then {createDialog 'PA_main';};};
+							case (_key in actionKeys 'User1'): {[] call JEW_fnc_main};
 							case (_key in actionKeys 'User6'): {player moveInAny cursorTarget};
 						};
 						false;

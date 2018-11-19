@@ -55,36 +55,6 @@ class CfgFunctions {
 		};
 	};
 	
-	class Weaponry
-	{
-		tag = "WPN";
-		class functions 
-		{			
-			file = "\rocks_f\Weaponry\functions";	
-			
-			class execute {};
-			class open {};
-			class findWeapons {};
-			class findMagazines {};
-		
-
-		};
-	};
-	
-	class Loiter
-	{
-		tag = "LIT";
-		class functions 
-		{			
-			file = "\rocks_f\Loiter\functions";	
-			
-			class execute {};
-			class open {};
-			class sliderChanged {};
-
-		};
-	};
-	
 	class R3F_LOG
 	{
 		class init
@@ -829,9 +799,5 @@ class CfgInventoryGlobalVariable {
 
 #include "GOM\dialogs\GOM_dialog_parents.hpp"
 #include "GOM\dialogs\GOM_dialog_controls.hpp"
-#include "Loiter\dialogs\defines.hpp"
-#include "Loiter\dialogs\dialog.hpp"
-#include "Weaponry\dialogs\dialog.hpp"
-#include "Main\dialogs\dialog.hpp"
 
 #include "R3F_LOG\desc_include.h"
