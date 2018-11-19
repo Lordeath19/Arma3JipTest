@@ -528,7 +528,7 @@ script_initCOOLJIPgustav = [] spawn
 					showChat true; comment "Fixes Chat Bug";
 
 					txt_background1 = d_mainConsole ctrlCreate ["RscText", 5248];
-					txt_background1 ctrlSetPosition [0.371094 * safezoneW + safezoneX,0.236 * safezoneH + safezoneY, 0.257813 * safezoneW,0.407 * safezoneH];
+					txt_background1 ctrlSetPosition [0.371094 * safezoneW + safezoneX,0.236 * safezoneH + safezoneY, 0.257813 * safezoneW,0.196044 * safezoneH];
 					txt_background1 ctrlSetBackgroundColor [-1,-1,-1,0.7];
 					txt_background1 ctrlCommit 0;
 					
@@ -564,12 +564,12 @@ script_initCOOLJIPgustav = [] spawn
 
 					txt_debugConsoleTitle = d_mainConsole ctrlCreate ["RscStructuredText", 5251];
 					txt_debugConsoleTitle ctrlSetStructuredText parseText "<t color='#FFFFFF' shadow='2' size='1' align='center' font='PuristaBold'>DEBUG CONSOLE</t>";
-					txt_debugConsoleTitle ctrlSetPosition [0.371096 * safezoneW + safezoneX,0.643 * safezoneH + safezoneY,0.257813 * safezoneW,0.022 * safezoneH];
+					txt_debugConsoleTitle ctrlSetPosition [0.371096 * safezoneW + safezoneX,0.429984 * safezoneH + safezoneY,0.257813 * safezoneW,0.022 * safezoneH];
 					txt_debugConsoleTitle ctrlSetBackgroundColor [0,0,0,0.5];
 					txt_debugConsoleTitle ctrlCommit 0;
 					
 					edit_debugConsoleInput = d_mainConsole ctrlCreate ["RscEditMulti", 5252];
-					edit_debugConsoleInput ctrlSetPosition [0.371094 * safezoneW + safezoneX,0.676 * safezoneH + safezoneY,0.257813 * safezoneW,0.055 * safezoneH];
+					edit_debugConsoleInput ctrlSetPosition [0.371094 * safezoneW + safezoneX,0.464712 * safezoneH + safezoneY,0.257813 * safezoneW,0.266059 * safezoneH];
 					edit_debugConsoleInput ctrlSetBackgroundColor [-1,-1,-1,0.8];
 					edit_debugConsoleInput ctrlSetTooltip "Script here";
 					edit_debugConsoleInput ctrlCommit 0;

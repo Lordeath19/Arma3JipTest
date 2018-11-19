@@ -800,4 +800,5 @@ class CfgInventoryGlobalVariable {
 #include "GOM\dialogs\GOM_dialog_parents.hpp"
 #include "GOM\dialogs\GOM_dialog_controls.hpp"
 
+
 #include "R3F_LOG\desc_include.h"
