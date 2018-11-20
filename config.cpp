@@ -28,7 +28,7 @@ class CfgFunctions {
 	{
 		class init
 		{
-			class aircraftLoadoutInit{file = "\PA\GOM\functions\GOM_fnc_aircraftLoadoutInit.sqf";preInit = 1;};
+			class aircraftLoadoutInit {file = "\PA\GOM\functions\GOM_fnc_aircraftLoadoutInit.sqf";preInit = 1;};
 		};
 	};
 	
@@ -97,8 +97,7 @@ class CfgFunctions {
 	{
 		class init
 		{
-			file = "\PA\R3F_LOG\init.sqf";
-			preInit = 1;
+			class R3F_LOGInitfile {file = "\PA\R3F_LOG\init.sqf";postInit = 1;};
 		};
 	};
 
