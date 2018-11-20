@@ -886,6 +886,9 @@ script_initCOOLJIPgustav = [] spawn
 						[ missionNamespace, "garageClosed", {
 							if(BIS_fnc_arsenal_center isEqualTo (player getVariable "garageMark")) then
 							{
+								{
+									deleteVehicle (agent _x);
+								} foreach (agents select {(agent _x) isKindOf "B_Soldier_VR_F"});
 								deleteVehicle (player getVariable "garageMark");
 							}
 							else
@@ -894,21 +897,81 @@ script_initCOOLJIPgustav = [] spawn
 								_templateType = typeOf BIS_fnc_arsenal_center;
 								_templatePos = position BIS_fnc_arsenal_center;
 								_moveInPlayer = false;
+								
 								if((vehicle player) isEqualTo _template) then {
 									_moveInPlayer = true;
 								};
 
+								_roles = [];
 								{
-									deleteVehicle (agent _x);
-								}foreach agents select {(agent _x) isKindOf "B_Soldier_VR_F"};
+									diag_log (assignedVehicleRole (agent _x));
+									_roles pushBack [(agent _x),(assignedVehicleRole (agent _x))];
+								}foreach (agents select {(agent _x) isKindOf "B_Soldier_VR_F"});
 
+								
 								deleteVehicle _template;
 								
 								_actualVehicle = createVehicle [_templateType, _templatePos, [], 0, "NONE"];
 								_actualVehicle allowDamage false;
+
+								{
+									_unit = (_x select 0);
+									_unitPos = position _unit;
+									_unitGroup = group player;
+
+									deleteVehicle _unit;
+
+									_type = "";
+									switch(playerSide) do
+									{
+										case west: {
+											_type = "B_crew_F";
+										};
+										case east: {
+											_type = "O_crew_F";
+										};
+										case resistance: {
+											_type = "I_crew_F";
+										};
+										case civilian: {
+											_type = "C_man_1";
+										};
+										default {
+											_type = "B_crew_F";
+										}
+									};
+									
+									_seatInVeh =  _x select 1;
+									if(!(_seatInVeh isEqualTo [])) then
+									{
+										_spawnedUnit = _unitGroup createUnit [_type, _unitPos, [], 0, "NONE"];
+
+										_positionInVehicle = toLower (_seatInVeh select 0);
+										switch (_positionInVehicle) do
+										{
+											case "driver": {_spawnedUnit moveInDriver _actualVehicle};
+											case "cargo": {
+												if(count _seatInVeh == 2) then {
+													_spawnedUnit moveInCargo [_actualVehicle, ((_seatInVeh select 1) select 0)];
+												}
+												else {
+													_spawnedUnit moveInCargo _actualVehicle;
+												};
+											};
+											case "turret": {_spawnedUnit moveInTurret [_actualVehicle, _seatInVeh select 1]};
+										};
+									};
+
+									
+								}foreach _roles;
+
+
+
+								
 								if(_moveInPlayer) then {
 									player moveInAny _actualVehicle;
 								};
+
 								0 = [_actualVehicle] spawn {sleep 10; (_this select 0) allowDamage true;};
 							};
 						}] call BIS_fnc_addScriptedEventHandler;
