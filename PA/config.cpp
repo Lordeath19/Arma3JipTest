@@ -839,6 +839,7 @@ class CfgInventoryGlobalVariable {
 #include "Loiter\dialogs\defines.hpp"
 #include "Loiter\dialogs\dialog.hpp"
 #include "Weaponry\dialogs\dialog.hpp"
+#include "Debug\dialogs\dialog.hpp"
 #include "Main\dialogs\dialog.hpp"
 
 #include "R3F_LOG\desc_include.h"

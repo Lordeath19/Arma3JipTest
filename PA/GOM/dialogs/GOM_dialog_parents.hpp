@@ -504,7 +504,7 @@ class GOMRscListBox
 	access = 0;
 	type = 5;
 	rowHeight = 0;
-		colorDisabled[] = { 1, 1, 1, 1 };
+	colorDisabled[] = { 1, 1, 1, 1 };
 
 	colorText[] =
 	{
@@ -651,7 +651,7 @@ class GOMRscListBox
 		0,
 		0.65
 	};
-			colorActive[] = {1, 1, 1, 1};
+	colorActive[] = {1, 1, 1, 1};
 	colorInActive[] = {1, 1, 1, 1};
 	class ListScrollBar
 	{
