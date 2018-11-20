@@ -45,22 +45,11 @@ class CfgFunctions {
 		};
 	};
 	
-	class Replacement
-	{
-		tag = "RPL";
-		class MarkFunctions
-		{
-			file = "\rocks_f\replacement";
-			class garage {};
-		};
-	};
-	
 	class R3F_LOG
 	{
 		class init
 		{
-			file = "\rocks_f\R3F_LOG\init.sqf";
-			preInit = 1;
+			class R3F_LOGInitFile { file = "\rocks_f\R3F_LOG\init.sqf";preInit = 1;};
 		};
 	};
 

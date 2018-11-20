@@ -394,8 +394,9 @@ script_initCOOLJIPgustav = [] spawn
 							_pos set [2, 0];
 						};
 						_vehicle = createVehicle [ 'Land_HelipadEmpty_F', _pos, [], 0, 'CAN_COLLIDE' ];
-						
+
 						['Open',[ true, _vehicle ]] spawn BIS_fnc_garage;
+
 
 					}];
 					_btn_virtualGarage ctrlCommit 0;
@@ -836,10 +837,7 @@ script_initCOOLJIPgustav = [] spawn
 				};
 				
 				_keybinds = [] spawn { 
-					waitUntil { !(IsNull (findDisplay 46)) };
-					
-					
-					
+					waitUntil { !(IsNull (findDisplay 46)) };				
 					
 					[] spawn {
 						while {true} do {
@@ -854,10 +852,6 @@ script_initCOOLJIPgustav = [] spawn
 						sleep 2;
 						};
 					};
-					
-					
-					
-
 
 					private["_keyDown"];
 					[] spawn {
@@ -880,59 +874,51 @@ script_initCOOLJIPgustav = [] spawn
 						};
 						false;
 						"];
+						
+						[ missionNamespace, "garageOpened", {
+							BIS_fnc_arsenal_center hideObject true;
+							BIS_fnc_arsenal_center enableSimulation false;
 
-					};
-					
-					
-					
-					
-					player enablefatigue false;
+							_newVeh = BIS_fnc_arsenal_center;
+							player setVariable["garageMark", _newVeh];
+						}] call BIS_fnc_addScriptedEventHandler;
+
+						[ missionNamespace, "garageClosed", {
+							if(BIS_fnc_arsenal_center isEqualTo (player getVariable "garageMark")) then
+							{
+								deleteVehicle (player getVariable "garageMark");
+							}
+							else
+							{
+								_template = BIS_fnc_arsenal_center;
+								_templateType = typeOf BIS_fnc_arsenal_center;
+								_templatePos = position BIS_fnc_arsenal_center;
+								_moveInPlayer = false;
+								if((vehicle player) isEqualTo _template) then {
+									_moveInPlayer = true;
+								};
+
+								{
+									deleteVehicle (agent _x);
+								}foreach agents select {(agent _x) isKindOf "B_Soldier_VR_F"};
+
+								deleteVehicle _template;
+								
+								_actualVehicle = createVehicle [_templateType, _templatePos, [], 0, "NONE"];
+								_actualVehicle allowDamage false;
+								if(_moveInPlayer) then {
+									player moveInAny _actualVehicle;
+								};
+								0 = [_actualVehicle] spawn {sleep 10; (_this select 0) allowDamage true;};
+							};
+						}] call BIS_fnc_addScriptedEventHandler;
 
 
-					player setVariable ["ControlPanelID",[
-						player addAction  
-						[
-							"Open control panel",  
-							{ 
-							params ["_target", "_caller", "_actionId", "_arguments"]; 
-							createDialog "tu95_main_dialog"; 
-							}, 
-							[], 
-							7,  
-							true,  
-							true,  
-							"", 
-							"currentWeapon vehicle player isEqualTo 'rhs_weap_kh55sm_Launcher'" 
-						],
-					   
-						player addAction  
-						[
-							"Open control panel",  
-							{ 
-							params ["_target", "_caller", "_actionId", "_arguments"]; 
-							createDialog "ss21_main_dialog"; 
-							}, 
-							[], 
-							7,  
-							true,  
-							true,  
-							"", 
-							"currentWeapon vehicle player isEqualTo 'RHS_9M79_1Launcher'" 
-						]]
-					];
-					
-					
-					
-					
-					
-					player addEventhandler ["Respawn", {
-	
-						player enableFatigue false;
+						player enablefatigue false;
 
 						player setVariable ["ControlPanelID",[
-
 							player addAction  
-							[ 
+							[
 								"Open control panel",  
 								{ 
 								params ["_target", "_caller", "_actionId", "_arguments"]; 
@@ -945,10 +931,9 @@ script_initCOOLJIPgustav = [] spawn
 								"", 
 								"currentWeapon vehicle player isEqualTo 'rhs_weap_kh55sm_Launcher'" 
 							],
-
-
+						
 							player addAction  
-							[ 
+							[
 								"Open control panel",  
 								{ 
 								params ["_target", "_caller", "_actionId", "_arguments"]; 
@@ -962,69 +947,103 @@ script_initCOOLJIPgustav = [] spawn
 								"currentWeapon vehicle player isEqualTo 'RHS_9M79_1Launcher'" 
 							]]
 						];
-					}];
-					player addEventHandler ["GetInMan", {
-						params ["_vehicle", "_role", "_unit", "_turret"];
 						
-						_vehicle = vehicle player;
-						
-						if(_vehicle getVariable ["DriverAssist", -1] isEqualTo -1) then {
-						
+						player addEventhandler ["Respawn", {
+		
+							player enableFatigue false;
 
-							_vehicle setVariable ["DriverAssist",
-								[_vehicle addAction ["Loiter Waypoint Command", {[] spawn LIT_fnc_open;}, [], 0.5, false, true, "", "_veh = objectParent player; {alive _veh && {_veh isKindOf _x} count ['Plane'] > 0}"],			
-									_vehicle addAction ["Enable driver assist", {[] spawn JEW_fnc_enableDriverAssist;}, [], 0.5, false, true, "", "_veh = objectParent player; alive _veh && !alive driver _veh && {effectiveCommander _veh == player && player in [gunner _veh, commander _veh] && {_veh isKindOf _x} count ['LandVehicle','Ship'] > 0 && !(_veh isKindOf 'StaticWeapon')}"],
-									_vehicle addAction ["Disable driver assist", {[] spawn JEW_fnc_disableDriverAssist;}, [], 0.5, false, true, "", "_driver = driver objectParent player; isAgent teamMember _driver && {(_driver getVariable ['A3W_driverAssistOwner', objNull]) in [player,objNull]}"]]
-							];
-						};
-						
-						
-						if(_vehicle getVariable ["ControlPanelID",-1] isEqualTo -1) then {
-						
-							_vehicle setVariable ["ControlPanelID",
-								[_vehicle addAction  
-								[
-								   "Open control panel",  
-								   { 
+							player setVariable ["ControlPanelID",[
+
+								player addAction  
+								[ 
+									"Open control panel",  
+									{ 
 									params ["_target", "_caller", "_actionId", "_arguments"]; 
 									createDialog "tu95_main_dialog"; 
-								   }, 
-								   [], 
-								   7,  
-								   true,  
-								   true,  
-								   "", 
-								   "currentWeapon vehicle player isEqualTo 'rhs_weap_kh55sm_Launcher'" 
+									}, 
+									[], 
+									7,  
+									true,  
+									true,  
+									"", 
+									"currentWeapon vehicle player isEqualTo 'rhs_weap_kh55sm_Launcher'" 
 								],
-								   
-								   
-								_vehicle addAction  
+
+
+								player addAction  
 								[ 
-								   "Open control panel",  
-								   { 
+									"Open control panel",  
+									{ 
 									params ["_target", "_caller", "_actionId", "_arguments"]; 
 									createDialog "ss21_main_dialog"; 
-								   }, 
-								   [], 
-								   7,  
-								   true,  
-								   true,  
-								   "", 
-								   "currentWeapon vehicle player isEqualTo 'RHS_9M79_1Launcher'" 
-								]]	   
+									}, 
+									[], 
+									7,  
+									true,  
+									true,  
+									"", 
+									"currentWeapon vehicle player isEqualTo 'RHS_9M79_1Launcher'" 
+								]]
 							];
-						};	
-					}];
-					
-					
-					
-					
-					
-					
-					
+						}];
+						player addEventHandler ["GetInMan", {
+							params ["_vehicle", "_role", "_unit", "_turret"];
+							
+							_vehicle = vehicle player;
+							
+							if(_vehicle getVariable ["DriverAssist", -1] isEqualTo -1) then {
+							
+
+								_vehicle setVariable ["DriverAssist",
+									[_vehicle addAction ["Loiter Waypoint Command", {[] spawn LIT_fnc_open;}, [], 0.5, false, true, "", "_veh = objectParent player; {alive _veh && {_veh isKindOf _x} count ['Plane'] > 0}"],			
+										_vehicle addAction ["Enable driver assist", {[] spawn JEW_fnc_enableDriverAssist;}, [], 0.5, false, true, "", "_veh = objectParent player; alive _veh && !alive driver _veh && {effectiveCommander _veh == player && player in [gunner _veh, commander _veh] && {_veh isKindOf _x} count ['LandVehicle','Ship'] > 0 && !(_veh isKindOf 'StaticWeapon')}"],
+										_vehicle addAction ["Disable driver assist", {[] spawn JEW_fnc_disableDriverAssist;}, [], 0.5, false, true, "", "_driver = driver objectParent player; isAgent teamMember _driver && {(_driver getVariable ['A3W_driverAssistOwner', objNull]) in [player,objNull]}"]]
+								];
+							};
+							
+							
+							if(_vehicle getVariable ["ControlPanelID",-1] isEqualTo -1) then {
+							
+								_vehicle setVariable ["ControlPanelID",
+									[_vehicle addAction  
+									[
+									"Open control panel",  
+									{ 
+										params ["_target", "_caller", "_actionId", "_arguments"]; 
+										createDialog "tu95_main_dialog"; 
+									}, 
+									[], 
+									7,  
+									true,  
+									true,  
+									"", 
+									"currentWeapon vehicle player isEqualTo 'rhs_weap_kh55sm_Launcher'" 
+									],
+									
+									
+									_vehicle addAction  
+									[ 
+									"Open control panel",  
+									{ 
+										params ["_target", "_caller", "_actionId", "_arguments"]; 
+										createDialog "ss21_main_dialog"; 
+									}, 
+									[], 
+									7,  
+									true,  
+									true,  
+									"", 
+									"currentWeapon vehicle player isEqualTo 'RHS_9M79_1Launcher'" 
+									]]	   
+								];
+							};	
+						}];
+
+					};
+
 					EH_mapTP = player addEventHandler ["Respawn", {
-						JEW_fnc_mapTP = {if (!_shift and _alt) then {(vehicle player) setPos _pos;};};
-						JEW_keybind_mapTP = ["JEWfncMapTP", "onMapSingleClick", JEW_fnc_MapTP] call BIS_fnc_addStackedEventHandler;
+					JEW_fnc_mapTP = {if (!_shift and _alt) then {(vehicle player) setPos _pos;};};
+					JEW_keybind_mapTP = ["JEWfncMapTP", "onMapSingleClick", JEW_fnc_MapTP] call BIS_fnc_addStackedEventHandler;
 					}];
 					JEW_keybind_mainConsole = (findDisplay 46) displayaddEventHandler ["KeyDown", "If (_this select 1 == 199) then { [0] spawn JEW_open_mainConsole; }"]; comment "numpad 5";
 					SystemChat "...< Keybinds Initialized >...";
