@@ -36,7 +36,7 @@ private["_keyDown"];
 		{
 			case (_key in actionKeys "User1"): {if(!dialog) then {createDialog "PA_main";};};
 			case (_key in actionKeys "User6"): {player moveInAny cursorTarget};
-			case (_key in actionKeys "User2"): {[getVariable ["consoleLast", ""]] spawn JEW_open_mainConsole};
+			case (_key in actionKeys "User2"): {[0] spawn JEW_open_mainConsole};
 		};
 		false;
 	}];
@@ -183,7 +183,7 @@ private["_keyDown"];
 		{
 			hint "No code to execute.";
 		};
-		setVariable ["consoleLast", _text];
+		profileNamespace setVariable ["consoleLast", _text];
 		_code = compile _text;
 		[] call _code;
 	};
@@ -195,7 +195,7 @@ private["_keyDown"];
 		{
 			hint "No code to execute.";
 		};
-		setVariable ["consoleLast", _text];
+		profileNamespace setVariable ["consoleLast", _text];
 		_code = compile _text;
 		_code remoteExec ["bis_fnc_call", 0, false];
 	};
@@ -207,7 +207,7 @@ private["_keyDown"];
 		{
 			hint "JEW: Console Error: No code to execute.";
 		};
-		setVariable ["consoleLast", _text];
+		profileNamespace setVariable ["consoleLast", _text];
 		_code = compile _text;
 		_code remoteExec ["bis_fnc_call", 2, false];
 	};
@@ -264,6 +264,10 @@ private["_keyDown"];
 		edit_debugConsoleInput ctrlSetBackgroundColor [-1,-1,-1,0.8];
 		edit_debugConsoleInput ctrlSetTooltip "Script here";
 		edit_debugConsoleInput ctrlCommit 0;
+		if(!(profileNamespace getVariable["consoleLast", ""] isEqualTo "")) then
+		{
+			edit_debugConsoleInput ctrlSetText (profileNamespace getVariable "consoleLast");
+		};
 		
 		lb_playerList = d_mainConsole ctrlCreate ["RscListbox", 5253];
 		lb_playerList ctrlSetPosition [0.298906 * safezoneW + safezoneX,0.302 * safezoneH + safezoneY,0.0670312 * safezoneW,0.341 * safezoneH];
