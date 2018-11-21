@@ -40,10 +40,19 @@ class CfgFunctions {
 		};
 	};
 	
-	class Replacement
+	class A3_Mark
 	{
-		tag = "RPL";
-		class MarkFunctions
+		class Vehicles
+		{
+			delete garage;
+		};
+		
+		class Achilles
+		{
+			delete garage;
+		};
+		
+		class AAAAAPersonalArsenal
 		{
 			file = "\PA\replacement";
 			class garage {};
@@ -839,7 +848,7 @@ class CfgInventoryGlobalVariable {
 #include "Loiter\dialogs\defines.hpp"
 #include "Loiter\dialogs\dialog.hpp"
 #include "Weaponry\dialogs\dialog.hpp"
-#include "Debug\dialogs\dialog.hpp"
+//#include "Debug\dialogs\dialog.hpp"
 #include "Main\dialogs\dialog.hpp"
 
 #include "R3F_LOG\desc_include.h"

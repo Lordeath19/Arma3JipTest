@@ -37,15 +37,3 @@ if(!(_defaultMagazine isEqualTo "")) then {
 lbAdd[1501,_defaultMagazine];
 lbSetCurSel [1501,0];
 };
-
-
-_refresh = [_dialog] spawn {
-	with uiNamespace do {
-		while {dialog} do {
-			
-			
-			sleep 1;
-			
-		};
-	};
-};
