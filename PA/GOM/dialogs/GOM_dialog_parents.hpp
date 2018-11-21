@@ -98,6 +98,7 @@
 ///////////////////////////////////////////////////////////////////////////
 /// Base Classes
 ///////////////////////////////////////////////////////////////////////////
+class ListScrollBar;
 
 class GOMRscText
 {
@@ -653,14 +654,14 @@ class GOMRscListBox
 	};
 	colorActive[] = {1, 1, 1, 1};
 	colorInActive[] = {1, 1, 1, 1};
-	class ListScrollBar
+	class ListScrollBar : ListScrollBar
 	{
 		color[] =
 		{
 			1,
 			1,
 			1,
-			1
+			0.6
 		};
 		autoScrollEnabled = 1;
 	};

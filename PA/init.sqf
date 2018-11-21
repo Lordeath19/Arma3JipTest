@@ -219,7 +219,7 @@ private["_keyDown"];
 	JEW_fnc_addStatement = 
 	{
 		params ["_control"];
-		private _display = ctrlParent _control;
+		private _display = ctrlParent d_mainConsole;
 		private _prevButton = _display displayCtrl 90110;
 		private _nextButton = _display displayCtrl 90111;
 		private _expression = _display displayCtrl 5252;
@@ -254,10 +254,9 @@ private["_keyDown"];
 		{
 			hint "No code to execute.";
 		};
-		profileNamespace setVariable ["consoleLast", _text];
+		[] call JEW_fnc_addStatement;
 		_code = compile _text;
 		[] call _code;
-		[edit_debugConsoleInput] call JEW_fnc_addStatement;
 	};
 
 	JEW_fnc_execGlobal = 
@@ -267,10 +266,10 @@ private["_keyDown"];
 		{
 			hint "No code to execute.";
 		};
-		profileNamespace setVariable ["consoleLast", _text];
+		[] call JEW_fnc_addStatement;
 		_code = compile _text;
 		_code remoteExec ["bis_fnc_call", 0, false];
-		[edit_debugConsoleInput] call JEW_fnc_addStatement;
+		[] call JEW_fnc_addStatement;
 	};
 
 	JEW_fnc_execServer = 
@@ -280,10 +279,10 @@ private["_keyDown"];
 		{
 			hint "JEW: Console Error: No code to execute.";
 		};
-		profileNamespace setVariable ["consoleLast", _text];
+		[] call JEW_fnc_addStatement;
 		_code = compile _text;
 		_code remoteExec ["bis_fnc_call", 2, false];
-		[edit_debugConsoleInput] call JEW_fnc_addStatement;
+		[] call JEW_fnc_addStatement;
 	};
 	
 	JEW_open_mainConsole = 

@@ -5,7 +5,7 @@ class PA_loiter
 	
 	class controls
 	{		
-		class pa_loiter_ok: PARscButtonMenuOK
+		class pa_loiter_ok: GOMRscButtonMenuOK
 		{
 			x = 0.408158 * safezoneW + safezoneX;
 			y = 0.528006 * safezoneH + safezoneY;
@@ -13,7 +13,7 @@ class PA_loiter
 			h = 0.0280062 * safezoneH;
 			onButtonClick = "closeDialog 1602;[sliderPosition 1900, sliderPosition 1901] spawn LIT_fnc_execute;";
 		};
-		class pa_loiter_cancel: PARscButtonMenuCancel
+		class pa_loiter_cancel: GOMRscButtonMenuCancel
 		{
 			x = 0.519681 * safezoneW + safezoneX;
 			y = 0.528006 * safezoneH + safezoneY;
@@ -22,7 +22,7 @@ class PA_loiter
 			onButtonClick = "closeDialog 1602;";
 		};
 
-		class pa_loiter_frame: PARscFrame
+		class pa_loiter_frame: GOMRscFrame
 		{
 			idc = 1800;
 			x = 0.375357 * safezoneW + safezoneX;
@@ -31,7 +31,7 @@ class PA_loiter
 			h = 0.294066 * safezoneH;
 		};
 		
-		class pa_loiter_back: PAIGUIBack
+		class pa_loiter_back: GOMIGUIBack
 		{
 			idc = 2200;
 			x = 0.375357 * safezoneW + safezoneX;
@@ -40,7 +40,7 @@ class PA_loiter
 			h = 0.294066 * safezoneH;
 		};
 
-		class  pa_loiter_altitude: PARscSlider
+		class  pa_loiter_altitude: GOMRscSlider
 		{
 			idc = 1900;
 			text="Altitude";
@@ -50,7 +50,7 @@ class PA_loiter
 			h = 0.0280062 * safezoneH;
 			onSliderPosChanged = "[_this select 0, _this select 1] spawn LIT_fnc_sliderChanged;";
 		};
-		class pa_loiter_radius: PARscSlider
+		class pa_loiter_radius: GOMRscSlider
 		{
 			idc = 1901;
 			text="Radius";
@@ -62,7 +62,7 @@ class PA_loiter
 
 		};
 		
-		class pa_loiter_altitude_text: PARscStructuredText
+		class pa_loiter_altitude_text: GOMRscStructuredText
 		{
 			idc = 1000;
 			tooltip = "Altitude";
@@ -72,7 +72,7 @@ class PA_loiter
 			w = 0.170564 * safezoneW;
 			h = 0.0280062 * safezoneH;
 		};
-		class pa_loiter_radius_text: PARscStructuredText
+		class pa_loiter_radius_text: GOMRscStructuredText
 		{
 			idc = 1001;
 			tooltip = "Radius";

@@ -6,7 +6,7 @@ class PA_weaponry
 
 	class controls
 	{
-		class PARscFrame_1800: PARscFrame
+		class PARscFrame_1800: GOMRscFrame
 		{
 			idc = 1800;
 			x = 0.257274 * safezoneW + safezoneX;
@@ -14,7 +14,7 @@ class PA_weaponry
 			w = 0.485452 * safezoneW;
 			h = 0.602134 * safezoneH;
 		};
-		class PARscListbox_1500: PARscListBox
+		class PARscListbox_1500: GOMRscListBox
 		{
 			idc = 1500;
 			onSetFocus = "[ctrlText 1400] spawn WPN_fnc_findWeapons;";
@@ -25,7 +25,7 @@ class PA_weaponry
 			w = 0.177125 * safezoneW;
 			h = 0.518116 * safezoneH;
 		};
-		class PARscListbox_1501: PARscListBox
+		class PARscListbox_1501: GOMRscListBox
 		{
 			idc = 1501;
 			onLBSelChanged = "hint format['%1', lbText [1501,lbCurSel 1501]]";
@@ -35,7 +35,7 @@ class PA_weaponry
 			w = 0.177125 * safezoneW;
 			h = 0.518116 * safezoneH;
 		};
-		class PARscButtonMenuOK_2600: PARscButtonMenuOK
+		class PARscButtonMenuOK_2600: GOMRscButtonMenuOK
 		{
 			onButtonClick = "closeDialog 1603;[lbText [1500,lbCurSel 1500], lbText [1501,(lbCurSel 1501)],ctrlText 1401, ctrlText 1400] spawn WPN_fnc_execute;";
 
@@ -46,7 +46,7 @@ class PA_weaponry
 			colorText[] = {1,1,1,1};
 			colorBackground[] = {0,0,0,0.8};
 		};
-		class PARscButtonMenuCancel_2700: PARscButtonMenuCancel
+		class PARscButtonMenuCancel_2700: GOMRscButtonMenuCancel
 		{
 			onButtonClick = "closeDialog 1603;";
 
@@ -57,7 +57,7 @@ class PA_weaponry
 			colorText[] = {1,1,1,1};
 			colorBackground[] = {0,0,0,0.8};
 		};
-		class PARscEdit_1400: PARscEdit
+		class PARscEdit_1400: GOMRscEdit
 		{
 			idc = 1400;
 
@@ -67,7 +67,7 @@ class PA_weaponry
 			w = 0.177125 * safezoneW;
 			h = 0.0280062 * safezoneH;
 		};
-		class PARscEdit_1401: PARscEdit
+		class PARscEdit_1401: GOMRscEdit
 		{
 			idc = 1401;
 

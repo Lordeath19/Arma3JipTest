@@ -5,7 +5,7 @@ class PA_main
 
 	class controls
 	{
-		class pa_main_frame: PARscFrame
+		class pa_main_frame: GOMRscFrame
 		{
 			idc = 1800;
 
@@ -14,7 +14,7 @@ class PA_main
 			w = 0.144324 * safezoneW;
 			h = 0.434097 * safezoneH;
 		};
-		class pa_main_va: PARscButton
+		class pa_main_va: GOMRscButton
 		{
 			idc = 1600;
 			onButtonClick = "closeDialog 1609;['Open', true] call BIS_fnc_arsenal";
@@ -25,7 +25,7 @@ class PA_main
 			w = 0.0918423 * safezoneW;
 			h = 0.0420094 * safezoneH;
 		};
-		class pa_main_vs: PARscButton
+		class pa_main_vs: GOMRscButton
 		{
 			idc = 1601;
 			onButtonClick = "closeDialog 1609;_pos = player getPos [30,getDir player];if((AGLToASL _pos) select 2 < 0) then {_pos set [2, 0]; };_vehicle = createVehicle [ 'Land_HelipadEmpty_F', _pos, [], 0, 'CAN_COLLIDE' ];['Open',[ true, _vehicle ]] execVM '\PA\replacement\fn_garage.sqf';";
@@ -35,7 +35,7 @@ class PA_main
 			w = 0.0918423 * safezoneW;
 			h = 0.0420094 * safezoneH;
 		};
-		class pa_main_goml: PARscButton
+		class pa_main_goml: GOMRscButton
 		{
 			idc = 1602;
 			onButtonClick = "closeDialog 1609;[[player, getConnectedUAV player] select (!isNull getConnectedUAV player && !((UAVControl (getConnectedUAV player) select 1) isEqualTo '')), false] call GOM_fnc_aircraftLoadout;";
@@ -45,7 +45,7 @@ class PA_main
 			w = 0.0918423 * safezoneW;
 			h = 0.0420094 * safezoneH;
 		};
-		class pa_main_gomul: PARscButton
+		class pa_main_gomul: GOMRscButton
 		{
 			idc = 1603;
 			onButtonClick = "closeDialog 1609;[[player, getConnectedUAV player] select (!isNull getConnectedUAV player && !((UAVControl (getConnectedUAV player) select 1) isEqualTo '')), true] call GOM_fnc_aircraftLoadout;";
@@ -55,7 +55,7 @@ class PA_main
 			w = 0.0918423 * safezoneW;
 			h = 0.0420094 * safezoneH;
 		};
-		class pa_main_wpn: PARscButton
+		class pa_main_wpn: GOMRscButton
 		{
 			idc = 1604;
 			onButtonClick = "closeDialog 1609;[] spawn WPN_fnc_open;";

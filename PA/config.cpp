@@ -845,7 +845,6 @@ class CfgInventoryGlobalVariable {
 
 #include "GOM\dialogs\GOM_dialog_parents.hpp"
 #include "GOM\dialogs\GOM_dialog_controls.hpp"
-#include "Loiter\dialogs\defines.hpp"
 #include "Loiter\dialogs\dialog.hpp"
 #include "Weaponry\dialogs\dialog.hpp"
 //#include "Debug\dialogs\dialog.hpp"
