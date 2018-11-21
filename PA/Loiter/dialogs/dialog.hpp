@@ -1,24 +1,26 @@
 class PA_loiter
- {
+{
 	idd = 1602;
 	movingenable=false;
-	
+
 	class controls
 	{		
-		class pa_loiter_ok: GOMRscButtonMenuOK
+		class pa_loiter_ok: GOMRscButtonMenu
 		{
 			x = 0.408158 * safezoneW + safezoneX;
 			y = 0.528006 * safezoneH + safezoneY;
 			w = 0.0590415 * safezoneW;
 			h = 0.0280062 * safezoneH;
+			text = "OK";
 			onButtonClick = "closeDialog 1602;[sliderPosition 1900, sliderPosition 1901] spawn LIT_fnc_execute;";
 		};
-		class pa_loiter_cancel: GOMRscButtonMenuCancel
+		class pa_loiter_cancel: GOMRscButtonMenu
 		{
 			x = 0.519681 * safezoneW + safezoneX;
 			y = 0.528006 * safezoneH + safezoneY;
 			w = 0.0590415 * safezoneW;
 			h = 0.0280062 * safezoneH;
+			text = "Cancel";
 			onButtonClick = "closeDialog 1602;";
 		};
 
@@ -58,7 +60,7 @@ class PA_loiter
 			y = 0.415981 * safezoneH + safezoneY;
 			w = 0.170564 * safezoneW;
 			h = 0.0280062 * safezoneH;
-		    onSliderPosChanged = "[_this select 0, _this select 1] spawn LIT_fnc_sliderChanged;";
+			onSliderPosChanged = "[_this select 0, _this select 1] spawn LIT_fnc_sliderChanged;";
 
 		};
 		
@@ -84,4 +86,4 @@ class PA_loiter
 		};
 		
 	};
- };
+};

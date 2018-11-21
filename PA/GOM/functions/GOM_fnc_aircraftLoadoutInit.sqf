@@ -715,14 +715,12 @@ _selections = selectionnames _veh;
 _presort = _selections select {(toupper _x find "PYLON") >= 0 AND parsenumber (_x select [count _x - 3,3]) > 0};
 _presort apply {[parsenumber (_x select [count _x - 3,3]),_x]};
 _presort sort true;
-_soundPos = agltoasl (_veh modeltoworld (_veh selectionposition (_presort select _pylon)));
 
 };
 
 	_rndSound = selectRandom ['FD_Target_PopDown_Large_F','FD_Target_PopDown_Small_F','FD_Target_PopUp_Small_F'];
 	_getPath = getArray (configfile >> "CfgSounds" >> _rndSound >> "sound");
 	_path = _getPath select 0;
-	playSound3D [_path,_veh,false,_soundpos,random [0.8,1,1.2],random [0.8,1,1.2],180];
 
 true
 };

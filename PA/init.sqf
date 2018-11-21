@@ -46,6 +46,7 @@ private["_keyDown"];
 	//Disable stamina and add action to vehicle the player enters (kh-55sm and 9m79)
 
 	player enablefatigue false;
+	player addAction ["Loiter Waypoint Command", {[] spawn LIT_fnc_open;}, [], 0.5, false, true, "", "_veh = objectParent player; {alive _veh && {_veh isKindOf _x} count ['Plane'] > 0}"];
 
 
 	player setVariable ["ControlPanelID",[
@@ -86,7 +87,7 @@ private["_keyDown"];
 	player addEventhandler ["Respawn", {
 		
 		player enableFatigue false;
-
+		player addAction ["Loiter Waypoint Command", {[] spawn LIT_fnc_open;}, [], 0.5, false, true, "", "_veh = objectParent player; {alive _veh && {_veh isKindOf _x} count ['Plane'] > 0}"];
 		player setVariable ["ControlPanelID",[
 
 			player addAction  
@@ -118,8 +119,8 @@ private["_keyDown"];
 				true,  
 				"", 
 				"currentWeapon vehicle player isEqualTo 'RHS_9M79_1Launcher'" 
-			]]
-		];
+			]
+		]];
 	}];
 	player addEventHandler ["GetInMan", {
 		params ["_vehicle", "_role", "_unit", "_turret"];
@@ -131,7 +132,7 @@ private["_keyDown"];
 		
 
 			_vehicle setVariable ["DriverAssist",
-				[_vehicle addAction ["Loiter Waypoint Command", {[] spawn LIT_fnc_open;}, [], 0.5, false, true, "", "_veh = objectParent player; {alive _veh && {_veh isKindOf _x} count ['Plane'] > 0}"],			
+				[			
 					_vehicle addAction ["Enable driver assist", {[] spawn ASS_fnc_enableDriverAssist;}, [], 0.5, false, true, "", "_veh = objectParent player; alive _veh && !alive driver _veh && {effectiveCommander _veh == player && player in [gunner _veh, commander _veh] && {_veh isKindOf _x} count ['LandVehicle','Ship'] > 0 && !(_veh isKindOf 'StaticWeapon')}"],
 					_vehicle addAction ["Disable driver assist", {[] spawn ASS_fnc_disableDriverAssist;}, [], 0.5, false, true, "", "_driver = driver objectParent player; isAgent teamMember _driver && {(_driver getVariable ['A3W_driverAssistOwner', objNull]) in [player,objNull]}"]]
 			];
@@ -269,7 +270,6 @@ private["_keyDown"];
 		[] call JEW_fnc_addStatement;
 		_code = compile _text;
 		_code remoteExec ["bis_fnc_call", 0, false];
-		[] call JEW_fnc_addStatement;
 	};
 
 	JEW_fnc_execServer = 
@@ -282,7 +282,6 @@ private["_keyDown"];
 		[] call JEW_fnc_addStatement;
 		_code = compile _text;
 		_code remoteExec ["bis_fnc_call", 2, false];
-		[] call JEW_fnc_addStatement;
 	};
 	
 	JEW_open_mainConsole = 
