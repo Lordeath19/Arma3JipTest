@@ -41,7 +41,7 @@ class PA_weaponry
 		class PARscEdit_1400: GOMRscEdit
 		{
 			idc = 1400;
-
+			onKeyUp = "[ctrlText 1400] spawn WPN_fnc_findWeapons;";
 			text = "Enter Weapon Name"; //--- ToDo: Localize;
 			x = 0.263834 * safezoneW + safezoneX;
 			y = 0.219938 * safezoneH + safezoneY;
@@ -58,6 +58,25 @@ class PA_weaponry
 			w = 0.177125 * safezoneW;
 			h = 0.0280062 * safezoneH;
 		};
+
+		class PARscListbox_1500: GOMRscListBox
+		{	
+			idc = 1500;
+			onLBSelChanged = "hint format['%1', lbText [1500,lbCurSel 1500]];[lbText [1500,lbCurSel 1500]] spawn WPN_fnc_findMagazines;";	
+ 			x = 0.263834 * safezoneW + safezoneX;	
+			y = 0.261946 * safezoneH + safezoneY;	
+			w = 0.177125 * safezoneW;	
+			h = 0.518116 * safezoneH;	
+		};	
+		class PARscListbox_1501: GOMRscListBox	
+		{	
+			idc = 1501;	
+			onLBSelChanged = "hint format['%1', lbText [1501,lbCurSel 1501]]";	
+ 			x = 0.45408 * safezoneW + safezoneX;	
+			y = 0.261946 * safezoneH + safezoneY;	
+			w = 0.177125 * safezoneW;	
+			h = 0.518116 * safezoneH;	
+		};	
 
 	}
 }

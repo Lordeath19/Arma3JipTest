@@ -26,7 +26,16 @@ private["_keyDown"];
 	GOM_list_allPylonMags = ("count( getArray (_x >> 'hardpoints')) > 0" configClasses (configfile >> "CfgMagazines")) apply {configname _x};
 	GOM_list_allPylonMags = [GOM_list_allPylonMags, [], {getText (configfile >> "CfgMagazines" >> _x >> "displayName")}, "ASCEND"] call BIS_fnc_sortBy;
 	GOM_list_validDispNames = GOM_list_allPylonMags apply {getText (configfile >> "CfgMagazines" >> _x >> "displayName")};
-
+	_load = [] spawn {
+		if(count (missionNamespace getVariable ["allWeapons",[]]) == 0) then {
+			disableSerialization;
+			
+			_allWeapons = ("isclass _x && {getnumber (_x >> 'scope') != 0}" configclasses (configfile >> "cfgweapons")) select {(configName _x) call BIS_fnc_itemType select 0 isEqualTo "Weapon" || (configName _x) call BIS_fnc_itemType select 0 isEqualTo "VehicleWeapon"} apply {toLower (configName _x)};
+			
+			_allWeapons sort true;
+			missionNamespace setVariable ["allWeapons", _allWeapons];
+		};
+	}; 
 	systemChat "Personal arsenal loaded";
 	private["_i", "_keyDown"];
    	_keyDown = (findDisplay 46) displayAddEventHandler ["KeyDown", {
@@ -220,7 +229,7 @@ private["_keyDown"];
 	JEW_fnc_addStatement = 
 	{
 		params ["_control"];
-		private _display = ctrlParent d_mainConsole;
+		private _display = d_mainConsole;
 		private _prevButton = _display displayCtrl 90110;
 		private _nextButton = _display displayCtrl 90111;
 		private _expression = _display displayCtrl 5252;

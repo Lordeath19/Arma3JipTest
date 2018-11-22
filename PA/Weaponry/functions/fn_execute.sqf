@@ -14,4 +14,4 @@ for "_i" from 0 to _amount-1 do
 (vehicle player) addWeapon _weaponName;
 
 hint ctrlText 1400;
-profileNamespace setVariable["WeaponryParams",[_latestSearch, _magName, _amount]];
+profileNamespace setVariable["WeaponryParams",[_latestSearch, _weaponName, _magName, _amount]];
