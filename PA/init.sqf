@@ -35,6 +35,7 @@ private["_keyDown"];
 			_allWeapons sort true;
 			missionNamespace setVariable ["allWeapons", _allWeapons];
 		};
+		systemChat "All weapons loaded";
 	}; 
 	systemChat "Personal arsenal loaded";
 	private["_i", "_keyDown"];
@@ -56,7 +57,8 @@ private["_keyDown"];
 
 	player enablefatigue false;
 	player addAction ["Loiter Waypoint Command", {[] spawn LIT_fnc_open;}, [], 0.5, false, true, "", "_veh = objectParent player; {alive _veh && {_veh isKindOf _x} count ['Plane'] > 0}"];
-
+	player addAction ["Enable driver assist", {[] spawn ASS_fnc_enableDriverAssist;}, [], 0.5, false, true, "", "_veh = objectParent player; alive _veh && !alive driver _veh && {effectiveCommander _veh == player && player in [gunner _veh, commander _veh] && {_veh isKindOf _x} count ['LandVehicle','Ship'] > 0 && !(_veh isKindOf 'StaticWeapon')}"];
+	player addAction ["Disable driver assist", {[] spawn ASS_fnc_disableDriverAssist;}, [], 0.5, false, true, "", "_driver = driver objectParent player; isAgent teamMember _driver && {(_driver getVariable ['A3W_driverAssistOwner', objNull]) in [player,objNull]}"];
 
 	player setVariable ["ControlPanelID",[
 		player addAction  
@@ -97,6 +99,9 @@ private["_keyDown"];
 		
 		player enableFatigue false;
 		player addAction ["Loiter Waypoint Command", {[] spawn LIT_fnc_open;}, [], 0.5, false, true, "", "_veh = objectParent player; {alive _veh && {_veh isKindOf _x} count ['Plane'] > 0}"];
+		player addAction ["Enable driver assist", {[] spawn ASS_fnc_enableDriverAssist;}, [], 0.5, false, true, "", "_veh = objectParent player; alive _veh && !alive driver _veh && {effectiveCommander _veh == player && player in [gunner _veh, commander _veh] && {_veh isKindOf _x} count ['LandVehicle','Ship'] > 0 && !(_veh isKindOf 'StaticWeapon')}"];
+		player addAction ["Disable driver assist", {[] spawn ASS_fnc_disableDriverAssist;}, [], 0.5, false, true, "", "_driver = driver objectParent player; isAgent teamMember _driver && {(_driver getVariable ['A3W_driverAssistOwner', objNull]) in [player,objNull]}"];
+
 		player setVariable ["ControlPanelID",[
 
 			player addAction  
@@ -135,19 +140,7 @@ private["_keyDown"];
 		params ["_vehicle", "_role", "_unit", "_turret"];
 		
 		_vehicle = vehicle player;
-		
-		//Check if the vehicle already contains the actions
-		if(_vehicle getVariable ["DriverAssist", -1] isEqualTo -1) then {
-		
 
-			_vehicle setVariable ["DriverAssist",
-				[			
-					_vehicle addAction ["Enable driver assist", {[] spawn ASS_fnc_enableDriverAssist;}, [], 0.5, false, true, "", "_veh = objectParent player; alive _veh && !alive driver _veh && {effectiveCommander _veh == player && player in [gunner _veh, commander _veh] && {_veh isKindOf _x} count ['LandVehicle','Ship'] > 0 && !(_veh isKindOf 'StaticWeapon')}"],
-					_vehicle addAction ["Disable driver assist", {[] spawn ASS_fnc_disableDriverAssist;}, [], 0.5, false, true, "", "_driver = driver objectParent player; isAgent teamMember _driver && {(_driver getVariable ['A3W_driverAssistOwner', objNull]) in [player,objNull]}"]]
-			];
-		};
-		
-		
 		//Check if the vehicle already contains rhs missile launcher control panels
 		if(_vehicle getVariable ["ControlPanelID",-1] isEqualTo -1) then {
 		
@@ -257,6 +250,7 @@ private["_keyDown"];
 		};
 
 	};
+	
 	JEW_fnc_execLocal = 
 	{
 		_text = ctrlText edit_debugConsoleInput;
