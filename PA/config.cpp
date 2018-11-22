@@ -267,6 +267,8 @@ class CfgVehicles {
 		{
 			class TransportPylonsComponent
 			{
+				uiPicture = "\A3\Air_F_EPC\Plane_CAS_01\Data\UI\Plane_CAS_01_3DEN_CA.paa";
+
 				class pylons // Pylons are indexed to aircraft model's proxies IDs in the order they are written in class Pylons
                 {
                     class pylons1 // left wingtip
@@ -283,7 +285,6 @@ class CfgVehicles {
                     class pylons2:pylons1
                     {
                         maxweight    = 800; //kg
-                        attachment[] = {};
                         priority     = 4;
                     };
                     class pylons3: pylons1 {priority = 3;};
@@ -328,6 +329,8 @@ class CfgVehicles {
 		{
 			class TransportPylonsComponent
 			{
+				uiPicture = "\A3\Air_F_EPC\Plane_CAS_01\Data\UI\Plane_CAS_01_3DEN_CA.paa";
+
 				class pylons // Pylons are indexed to aircraft model's proxies IDs in the order they are written in class Pylons
                 {
                     class pylons1 // left wingtip
@@ -344,7 +347,6 @@ class CfgVehicles {
                     class pylons2:pylons1
                     {
                         maxweight    = 800; //kg
-                        attachment[] = {};
                         priority     = 4;
                     };
                     class pylons3: pylons1 {priority = 3;};
@@ -356,9 +358,6 @@ class CfgVehicles {
                     class pylons9: pylons2  {mirroredMissilePos = 2;};
                     class pylons10: pylons1 {mirroredMissilePos = 1;}; // right wingtip
                 };
-				
-				
-				
 				class Bays
                 {
                     class BayCenter // corresponding to pylons/##pylon##/bay=1;
@@ -376,6 +375,7 @@ class CfgVehicles {
                     };
                     class BayLeft: BayRight{}; // corresponding to pylons/##pylon##/bay=3;
                 };
+
 			};
 			
 		};
@@ -387,6 +387,8 @@ class CfgVehicles {
 		{
 			class TransportPylonsComponent
 			{
+				uiPicture = "\A3\Air_F_EPC\Plane_CAS_01\Data\UI\Plane_CAS_01_3DEN_CA.paa";
+
 				class pylons // Pylons are indexed to aircraft model's proxies IDs in the order they are written in class Pylons
                 {
                     class pylons1 // left wingtip
@@ -403,7 +405,6 @@ class CfgVehicles {
                     class pylons2:pylons1
                     {
                         maxweight    = 800; //kg
-                        attachment[] = {};
                         priority     = 4;
                     };
                     class pylons3: pylons1 {priority = 3;};
