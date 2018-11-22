@@ -483,6 +483,7 @@ script_initCOOLJIPgustav = [] spawn
 				{
 					private _display = d_mainConsole;
 					private _nextButton = _display displayCtrl 90111;
+					private _prevButton = _display displayCtrl 90110;
 					private _expression = _display displayCtrl 5252;
 
 					private _statementIndex = profileNamespace getVariable ["DebugStatementsIndex", 0];
@@ -493,7 +494,6 @@ script_initCOOLJIPgustav = [] spawn
 
 					private _prevStatement = _prevStatements select _statementIndex;
 					_expression ctrlSetText _prevStatement;
-
 					_prevButton ctrlEnable (_statementIndex < count _prevStatements - 1);
 					_nextButton ctrlEnable (_statementIndex > 0);
 				};
@@ -502,6 +502,7 @@ script_initCOOLJIPgustav = [] spawn
 				{
 					private _display = d_mainConsole;
 					private _prevButton = _display displayCtrl 90110;
+					private _nextButton = _display displayCtrl 90111;
 					private _expression = _display displayCtrl 5252;
 
 					private _statementIndex = profileNamespace getVariable ["DebugStatementsIndex", 0];
@@ -1019,7 +1020,6 @@ script_initCOOLJIPgustav = [] spawn
 
 								_roles = [];
 								{
-									diag_log (assignedVehicleRole (agent _x));
 									_roles pushBack [(agent _x),(assignedVehicleRole (agent _x))];
 								}foreach (agents select {(agent _x) isKindOf "B_Soldier_VR_F"});
 
