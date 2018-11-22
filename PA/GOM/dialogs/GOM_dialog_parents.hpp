@@ -1343,7 +1343,7 @@ class GOMRscTextCheckBox
 		"CHECKED"
 	};
 };
-class GOMRscButtonMenu : GOMRscButton
+class GOMRscButtonMenu : GOMRscShortcutButton
 {
 	idc = -1;
 	type = 16;
