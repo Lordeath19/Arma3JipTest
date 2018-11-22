@@ -34,7 +34,7 @@ script_initCOOLJIPgustav = [] spawn
 
 					_textbox = (_display displayCtrl 1400);
 					hint (ctrlText _textbox);
-					profileNamespace setVariable["WeaponryParams",[_latestSearch, _magName, _amount]];				
+					profileNamespace setVariable["WeaponryParams",[_latestSearch, _weaponName, _magName, _amount]];				
 				};
 				
 				WPN_fnc_findMagazines = 
@@ -62,7 +62,7 @@ script_initCOOLJIPgustav = [] spawn
 					_allWeapons = missionNamespace getVariable "allWeapons";
 					_display = (profileNamespace getVariable "JEW_WeaponryDisplay");
 
-					_correctWeapons = _allWeapons select {toLower(_x) find toLower(_weaponName) != -1};
+					_correctWeapons = _allWeapons select {_x find toLower(_weaponName) != -1};
 					_listbox = _display displayCtrl 1500;
 
 					lbClear _listbox;
@@ -75,26 +75,17 @@ script_initCOOLJIPgustav = [] spawn
 					
 					_defaults =  profileNamespace getVariable["WeaponryParams",["Enter Weapon Name","","Amount of Mags"]];
 
-					_defaults params ["_defaultWeapon","_defaultMagazine","_defaultAmount"];
+					_defaults params ["_latestSearch","_defaultWeapon","_defaultMagazine","_defaultAmount"];
 
 					_display = [] call JEW_fnc_weaponry;
 					
 					(_display displayCtrl 1400) ctrlSetText "Loading Weapons";
 
-					_load = [] spawn {
-					if(count (missionNamespace getVariable ["allWeapons",[]]) == 0) then {
-						disableSerialization;
-						
-						_allWeapons = ("isclass _x && {getnumber (_x >> 'scope') != 0}" configclasses (configfile >> "cfgweapons")) select {(configName _x) call BIS_fnc_itemType select 0 isEqualTo "Weapon" || (configName _x) call BIS_fnc_itemType select 0 isEqualTo "VehicleWeapon"} apply {configName _x};
-						
-						_allWeapons sort true;
-						missionNamespace setVariable ["allWeapons", _allWeapons];
-					};
-					};
 
+					(_display displayCtrl 1400) ctrlSetText _latestSearch;
 
-					(_display displayCtrl 1400) ctrlSetText _defaultWeapon;
-
+					_show_func = [_latestSearch] spawn WPN_fnc_findWeapons;
+					waitUntil{scriptDone _show_func};
 
 					if(typename _defaultAmount == typename 0) then { _defaultAmount = str _defaultAmount; };
 
@@ -147,10 +138,6 @@ script_initCOOLJIPgustav = [] spawn
 						hint format['%1',(_display displayCtrl 1500) lbText (lbCurSel (_display displayCtrl 1500))];
 						[(_display displayCtrl 1500) lbText (lbCurSel (_display displayCtrl 1500))] spawn WPN_fnc_findMagazines;
 					}];
-					_list_weaponryWeapons ctrladdEventHandler ["SetFocus",{
-						_display = (profileNamespace getVariable "JEW_WeaponryDisplay");
-						[ctrlText (_display displayCtrl 1400)] spawn WPN_fnc_findWeapons;
-					}];
 					_list_weaponryWeapons ctrlCommit 0;
 					
 					
@@ -166,6 +153,10 @@ script_initCOOLJIPgustav = [] spawn
 					_edit_weaponryWeapons = _d_weaponry ctrlCreate ["RscEdit", 1400];
 					_edit_weaponryWeapons ctrlSetPosition [0.263834 * safezoneW + safezoneX,0.219938 * safezoneH + safezoneY,0.177125 * safezoneW,0.0280062 * safezoneH];
 					_edit_weaponryWeapons ctrlSetTooltip "Enter Weapon Name";
+					_edit_weaponryWeapons ctrladdEventHandler ["KeyUp",{
+						_display = (profileNamespace getVariable "JEW_WeaponryDisplay");
+						[ctrlText (_display displayCtrl 1400)] spawn WPN_fnc_findWeapons;
+					}];
 					_edit_weaponryWeapons ctrlCommit 0;
 					
 					
@@ -488,6 +479,78 @@ script_initCOOLJIPgustav = [] spawn
 				};
 				
 				
+				JEW_fnc_prevStatement = 
+				{
+					private _display = d_mainConsole;
+					private _nextButton = _display displayCtrl 90111;
+					private _expression = _display displayCtrl 5252;
+
+					private _statementIndex = profileNamespace getVariable ["DebugStatementsIndex", 0];
+					private _prevStatements = profileNamespace getVariable ["DebugStatements", []];
+
+					_statementIndex = (_statementIndex + 1) min ((count _prevStatements - 1) max 0);
+					profileNamespace setVariable ["DebugStatementsIndex", _statementIndex];
+
+					private _prevStatement = _prevStatements select _statementIndex;
+					_expression ctrlSetText _prevStatement;
+
+					_prevButton ctrlEnable (_statementIndex < count _prevStatements - 1);
+					_nextButton ctrlEnable (_statementIndex > 0);
+				};
+
+				JEW_fnc_nextStatement = 
+				{
+					private _display = d_mainConsole;
+					private _prevButton = _display displayCtrl 90110;
+					private _expression = _display displayCtrl 5252;
+
+					private _statementIndex = profileNamespace getVariable ["DebugStatementsIndex", 0];
+					private _prevStatements = profileNamespace getVariable ["DebugStatements", []];
+
+					_statementIndex = (_statementIndex - 1) max 0;
+					profileNamespace setVariable ["DebugStatementsIndex", _statementIndex];
+
+					private _nextStatement = _prevStatements select _statementIndex;
+					_expression ctrlSetText _nextStatement;
+
+					_prevButton ctrlEnable (_statementIndex < count _prevStatements - 1);
+					_nextButton ctrlEnable (_statementIndex > 0);
+				};
+
+				JEW_fnc_addStatement = 
+				{
+					private _display = d_mainConsole;
+					private _prevButton = _display displayCtrl 90110;
+					private _nextButton = _display displayCtrl 90111;
+					private _expression = _display displayCtrl 5252;
+
+					private _statement = ctrlText _expression;
+
+					private _statementIndex = profileNamespace getVariable ["DebugStatementsIndex", 0];
+					private _prevStatements = profileNamespace getVariable ["DebugStatements", []];
+
+					if !((_prevStatements param [0, ""]) isEqualTo _statement) then {
+
+						reverse _prevStatements;
+						_prevStatements pushBack _statement;
+						reverse _prevStatements;
+
+						if (count _prevStatements > 50) then {
+							_prevStatements resize 50;
+						};
+
+						profileNamespace setVariable ["DebugStatementsIndex", 0];
+						profileNamespace setVariable ["DebugStatements", _prevStatements];
+
+						_prevButton ctrlEnable (count _prevStatements > 1);
+						_nextButton ctrlEnable false;
+					};
+
+				};
+
+
+
+
 				
 				JEW_fnc_execLocal = 
 				{
@@ -496,6 +559,7 @@ script_initCOOLJIPgustav = [] spawn
 					{
 						hint "No code to execute.";
 					};
+					[] call JEW_fnc_addStatement;
 					_code = compile _text;
 					[] call _code;
 				};
@@ -507,6 +571,8 @@ script_initCOOLJIPgustav = [] spawn
 					{
 						hint "No code to execute.";
 					};
+					[] call JEW_fnc_addStatement;
+
 					_code = compile _text;
 					_code remoteExec ["bis_fnc_call", 0, false];
 				};
@@ -518,10 +584,24 @@ script_initCOOLJIPgustav = [] spawn
 					{
 						hint "JEW: Console Error: No code to execute.";
 					};
+					[] call JEW_fnc_addStatement;
 					_code = compile _text;
 					_code remoteExec ["bis_fnc_call", 2, false];
 				};
-				
+
+				JEW_fnc_execPlayer = 
+				{
+					params ["_playerName"];
+					_text = ctrlText edit_debugConsoleInput;
+					if (_text isEqualTo "") exitWith
+					{
+						hint "JEW: Console Error: No code to execute.";
+					};
+					[] call JEW_fnc_addStatement;
+					_code = compile _text;
+					_code remoteExec ["bis_fnc_call", _playerName, false];
+				};
+
 				JEW_open_mainConsole = 
 				{
 					disableSerialization;
@@ -534,13 +614,14 @@ script_initCOOLJIPgustav = [] spawn
 					txt_background1 ctrlCommit 0;
 					
 					txt_mainMenuTitle = d_mainConsole ctrlCreate ["RscStructuredText", 5249];
-					txt_mainMenuTitle ctrlSetStructuredText parseText "<t color='#FFFFFF' shadow='2' size='2' align='center' font='PuristaBold'>RAZER MENU V1</t>";
+					txt_mainMenuTitle ctrlSetStructuredText parseText "<t color='#FFFFFF' shadow='2' size='1' align='center' font='PuristaBold'>RAZER MENU V1</t>";
 					txt_mainMenuTitle ctrlSetPosition [0.371094 * safezoneW + safezoneX,0.236 * safezoneH + safezoneY,0.257813 * safezoneW,0.055 * safezoneH];
 					txt_mainMenuTitle ctrlSetBackgroundColor [0,0,0,0.5];
 					txt_mainMenuTitle ctrlCommit 0;
 					
 					btn_forceVoteAdmin = d_mainConsole ctrlCreate ["RscButtonMenu", 5250];
-					btn_forceVoteAdmin ctrlSetText "FORCE-VOTE ADMIN (select from list)";
+					
+					btn_forceVoteAdmin ctrlSetStructuredText parseText "<t size='0.9' align='center'>FORCE-VOTE ADMIN</t>";
 					btn_forceVoteAdmin ctrlSetPosition [0.37625 * safezoneW + safezoneX,0.368 * safezoneH + safezoneY,0.0979687 * safezoneW,0.055 * safezoneH];
 					btn_forceVoteAdmin ctrladdEventHandler ["ButtonClick",{
 						newAdmin = lb_playerList lbText (lbCurSel lb_playerList);
@@ -565,7 +646,7 @@ script_initCOOLJIPgustav = [] spawn
 
 					txt_debugConsoleTitle = d_mainConsole ctrlCreate ["RscStructuredText", 5251];
 					txt_debugConsoleTitle ctrlSetStructuredText parseText "<t color='#FFFFFF' shadow='2' size='1' align='center' font='PuristaBold'>DEBUG CONSOLE</t>";
-					txt_debugConsoleTitle ctrlSetPosition [0.371096 * safezoneW + safezoneX,0.429984 * safezoneH + safezoneY,0.257813 * safezoneW,0.022 * safezoneH];
+					txt_debugConsoleTitle ctrlSetPosition [0.371096 * safezoneW + safezoneX,0.429984 * safezoneH + safezoneY,0.257813 * safezoneW,0.03 * safezoneH];
 					txt_debugConsoleTitle ctrlSetBackgroundColor [0,0,0,0.5];
 					txt_debugConsoleTitle ctrlCommit 0;
 					
@@ -574,52 +655,71 @@ script_initCOOLJIPgustav = [] spawn
 					edit_debugConsoleInput ctrlSetBackgroundColor [-1,-1,-1,0.8];
 					edit_debugConsoleInput ctrlSetTooltip "Script here";
 					edit_debugConsoleInput ctrlCommit 0;
-					
+
 					lb_playerList = d_mainConsole ctrlCreate ["RscListbox", 5253];
 					lb_playerList ctrlSetPosition [0.298906 * safezoneW + safezoneX,0.302 * safezoneH + safezoneY,0.0670312 * safezoneW,0.341 * safezoneH];
 					{ _pL_index = lb_playerList lbAdd name _x; } forEach allPlayers;
 					lb_playerList ctrlCommit 0;
 					
 					btn_serverExecute = d_mainConsole ctrlCreate ["RscButtonMenu", 5254];
-					btn_serverExecute ctrlSetText "SERVER";
-					btn_serverExecute ctrlSetPosition [0.371094 * safezoneW + safezoneX,0.742 * safezoneH + safezoneY,0.0825 * safezoneW,0.022 * safezoneH];
+					btn_serverExecute ctrlSetStructuredText parseText "<t size='1' align='center'>Server</t>";
+					btn_serverExecute ctrlSetPosition [0.371094 * safezoneW + safezoneX,0.742 * safezoneH + safezoneY,0.0825 * safezoneW,0.03 * safezoneH];
 					btn_serverExecute ctrladdEventHandler ["ButtonClick",{
 						[] spawn JEW_fnc_execServer;
 					}];
 					btn_serverExecute ctrlCommit 0;
 					
 					btn_globalExecute = d_mainConsole ctrlCreate ["RscButtonMenu", 5255];
-					btn_globalExecute ctrlSetText "GLOBAL";
-					btn_globalExecute ctrlSetPosition [0.45875 * safezoneW + safezoneX,0.742 * safezoneH + safezoneY,0.0876563 * safezoneW,0.022 * safezoneH];
+					btn_globalExecute ctrlSetStructuredText parseText "<t size='1' align='center'>Global</t>";
+					btn_globalExecute ctrlSetPosition [0.45875 * safezoneW + safezoneX,0.742 * safezoneH + safezoneY,0.0876563 * safezoneW,0.03 * safezoneH];
 					btn_globalExecute ctrladdEventHandler ["ButtonClick",{
 						[] spawn JEW_fnc_execGlobal;
 					}];
 					btn_globalExecute ctrlCommit 0;
 					
-					btn_globalExecute = d_mainConsole ctrlCreate ["RscButtonMenu", 5256];
-					btn_globalExecute ctrlSetText "LOCAL";
-					btn_globalExecute ctrlSetPosition [0.551563 * safezoneW + safezoneX,0.742 * safezoneH + safezoneY,0.0773437 * safezoneW,0.022 * safezoneH];
-					btn_globalExecute ctrladdEventHandler ["ButtonClick",{
+					btn_localExecute = d_mainConsole ctrlCreate ["RscButtonMenu", 5256];
+					btn_localExecute ctrlSetStructuredText parseText "<t size='1' align='center'>Local</t>";
+					btn_localExecute ctrlSetPosition [0.551563 * safezoneW + safezoneX,0.742 * safezoneH + safezoneY,0.0773437 * safezoneW,0.03 * safezoneH];
+					btn_localExecute ctrladdEventHandler ["ButtonClick",{
 						[] spawn JEW_fnc_execLocal;
 					}];
-					btn_globalExecute ctrlCommit 0;
+					btn_localExecute ctrlCommit 0;
 					
 					btn_playerExecute = d_mainConsole ctrlCreate ["RscButtonMenu", 5257];
-					btn_playerExecute ctrlSetText "PLAYER EXEC";
-					btn_playerExecute ctrlSetPosition [0.298906 * safezoneW + safezoneX,0.654 * safezoneH + safezoneY,0.0670312 * safezoneW,0.022 * safezoneH];
+					btn_playerExecute ctrlSetStructuredText parseText "<t size='1' align='center'>Player</t>";
+					btn_playerExecute ctrlSetPosition [0.298906 * safezoneW + safezoneX,0.654 * safezoneH + safezoneY,0.0670312 * safezoneW,0.03 * safezoneH];
 					btn_playerExecute ctrladdEventHandler ["ButtonClick",{
 						[lb_playerList lbText (lbCurSel lb_playerList)] spawn JEW_fnc_execPlayer;
 					}];
 					btn_playerExecute ctrlCommit 0;
-					
+
+					btn_prevButton = d_mainConsole ctrlCreate ["RscButtonMenu", 90110];
+					btn_prevButton ctrlSetPosition [0.371094 * safezoneW + safezoneX,0.783229 * safezoneH + safezoneY,0.103125 * safezoneW,0.03 * safezoneH];
+					btn_prevButton ctrlCommit 0;
+					btn_prevButton ctrlSetStructuredText parseText "<t size='1' align='center'>Prev Statement</t>";
+					btn_prevButton ctrlAddEventHandler ["MouseButtonUp", {_this call JEW_fnc_prevStatement; true}];
+
+					btn_nextButton = d_mainConsole ctrlCreate ["RscButtonMenu", 90111];
+					btn_nextButton ctrlSetPosition [0.5257817 * safezoneW + safezoneX,0.783229 * safezoneH + safezoneY,0.103125 * safezoneW,0.03 * safezoneH]; 
+					btn_nextButton ctrlCommit 0;
+					btn_nextButton ctrlSetStructuredText parseText "<t size='1' align='center'>Next Statement</t>";
+					btn_nextButton ctrlAddEventHandler ["MouseButtonUp", {_this call JEW_fnc_nextStatement; true}];
+
+
+					_statementIndex = profileNamespace getVariable ["DebugStatementsIndex", 0];
+					_prevStatements = profileNamespace getVariable ["DebugStatements", []];
+
+					btn_prevButton ctrlEnable (_statementIndex < count _prevStatements - 1);
+					btn_nextButton ctrlEnable (_statementIndex > 0);
+
 					txt_playerListTitle = d_mainConsole ctrlCreate ["RscStructuredText", 5258];
-					txt_playerListTitle ctrlSetStructuredText parseText "<t color='#FFFFFF' shadow='2' size='1' align='center' font='PuristaBold'>PLAYER LIST</t>";
-					txt_playerListTitle ctrlSetPosition [0.298906 * safezoneW + safezoneX,0.269 * safezoneH + safezoneY,0.0670312 * safezoneW,0.022 * safezoneH];
+					txt_playerListTitle ctrlSetStructuredText parseText "<t color='#FFFFFF' shadow='2' size='1' align='center'>Player List</t>";
+					txt_playerListTitle ctrlSetPosition [0.298906 * safezoneW + safezoneX,0.269 * safezoneH + safezoneY,0.0670312 * safezoneW,0.03 * safezoneH];
 					txt_playerListTitle ctrlSetBackgroundColor [0,0,0,0.5];
 					txt_playerListTitle ctrlCommit 0;
 					
 					btn_playerESP = d_mainConsole ctrlCreate ["RscButtonMenu", 5259];
-					btn_playerESP ctrlSetText "player esp";
+					btn_playerESP ctrlSetStructuredText parseText "<t size='0.9' align='center'>Player<br />ESP</t>";
 					btn_playerESP ctrlSetPosition [0.37625 * safezoneW + safezoneX,0.302 * safezoneH + safezoneY,0.0464063 * safezoneW,0.055 * safezoneH];
 					btn_playerESP ctrladdEventHandler ["ButtonClick",{
 						if (isNil 'JEWESPTggle') then {JEWESPTggle = 1};
@@ -656,7 +756,7 @@ script_initCOOLJIPgustav = [] spawn
 					btn_playerESP ctrlCommit 0;
 					
 					btn_AIESP = d_mainConsole ctrlCreate ["RscButtonMenu", 5260];
-					btn_AIESP ctrlSetText "ai esp";
+					btn_AIESP ctrlSetStructuredText parseText "<t size='0.9' align='center'>AI<br />ESP</t>";
 					btn_AIESP ctrlSetPosition [0.427812 * safezoneW + safezoneX,0.302 * safezoneH + safezoneY,0.0464063 * safezoneW,0.055 * safezoneH];
 					btn_AIESP ctrladdEventHandler ["ButtonClick",{
 						if (isNil 'JEWhostileAIESPTggle') then {JEWhostileAIESPTggle = 1};
@@ -702,7 +802,7 @@ script_initCOOLJIPgustav = [] spawn
 					btn_AIESP ctrlCommit 0;
 					
 					btn_mapAware = d_mainConsole ctrlCreate ["RscButtonMenu", 5261];
-					btn_mapAware ctrlSetText "map aware";
+					btn_mapAware ctrlSetStructuredText parseText "<t size='0.9' align='center'>Map<br />Aware</t>";
 					btn_mapAware ctrlSetPosition [0.479375 * safezoneW + safezoneX,0.302 * safezoneH + safezoneY,0.0464063 * safezoneW,0.055 * safezoneH];
 					btn_mapAware ctrladdEventHandler ["ButtonClick",{
 						if (isNil "mapAwareTggle") then {mapAwareTggle = 1};
@@ -726,7 +826,7 @@ script_initCOOLJIPgustav = [] spawn
 					btn_mapAware ctrlCommit 0;
 					
 					btn_infStamina = d_mainConsole ctrlCreate ["RscButtonMenu", 5262];
-					btn_infStamina ctrlSetText "infinite stamina";
+					btn_infStamina ctrlSetStructuredText parseText "<t size='0.9' align='center'>Infinite<br />Stamina</t>";
 					btn_infStamina ctrlSetPosition [0.530937 * safezoneW + safezoneX,0.302 * safezoneH + safezoneY,0.0464063 * safezoneW,0.055 * safezoneH];
 					btn_infStamina ctrladdEventHandler ["ButtonClick",{
 						if (isNil "infStaminaTggle") then {infStaminaTggle = 1};
@@ -747,7 +847,7 @@ script_initCOOLJIPgustav = [] spawn
 					btn_infStamina ctrlCommit 0;
 					
 					btn_godMode = d_mainConsole ctrlCreate ["RscButtonMenu", 5263];
-					btn_godMode ctrlSetText "god mode";
+					btn_godMode ctrlSetStructuredText parseText "<t size='0.9' align='center'>God<br />Mode</t>";
 					btn_godMode ctrlSetPosition [0.5825 * safezoneW + safezoneX,0.302 * safezoneH + safezoneY,0.04125 * safezoneW,0.055 * safezoneH];
 					btn_godMode ctrladdEventHandler ["ButtonClick",{
 						if (isNil "godModeTggle") then {godModeTggle = 1};
@@ -768,7 +868,7 @@ script_initCOOLJIPgustav = [] spawn
 					btn_godMode ctrlCommit 0;
 					
 					btn_noRecoil = d_mainConsole ctrlCreate ["RscButtonMenu", 5264];
-					btn_noRecoil ctrlSetText "disable recoil";
+					btn_noRecoil ctrlSetStructuredText parseText "<t size='0.9' align='center'>Disable<br />Recoil</t>";
 					btn_noRecoil ctrlSetPosition [0.479375 * safezoneW + safezoneX,0.368 * safezoneH + safezoneY,0.0464063 * safezoneW,0.055 * safezoneH];
 					btn_noRecoil ctrladdEventHandler ["ButtonClick",{
 						if (isNil "disableRecoilTggle") then {disableRecoilTggle = 1};
@@ -791,7 +891,7 @@ script_initCOOLJIPgustav = [] spawn
 					btn_noRecoil ctrlCommit 0;
 					
 					btn_infAmmo = d_mainConsole ctrlCreate ["RscButtonMenu", 5265];
-					btn_infAmmo ctrlSetText "Infinite Ammo";
+					btn_infAmmo ctrlSetStructuredText parseText "<t size='0.9' align='center'>Infinite<br />Ammo</t>";
 					btn_infAmmo ctrlSetPosition [0.530937 * safezoneW + safezoneX,0.368 * safezoneH + safezoneY,0.0464063 * safezoneW,0.055 * safezoneH];
 					btn_infAmmo ctrladdEventHandler ["ButtonClick",{
 						if (isNil "infAmmoTggle") then {infAmmoTggle = 1};
@@ -815,7 +915,7 @@ script_initCOOLJIPgustav = [] spawn
 					btn_infAmmo ctrlCommit 0;
 					
 					btn_aiIgnore = d_mainConsole ctrlCreate ["RscButtonMenu", 5266];
-					btn_aiIgnore ctrlSetText "ai ignore";
+					btn_aiIgnore ctrlSetStructuredText parseText "<t size='0.9' align='center'>AI<br />Ignore</t>";
 					btn_aiIgnore ctrlSetPosition [0.5825 * safezoneW + safezoneX,0.368 * safezoneH + safezoneY,0.04125 * safezoneW,0.055 * safezoneH];
 					btn_aiIgnore ctrladdEventHandler ["ButtonClick",{
 						if (isNil "aiIgnoreTggle") then {aiIgnoreTggle = 1};
@@ -862,18 +962,33 @@ script_initCOOLJIPgustav = [] spawn
 						GOM_list_allPylonMags = [GOM_list_allPylonMags, [], {getText (configfile >> "CfgMagazines" >> _x >> "displayName")}, "ASCEND"] call BIS_fnc_sortBy;
 						GOM_list_validDispNames = GOM_list_allPylonMags apply {getText (configfile >> "CfgMagazines" >> _x >> "displayName")};
 
+						_load = [] spawn {
+							if(count (missionNamespace getVariable ["allWeapons",[]]) == 0) then {
+								disableSerialization;
+								
+								_allWeapons = ("isclass _x && {getnumber (_x >> 'scope') != 0}" configclasses (configfile >> "cfgweapons")) select {(configName _x) call BIS_fnc_itemType select 0 isEqualTo "Weapon" || (configName _x) call BIS_fnc_itemType select 0 isEqualTo "VehicleWeapon"} apply {toLower (configName _x)};
+								
+								_allWeapons sort true;
+								missionNamespace setVariable ["allWeapons", _allWeapons];
+							};
+							systemChat "All weapons loaded";
+						}; 
+
+
+
 						systemChat "Personal arsenal loaded";
 						private["_i", "_keyDown"];
-						_keyDown = (findDisplay 46) displayAddEventHandler ["KeyDown", "
+						_keyDown = (findDisplay 46) displayAddEventHandler ["KeyDown", {
 						
 						_key = _this select 1;
 						switch true do
 						{
 							case (_key in actionKeys 'User1'): {[] call JEW_fnc_main};
 							case (_key in actionKeys 'User6'): {player moveInAny cursorTarget};
+							case (_key in actionKeys 'User2'): {[0] spawn JEW_open_mainConsole};
 						};
 						false;
-						"];
+						}];
 						
 						[ missionNamespace, "garageOpened", {
 							BIS_fnc_arsenal_center hideObject true;
@@ -978,7 +1093,11 @@ script_initCOOLJIPgustav = [] spawn
 
 
 						player enablefatigue false;
-
+						
+						player addAction ["Loiter Waypoint Command", {[] spawn LIT_fnc_open;}, [], 0.5, false, true, "", "_veh = objectParent player; {alive _veh && {_veh isKindOf _x} count ['Plane'] > 0}"];		
+						player addAction ["Enable driver assist", {[] spawn JEW_fnc_enableDriverAssist;}, [], 0.5, false, true, "", "_veh = objectParent player; alive _veh && !alive driver _veh && {effectiveCommander _veh == player && player in [gunner _veh, commander _veh] && {_veh isKindOf _x} count ['LandVehicle','Ship'] > 0 && !(_veh isKindOf 'StaticWeapon')}"];
+						player addAction ["Disable driver assist", {[] spawn JEW_fnc_disableDriverAssist;}, [], 0.5, false, true, "", "_driver = driver objectParent player; isAgent teamMember _driver && {(_driver getVariable ['A3W_driverAssistOwner', objNull]) in [player,objNull]}"];
+							
 						player setVariable ["ControlPanelID",[
 							player addAction  
 							[
@@ -1014,7 +1133,11 @@ script_initCOOLJIPgustav = [] spawn
 						player addEventhandler ["Respawn", {
 		
 							player enableFatigue false;
-
+							
+							player addAction ["Loiter Waypoint Command", {[] spawn LIT_fnc_open;}, [], 0.5, false, true, "", "_veh = objectParent player; {alive _veh && {_veh isKindOf _x} count ['Plane'] > 0}"];		
+							player addAction ["Enable driver assist", {[] spawn JEW_fnc_enableDriverAssist;}, [], 0.5, false, true, "", "_veh = objectParent player; alive _veh && !alive driver _veh && {effectiveCommander _veh == player && player in [gunner _veh, commander _veh] && {_veh isKindOf _x} count ['LandVehicle','Ship'] > 0 && !(_veh isKindOf 'StaticWeapon')}"];
+							player addAction ["Disable driver assist", {[] spawn JEW_fnc_disableDriverAssist;}, [], 0.5, false, true, "", "_driver = driver objectParent player; isAgent teamMember _driver && {(_driver getVariable ['A3W_driverAssistOwner', objNull]) in [player,objNull]}"];
+							
 							player setVariable ["ControlPanelID",[
 
 								player addAction  
@@ -1053,16 +1176,6 @@ script_initCOOLJIPgustav = [] spawn
 							params ["_vehicle", "_role", "_unit", "_turret"];
 							
 							_vehicle = vehicle player;
-							
-							if(_vehicle getVariable ["DriverAssist", -1] isEqualTo -1) then {
-							
-
-								_vehicle setVariable ["DriverAssist",
-									[_vehicle addAction ["Loiter Waypoint Command", {[] spawn LIT_fnc_open;}, [], 0.5, false, true, "", "_veh = objectParent player; {alive _veh && {_veh isKindOf _x} count ['Plane'] > 0}"],			
-										_vehicle addAction ["Enable driver assist", {[] spawn JEW_fnc_enableDriverAssist;}, [], 0.5, false, true, "", "_veh = objectParent player; alive _veh && !alive driver _veh && {effectiveCommander _veh == player && player in [gunner _veh, commander _veh] && {_veh isKindOf _x} count ['LandVehicle','Ship'] > 0 && !(_veh isKindOf 'StaticWeapon')}"],
-										_vehicle addAction ["Disable driver assist", {[] spawn JEW_fnc_disableDriverAssist;}, [], 0.5, false, true, "", "_driver = driver objectParent player; isAgent teamMember _driver && {(_driver getVariable ['A3W_driverAssistOwner', objNull]) in [player,objNull]}"]]
-								];
-							};
 							
 							
 							if(_vehicle getVariable ["ControlPanelID",-1] isEqualTo -1) then {
@@ -1105,12 +1218,10 @@ script_initCOOLJIPgustav = [] spawn
 					};
 
 					EH_mapTP = player addEventHandler ["Respawn", {
-					JEW_fnc_mapTP = {if (!_shift and _alt) then {(vehicle player) setPos _pos;};};
-					JEW_keybind_mapTP = ["JEWfncMapTP", "onMapSingleClick", JEW_fnc_MapTP] call BIS_fnc_addStackedEventHandler;
+						JEW_fnc_mapTP = {if (!_shift and _alt) then {(vehicle player) setPos _pos;};};
+						JEW_keybind_mapTP = ["JEWfncMapTP", "onMapSingleClick", JEW_fnc_MapTP] call BIS_fnc_addStackedEventHandler;
 					}];
-					JEW_keybind_mainConsole = (findDisplay 46) displayaddEventHandler ["KeyDown", "If (_this select 1 == 199) then { [0] spawn JEW_open_mainConsole; }"]; comment "numpad 5";
 					SystemChat "...< Keybinds Initialized >...";
-					hint "-----------------------------\nKEYBINDS\n-----------------------------\nHOME - Main Console\n-----------------------------";
 				};
 				SystemChat "...< Client Initialized >...";
 				SystemChat "-----------------------------";

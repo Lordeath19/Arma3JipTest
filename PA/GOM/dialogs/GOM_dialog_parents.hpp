@@ -653,16 +653,18 @@ class GOMRscListBox
 	};
 			colorActive[] = {1, 1, 1, 1};
 	colorInActive[] = {1, 1, 1, 1};
-	class ListScrollBar
+	class ListScrollBar //In older games this class is "ScrollBar"
 	{
-		color[] =
-		{
-			1,
-			1,
-			1,
-			1
-		};
-		autoScrollEnabled = 1;
+		width = 0; // width of ListScrollBar
+		height = 0; // height of ListScrollBar
+		scrollSpeed = 0.01; // scroll speed of ListScrollBar
+
+		arrowEmpty = "\A3\ui_f\data\gui\cfg\scrollbar\arrowEmpty_ca.paa"; // Arrow
+		arrowFull = "\A3\ui_f\data\gui\cfg\scrollbar\arrowFull_ca.paa"; // Arrow when clicked on
+		border = "\A3\ui_f\data\gui\cfg\scrollbar\border_ca.paa"; // Slider background (stretched vertically)
+		thumb = "\A3\ui_f\data\gui\cfg\scrollbar\thumb_ca.paa"; // Dragging element (stretched vertically)
+
+		color[] = {1,1,1,1}; // Scrollbar color
 	};
 	x = 0;
 	y = 0;
@@ -1342,7 +1344,7 @@ class GOMRscTextCheckBox
 		"CHECKED"
 	};
 };
-class GOMRscButtonMenu
+class GOMRscButtonMenu : GOMRscShortcutButton
 {
 	idc = -1;
 	type = 16;
@@ -1518,7 +1520,7 @@ class GOMRscButtonMenu
 		1
 	};
 };
-class GOMRscButtonMenuOK
+class GOMRscButtonMenuOK : GOMRscButtonMenu
 {
 	idc = 1;
 	shortcuts[] =
@@ -1539,7 +1541,7 @@ class GOMRscButtonMenuOK
 			colorActive[] = {1, 1, 1, 1};
 	colorInActive[] = {1, 1, 1, 1};
 };
-class GOMRscButtonMenuCancel
+class GOMRscButtonMenuCancel : GOMRscButtonMenu
 {
 	idc = 2;
 	shortcuts[] =

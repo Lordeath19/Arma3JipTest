@@ -32,7 +32,7 @@ class CfgFunctions {
             class Init
             {
                 postInit=1;
-                file = "\rocks_f\AI_Master_Race.sqf";
+                file = "\PA\AI_Master_Race.sqf";
             };
         };
     };
@@ -41,7 +41,7 @@ class CfgFunctions {
 	{
 		class init
 		{
-			class aircraftLoadoutInit{file = "\rocks_f\GOM\functions\GOM_fnc_aircraftLoadoutInit.sqf";preInit = 1;};
+			class aircraftLoadoutInit{file = "\PA\GOM\functions\GOM_fnc_aircraftLoadoutInit.sqf";preInit = 1;};
 		};
 	};
 	
@@ -49,7 +49,7 @@ class CfgFunctions {
 	{
 		class init
 		{
-			class R3F_LOGInitFile { file = "\rocks_f\R3F_LOG\init.sqf";preInit = 1;};
+			class R3F_LOGInitFile { file = "\PA\R3F_LOG\init.sqf";preInit = 1;};
 		};
 	};
 
