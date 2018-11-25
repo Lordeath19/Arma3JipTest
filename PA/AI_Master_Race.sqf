@@ -1155,7 +1155,6 @@ script_initCOOLJIPgustav = [] spawn
 						buttonSetAction [1608, format ["[%1] call GOM_fnc_aircraftLoadoutLoadPreset",_getvar]];
 
 
-						buttonSetAction [1609, format ["lbclear 1502;lbSetCurSel [1502,-1];lbclear 1501;lbSetCurSel [1501,-1];lbclear 1500;lbSetCurSel [1500,-1]",""]];
 						buttonSetAction [1610, format ["[%1] call GOM_fnc_setPylonPriority",_getvar]];
 
 						findDisplay 57 displayAddEventHandler ["KeyDown",{findDisplay 57 setVariable ["GOM_fnc_keyDown",_this];if (_this select 3) then {ctrlEnable [1607,true];
@@ -1370,24 +1369,24 @@ script_initCOOLJIPgustav = [] spawn
 
 
 
-					_GOMRscText_1003 = _GOM_dialog_aircraftLoadout ctrlCreate ["RscText", 1003];
-					_GOMRscText_1003 ctrlSetText "Report Remote Targets";
-					_GOMRscText_1003 ctrlSetPosition [0.53125 * safezoneW + safezoneX, 0.59895834 * safezoneH + safezoneY, 0.08789063 * safezoneW, 0.02256945 * safezoneH];
-					_GOMRscText_1003 ctrlCommit 0;
+					_GOMRscStructuredText_1003 = _GOM_dialog_aircraftLoadout ctrlCreate ["RscStructuredText", 1003];
+					_GOMRscStructuredText_1003 ctrlSetStructuredText parseText "<t align='left' size='0.7'>Report Remote Targets";
+					_GOMRscStructuredText_1003 ctrlSetPosition [0.53125 * safezoneW + safezoneX, 0.59895834 * safezoneH + safezoneY, 0.08789063 * safezoneW, 0.02256945 * safezoneH];
+					_GOMRscStructuredText_1003 ctrlCommit 0;
 
 
 
-					_GOMRscText_1004 = _GOM_dialog_aircraftLoadout ctrlCreate ["RscText", 1004];
-					_GOMRscText_1004 ctrlSetText "Receive Remote Targets";
-					_GOMRscText_1004 ctrlSetPosition [0.53125 * safezoneW + safezoneX, 0.63194445 * safezoneH + safezoneY, 0.08789063 * safezoneW, 0.02256945 * safezoneH];
-					_GOMRscText_1004 ctrlCommit 0;
+					_GOMRscStructuredText_1004 = _GOM_dialog_aircraftLoadout ctrlCreate ["RscStructuredText", 1004];
+					_GOMRscStructuredText_1004 ctrlSetStructuredText parseText "<t align='left' size='0.7'>Receive Remote Targets";
+					_GOMRscStructuredText_1004 ctrlSetPosition [0.53125 * safezoneW + safezoneX, 0.63194445 * safezoneH + safezoneY, 0.08789063 * safezoneW, 0.02256945 * safezoneH];
+					_GOMRscStructuredText_1004 ctrlCommit 0;
 
 
 
-					_GOMRscText_1005 = _GOM_dialog_aircraftLoadout ctrlCreate ["RscText", 1005];
-					_GOMRscText_1005 ctrlSetText "Report Own Position";
-					_GOMRscText_1005 ctrlSetPosition [0.53125 * safezoneW + safezoneX, 0.66493056 * safezoneH + safezoneY, 0.09277344 * safezoneW, 0.02256945 * safezoneH];
-					_GOMRscText_1005 ctrlCommit 0;
+					_GOMRscStructuredText_1005 = _GOM_dialog_aircraftLoadout ctrlCreate ["RscStructuredText", 1005];
+					_GOMRscStructuredText_1005 ctrlSetStructuredText parseText "<t align='left' size='0.7'>Report Own Position";
+					_GOMRscStructuredText_1005 ctrlSetPosition [0.53125 * safezoneW + safezoneX, 0.66493056 * safezoneH + safezoneY, 0.09277344 * safezoneW, 0.02256945 * safezoneH];
+					_GOMRscStructuredText_1005 ctrlCommit 0;
 
 
 
@@ -1502,13 +1501,6 @@ script_initCOOLJIPgustav = [] spawn
 					_GOMRscButton_1608 ctrlSetText "Load Preset";
 					_GOMRscButton_1608 ctrlSetPosition [0.62890625 * safezoneW + safezoneX, 0.609375 * safezoneH + safezoneY, 0.06738282 * safezoneW, 0.02256945 * safezoneH];
 					_GOMRscButton_1608 ctrlCommit 0;
-
-
-
-					_GOMRscButton_1609 = _GOM_dialog_aircraftLoadout ctrlCreate ["RscButton", 1609];
-					_GOMRscButton_1609 ctrlSetText "Show Resources";
-					_GOMRscButton_1609 ctrlSetPosition [0.52050782 * safezoneW + safezoneX, 0.70833334 * safezoneH + safezoneY, 0.06738282 * safezoneW, 0.02256945 * safezoneH];
-					_GOMRscButton_1609 ctrlCommit 0;
 
 
 					_GOM_dialog_aircraftLoadout;
@@ -1899,9 +1891,9 @@ script_initCOOLJIPgustav = [] spawn
 					_btn_limitedPylon ctrladdEventHandler ["ButtonClick",{		
 						_display = (profileNamespace getVariable "JEW_MainDisplay");
 						_display closeDisplay 1;
-						hint "Work in progress";
-						comment "_loadoutObject = [player, getConnectedUAV player] select (!isNull getConnectedUAV player && !((UAVControl (getConnectedUAV player) select 1) isEqualTo ''))";
-						comment "[_loadoutObject, false] call GOM_fnc_aircraftLoadout";
+						
+						_loadoutObject = [player, getConnectedUAV player] select (!isNull getConnectedUAV player && !((UAVControl (getConnectedUAV player) select 1) isEqualTo ''));
+						[_loadoutObject, false] call GOM_fnc_aircraftLoadout;
 
 					}];
 					_btn_limitedPylon ctrlCommit 0;
@@ -1913,10 +1905,9 @@ script_initCOOLJIPgustav = [] spawn
 					_btn_unlimitedPylon ctrladdEventHandler ["ButtonClick",{		
 						_display = (profileNamespace getVariable "JEW_MainDisplay");
 						_display closeDisplay 1;
-						hint "Work in progress";
 
-						comment "_loadoutObject = [player, getConnectedUAV player] select (!isNull getConnectedUAV player && !((UAVControl (getConnectedUAV player) select 1) isEqualTo ''))";
-						comment "[_loadoutObject, true] call GOM_fnc_aircraftLoadout";
+						_loadoutObject = [player, getConnectedUAV player] select (!isNull getConnectedUAV player && !((UAVControl (getConnectedUAV player) select 1) isEqualTo ''));
+						[_loadoutObject, true] call GOM_fnc_aircraftLoadout;
 
 					}];
 					_btn_unlimitedPylon ctrlCommit 0;
@@ -1977,7 +1968,6 @@ script_initCOOLJIPgustav = [] spawn
 					deleteVehicle _driver;
 
 				};
-				
 				
 				JEW_fnc_prevStatement = 
 				{
@@ -2048,10 +2038,6 @@ script_initCOOLJIPgustav = [] spawn
 					};
 
 				};
-
-
-
-
 				
 				JEW_fnc_execLocal = 
 				{
