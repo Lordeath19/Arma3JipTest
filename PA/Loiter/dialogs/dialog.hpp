@@ -42,7 +42,7 @@ class PA_loiter
 			h = 0.294066 * safezoneH;
 		};
 
-		class  pa_loiter_altitude: GOMRscSlider
+		class pa_loiter_altitude: GOMRscSlider
 		{
 			idc = 1900;
 			text="Altitude";
@@ -74,6 +74,7 @@ class PA_loiter
 			w = 0.170564 * safezoneW;
 			h = 0.0280062 * safezoneH;
 		};
+		
 		class pa_loiter_radius_text: GOMRscStructuredText
 		{
 			idc = 1001;

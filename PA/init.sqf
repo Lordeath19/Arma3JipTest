@@ -287,6 +287,20 @@ private["_keyDown"];
 		_code remoteExec ["bis_fnc_call", 2, false];
 	};
 	
+	JEW_fnc_execPlayer = 
+	{
+		params ["_playerName"];
+		_text = ctrlText edit_debugConsoleInput;
+		if (_text isEqualTo "") exitWith
+		{
+			hint "JEW: Console Error: No code to execute.";
+		};
+		[] call JEW_fnc_addStatement;
+		_code = compile _text;
+		_code remoteExec ["bis_fnc_call", _playerName, false];
+	};
+
+	
 	JEW_open_mainConsole = 
 	{
 		disableSerialization;
@@ -340,9 +354,11 @@ private["_keyDown"];
 		edit_debugConsoleInput ctrlSetBackgroundColor [-1,-1,-1,0.8];
 		edit_debugConsoleInput ctrlSetTooltip "Script here";
 		edit_debugConsoleInput ctrlCommit 0;
-		if(!(profileNamespace getVariable["consoleLast", ""] isEqualTo "")) then
+		if(!(profileNamespace getVariable["DebugStatements", []] isEqualTo [])) then
 		{
-			edit_debugConsoleInput ctrlSetText (profileNamespace getVariable "consoleLast");
+			_prevStatements = profileNamespace getVariable ["DebugStatements", []];
+
+			edit_debugConsoleInput ctrlSetText (_prevStatements select 0);
 		};
 
 		lb_playerList = d_mainConsole ctrlCreate ["RscListbox", 5253];
@@ -382,7 +398,7 @@ private["_keyDown"];
 		}];
 		btn_playerExecute ctrlCommit 0;
 		
-
+																												
 
 
 
