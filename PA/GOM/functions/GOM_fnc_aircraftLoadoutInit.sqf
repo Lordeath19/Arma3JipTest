@@ -64,7 +64,7 @@ GOM_fnc_aircraftLoadoutLoadPreset = {
 	} forEach _textures;
 
 
-true
+	true
 };
 
 GOM_fnc_setPylonOwner = {
@@ -83,117 +83,117 @@ GOM_fnc_setPylonOwner = {
 
 	_veh setVariable ["GOM_fnc_aircraftLoadoutPylonOwner",_pylonOwner,true];
 	//_update = [_obj] call GOM_fnc_updateDialog;
-true
+	true
 };
 
 GOM_fnc_setPylonsRearm = {
 
 	if (lbCursel 1500 < 0) exitWith {systemchat "No aircraft selected!";false};
 	params ["_obj",["_rearm",false],["_pylons",[]],["_pylonAmmoCounts",[]]];
-_nul = [_obj,_rearm,_pylons,_pylonAmmoCounts] spawn {
+	_nul = [_obj,_rearm,_pylons,_pylonAmmoCounts] spawn {
 
-	params ["_obj",["_rearm",false],["_pylons",[]],["_pylonAmmoCounts",[]]];
+		params ["_obj",["_rearm",false],["_pylons",[]],["_pylonAmmoCounts",[]]];
 
-		_veh = call compile lbData [1500,lbcursel 1500];
-
-
-
-	if (!alive _veh) exitWith {systemchat "Aircraft is destroyed!"};
-	if (_veh getVariable ["GOM_fnc_aircraftLoadoutRearmingInProgress",false]) exitWith {systemchat "Aircraft is currently being rearmed!"};
-	_veh setVariable ["GOM_fnc_aircraftLoadoutRearmingInProgress",true,true];
-	_activePylonMags = GetPylonMagazines _veh;
-	if (_rearm) exitWith {
-
-		[_obj] call GOM_fnc_clearAllPylons;
-			_pylonOwners = _veh getVariable ["GOM_fnc_aircraftLoadoutPylonOwners",[]];
-
-		{
-			_pylonOwner = if (_pylonOwners isequalto []) then {[]} else {_pylonOwners select (_foreachindex + 1)};
-
-		[_veh,[_foreachindex+1,_x,true,_pylonOwner]] remoteexec ["setPylonLoadOut",0] ;
-		[_veh,[_foreachIndex + 1,0]] remoteexec ["SetAmmoOnPylon",0] ;
-		} foreach _pylons;
-{
-		_mag = _activePylonMags select _forEachIndex;
-
-
-			_pylonOwners = _veh getVariable ["GOM_fnc_aircraftLoadoutPylonOwners",[]];
-			_pylonOwner = if (_pylonOwners isequalto []) then {[]} else {_pylonOwners select (_foreachindex + 1)};
-			_maxAmount = (_pylonAmmoCounts select _forEachIndex);
+			_veh = call compile lbData [1500,lbcursel 1500];
 
 
 
+		if (!alive _veh) exitWith {systemchat "Aircraft is destroyed!"};
+		if (_veh getVariable ["GOM_fnc_aircraftLoadoutRearmingInProgress",false]) exitWith {systemchat "Aircraft is currently being rearmed!"};
+		_veh setVariable ["GOM_fnc_aircraftLoadoutRearmingInProgress",true,true];
+		_activePylonMags = GetPylonMagazines _veh;
+		if (_rearm) exitWith {
 
+			[_obj] call GOM_fnc_clearAllPylons;
+				_pylonOwners = _veh getVariable ["GOM_fnc_aircraftLoadoutPylonOwners",[]];
 
-		if (_maxamount < 24) then {
+			{
+				_pylonOwner = if (_pylonOwners isequalto []) then {[]} else {_pylonOwners select (_foreachindex + 1)};
 
-		for "_i" from 0 to _maxamount do {
-		[_veh,[_foreachIndex + 1,_i]] remoteexec ["SetAmmoOnPylon",0];
-		if (_i > 0) then {
-
-		_sound = [_veh,_foreachIndex] call GOM_fnc_pylonSound;
-		};
-		};
-		} else {
-
-		[_veh,[_foreachIndex + 1,_maxamount]] remoteexec ["SetAmmoOnPylon",0] ;
-		_sound = [_veh,_foreachIndex] call GOM_fnc_pylonSound;
-		};
-
-
-
-	} forEach _pylons;
-	playSound "Click";
-	_veh setVariable ["GOM_fnc_aircraftLoadoutRearmingInProgress",false,true];
-	_veh setVehicleAmmo 1;
-	systemchat "All pylons, counter measures and board guns rearmed!";
-true
-};
-
-
-
-_mounts = [];
+			[_veh,[_foreachindex+1,_x,true,_pylonOwner]] remoteexec ["setPylonLoadOut",0] ;
+			[_veh,[_foreachIndex + 1,0]] remoteexec ["SetAmmoOnPylon",0] ;
+			} foreach _pylons;
 	{
+			_mag = _activePylonMags select _forEachIndex;
+
+
+				_pylonOwners = _veh getVariable ["GOM_fnc_aircraftLoadoutPylonOwners",[]];
+				_pylonOwner = if (_pylonOwners isequalto []) then {[]} else {_pylonOwners select (_foreachindex + 1)};
+				_maxAmount = (_pylonAmmoCounts select _forEachIndex);
 
 
 
-			_mount = [_veh,_forEachIndex+1,_x] spawn {
-				params ["_veh","_ind","_mag"];
-
-	_maxAmount = getNumber (configfile >> "CfgMagazines" >> _mag >> "count");
 
 
+			if (_maxamount < 24) then {
+
+			for "_i" from 0 to _maxamount do {
+			[_veh,[_foreachIndex + 1,_i]] remoteexec ["SetAmmoOnPylon",0];
+			if (_i > 0) then {
+
+			_sound = [_veh,_foreachIndex] call GOM_fnc_pylonSound;
+			};
+			};
+			} else {
+
+			[_veh,[_foreachIndex + 1,_maxamount]] remoteexec ["SetAmmoOnPylon",0] ;
+			_sound = [_veh,_foreachIndex] call GOM_fnc_pylonSound;
+			};
 
 
 
-		if (_maxamount < 24) then {
-
-		for "_i" from (_veh AmmoOnPylon _ind) to _maxamount do {
-				[_veh,[_ind,_i]] remoteexec ["SetAmmoOnPylon",0];
-
-		if (_i > 0) then {
-
-		_sound = [_veh,_ind - 1] call GOM_fnc_pylonSound;
-		}
-		};
-		} else {
-				[_veh,[_ind,_maxamount]] remoteexec ["SetAmmoOnPylon",0];
-
-		_sound = [_veh, _ind - 1] call GOM_fnc_pylonSound;
-		};
+		} forEach _pylons;
+		playSound "Click";
+		_veh setVariable ["GOM_fnc_aircraftLoadoutRearmingInProgress",false,true];
+		_veh setVehicleAmmo 1;
+		systemchat "All pylons, counter measures and board guns rearmed!";
+	true
 	};
-	_mounts pushback _mount;
 
-	} forEach _activePylonMags;
-	waituntil {!alive _veh OR {scriptdone _x} count _mounts isequalto count _mounts};
-	playSound "Click";
-	_veh setVariable ["GOM_fnc_aircraftLoadoutRearmingInProgress",false,true];
-	_veh setVehicleAmmo 1;
 
-	systemchat "All pylons, counter measures and board guns rearmed!";
 
-};
-true
+	_mounts = [];
+		{
+
+
+
+				_mount = [_veh,_forEachIndex+1,_x] spawn {
+					params ["_veh","_ind","_mag"];
+
+		_maxAmount = getNumber (configfile >> "CfgMagazines" >> _mag >> "count");
+
+
+
+
+
+			if (_maxamount < 24) then {
+
+			for "_i" from (_veh AmmoOnPylon _ind) to _maxamount do {
+					[_veh,[_ind,_i]] remoteexec ["SetAmmoOnPylon",0];
+
+			if (_i > 0) then {
+
+			_sound = [_veh,_ind - 1] call GOM_fnc_pylonSound;
+			}
+			};
+			} else {
+					[_veh,[_ind,_maxamount]] remoteexec ["SetAmmoOnPylon",0];
+
+			_sound = [_veh, _ind - 1] call GOM_fnc_pylonSound;
+			};
+		};
+		_mounts pushback _mount;
+
+		} forEach _activePylonMags;
+		waituntil {!alive _veh OR {scriptdone _x} count _mounts isequalto count _mounts};
+		playSound "Click";
+		_veh setVariable ["GOM_fnc_aircraftLoadoutRearmingInProgress",false,true];
+		_veh setVehicleAmmo 1;
+
+		systemchat "All pylons, counter measures and board guns rearmed!";
+
+	};
+	true
 };
 
 GOM_fnc_setPylonsRepair = {
@@ -255,7 +255,7 @@ GOM_fnc_setPylonsRepair = {
 
 	playSound "Click";
 
-true
+	true
 };
 
 GOM_fnc_setPylonsRefuel = {
@@ -310,15 +310,15 @@ GOM_fnc_setPylonsRefuel = {
 		};
 			if (!_abort AND !_empty AND !_leaking) then {	systemchat format ["%1 filled up!",_vehDispName];
 
-} else {
+	} else {
 
-if (_abort) then {systemchat "Refuelling aborted!"};
+	if (_abort) then {systemchat "Refuelling aborted!"};
 
-};
-
-		playSound "Click";
 	};
-true
+
+			playSound "Click";
+		};
+	true
 
 };
 
@@ -448,124 +448,124 @@ GOM_fnc_updateDialog = {
 		if (count _priorities > 0) then {
 
 	_priority = _priorities select _foreachindex;
-};
-		_pylonInfoText = _pylonInfoText + format ["%1Pyl%2: %3 Prio. %4 %5 (%6).%7",_setAlign,_count,_owner,_priority,_pylonDispname,_pylonAmmoCounts select _forEachIndex,_break];
-
-	} forEach _pylons;
-			_text = format ["<t align='center' size='0.75'>Selected %1 preset: %2 Tail No. %5<br /><br /><t align='left'>Livery: %3<br />%4",_dispName,_presetName,_textureName,_pylonInfoText,_serialNumber];
-
-	(finddisplay 66 displayctrl 1100) ctrlSetStructuredText parsetext _text;
-
 	};
+			_pylonInfoText = _pylonInfoText + format ["%1Pyl%2: %3 Prio. %4 %5 (%6).%7",_setAlign,_count,_owner,_priority,_pylonDispname,_pylonAmmoCounts select _forEachIndex,_break];
 
-		if (lbCursel 1502 < 0 AND lbCursel 1501 >= 0) exitWith {
+		} forEach _pylons;
+				_text = format ["<t align='center' size='0.75'>Selected %1 preset: %2 Tail No. %5<br /><br /><t align='left'>Livery: %3<br />%4",_dispName,_presetName,_textureName,_pylonInfoText,_serialNumber];
 
-
-	_pylonInfoText = "";
-	_sel = 0;
-	_align = ["<t align='left'>","<t align='center'>","<t align='right'>"];
-	_count = 0;
-		_priorities = 	_veh getVariable ["GOM_fnc_pylonPriorities",[]];
-	{
-		_priority = "N/A";
-		if (count _priorities > 0) then {
-
-	_priority = _priorities select _foreachindex;
-};
-		_count = _count + 1;
-		_owner = "N/A";
-
-	_ammo = _veh AmmoOnPylon (_foreachindex+1);
-
-	_pylonDispname = getText (configfile >> "CfgMagazines" >> _x >> "displayName");
-	_setAlign = _align select _sel;
-		_sel = _sel + 1;
-	_break = "";
-	if (_sel > 2) then {_sel = 0;_break = "<br />"};
-	if (count _pylons <= 6) then {_setAlign = "<t align='left'>";_break = "<br />"};
-		_pylonInfoText = _pylonInfoText + format ["%1Pyl%2: %3 Prio. %4 %5 (%6).%7",_setAlign,_count,_owner,_priority,_pylonDispname,_ammo,_break];
-
-	} forEach GetPylonMagazines _veh;
-			_text = format ["<t align='center' size='0.75'>%1 current loadout:<br /><br /><t align='left' size='0.75'><br />%2",_dispName,_pylonInfoText];
-
-	(finddisplay 66 displayctrl 1100) ctrlSetStructuredText parsetext _text;
-
-	};
-
-	_driverName = name assigneddriver _veh;
-
-	_rank = [assignedDriver _veh,"displayName"] call BIS_fnc_rankParams;
-	_rank = _rank + " ";
-	if (assigneddriver _veh isEqualTo objnull) then {_driverName = "No Pilot";_rank = ""};
-
-	_mag = "N/A";
-	_get = "";
-	if (lbcursel 1502 > -1) then {_get = (lbdata [1502,(lbCursel 1502)]);};
-	_ind2 = "N/A";
-	_pylonMagDispName = getText (configfile >> "CfgMagazines" >> _get >> "displayName");
-	_pylonMagType = getText (configfile >> "CfgMagazines" >> _get >> "displayNameShort");
-	_pylonMagDetails = getText (configfile >> "CfgMagazines" >> _get >> "descriptionShort");
-	if (_pylonMagDispName isequalto "") then {_pylonMagDispName = "N/A"};
-	if (_pylonMagType isequalto "") then {_pylonMagType = "N/A"};
-	if (_pylonMagDetails isequalto "") then {_pylonMagDetails = "N/A"};
-	_pyl = "N/A";
-	if (lbcursel 1501 > -1) then {_pyl = (lbdata [1501,(lbCursel 1501)]);};
-
-	_curFuel = fuel _veh;
-
-	_maxFuel = getNumber (configfile >> "CfgVehicles" >> typeof _veh >> "fuelCapacity");
-	_fuel = [(_curFuel * _maxfuel),1] call GOM_fnc_roundByDecimals;
-
-		_missingFuel = _maxfuel - _fuel;
-
-	_pylonOwner = _veh getVariable ["GOM_fnc_aircraftLoadoutPylonOwner",[]];
-
-	_pylonOwnerName = "Pilot";
-	_nextOwnerName = "Gunner";
-	if !(_pylonOwner isEqualTo []) then {_pylonOwnerName = "Gunner"};
-	_ownerText = format ["Operated by: %1",_pylonOwnerName];
-
-	_integrity = [((damage _veh * 100) - 100) * -1] call GOM_fnc_roundByDecimals;
-
-	_pylontext = format ["Mount %1 on %2 - %3<br /><br /><t align='left'>Weapon Type: %4<br />Details: %5",_pylonMagDispName,_pyl,_ownertext,_pylonMagType,_pylonMagDetails];
-
-		if (lbcursel 1502 < 0) then {_pylontext = ""};
-
-		_kills = _veh getVariable ["GOM_fnc_aircraftLoadoutTrackStats",[]];
-
-		_killtext = if (_kills isequalto []) then {"Confirmed kills:<br />None"} else {
-		_kills params ["_infantry","_staticWeapon","_cars","_armored","_chopper","_plane","_ship","_building","_parachute"];
-
-		_typeNamesS = ["infantry","static weapon","vehicle","armored vehicle","helicopter","plane","ship","building","parachuting kitten"];
-		_typeNamesPL = ["infantry","static weapons","vehicles","armored vehicles","helicopters","planes","ships","buildings","parachuting kittens"];
-
-		_out = "Confirmed kills:<br />";
-		_index = -1;
-		_killText = _kills apply {_index = _index + 1;_kind = ([_typeNamesS select _index,_typeNamesPL select _index] select (_x > 1));
-			if (_x > 0) then {
-
-				_out = _out + (format ["%1 %2, ",_x,_kind])};
+		(finddisplay 66 displayctrl 1100) ctrlSetStructuredText parsetext _text;
 
 		};
-_out = _out select [0,count _out - 2];
-_out = _out + ".";
-_out
+
+			if (lbCursel 1502 < 0 AND lbCursel 1501 >= 0) exitWith {
+
+
+		_pylonInfoText = "";
+		_sel = 0;
+		_align = ["<t align='left'>","<t align='center'>","<t align='right'>"];
+		_count = 0;
+			_priorities = 	_veh getVariable ["GOM_fnc_pylonPriorities",[]];
+		{
+			_priority = "N/A";
+			if (count _priorities > 0) then {
+
+		_priority = _priorities select _foreachindex;
+	};
+			_count = _count + 1;
+			_owner = "N/A";
+
+		_ammo = _veh AmmoOnPylon (_foreachindex+1);
+
+		_pylonDispname = getText (configfile >> "CfgMagazines" >> _x >> "displayName");
+		_setAlign = _align select _sel;
+			_sel = _sel + 1;
+		_break = "";
+		if (_sel > 2) then {_sel = 0;_break = "<br />"};
+		if (count _pylons <= 6) then {_setAlign = "<t align='left'>";_break = "<br />"};
+			_pylonInfoText = _pylonInfoText + format ["%1Pyl%2: %3 Prio. %4 %5 (%6).%7",_setAlign,_count,_owner,_priority,_pylonDispname,_ammo,_break];
+
+		} forEach GetPylonMagazines _veh;
+				_text = format ["<t align='center' size='0.75'>%1 current loadout:<br /><br /><t align='left' size='0.75'><br />%2",_dispName,_pylonInfoText];
+
+		(finddisplay 66 displayctrl 1100) ctrlSetStructuredText parsetext _text;
+
 		};
 
-_landings = _veh getvariable ["GOM_fnc_aircraftStatsLandings",0];
+		_driverName = name assigneddriver _veh;
 
-_landingtext = format ["Successful landings: %1<br />",_landings];
-if (typeof _veh iskindof "Helicopter") then {_landingtext = "<br />"};
-if (lbcursel 1502 >= 0) then {_landingtext = "";_killtext = ""};
+		_rank = [assignedDriver _veh,"displayName"] call BIS_fnc_rankParams;
+		_rank = _rank + " ";
+		if (assigneddriver _veh isEqualTo objnull) then {_driverName = "No Pilot";_rank = ""};
+
+		_mag = "N/A";
+		_get = "";
+		if (lbcursel 1502 > -1) then {_get = (lbdata [1502,(lbCursel 1502)]);};
+		_ind2 = "N/A";
+		_pylonMagDispName = getText (configfile >> "CfgMagazines" >> _get >> "displayName");
+		_pylonMagType = getText (configfile >> "CfgMagazines" >> _get >> "displayNameShort");
+		_pylonMagDetails = getText (configfile >> "CfgMagazines" >> _get >> "descriptionShort");
+		if (_pylonMagDispName isequalto "") then {_pylonMagDispName = "N/A"};
+		if (_pylonMagType isequalto "") then {_pylonMagType = "N/A"};
+		if (_pylonMagDetails isequalto "") then {_pylonMagDetails = "N/A"};
+		_pyl = "N/A";
+		if (lbcursel 1501 > -1) then {_pyl = (lbdata [1501,(lbCursel 1501)]);};
+
+		_curFuel = fuel _veh;
+
+		_maxFuel = getNumber (configfile >> "CfgVehicles" >> typeof _veh >> "fuelCapacity");
+		_fuel = [(_curFuel * _maxfuel),1] call GOM_fnc_roundByDecimals;
+
+			_missingFuel = _maxfuel - _fuel;
+
+		_pylonOwner = _veh getVariable ["GOM_fnc_aircraftLoadoutPylonOwner",[]];
+
+		_pylonOwnerName = "Pilot";
+		_nextOwnerName = "Gunner";
+		if !(_pylonOwner isEqualTo []) then {_pylonOwnerName = "Gunner"};
+		_ownerText = format ["Operated by: %1",_pylonOwnerName];
+
+		_integrity = [((damage _veh * 100) - 100) * -1] call GOM_fnc_roundByDecimals;
+
+		_pylontext = format ["Mount %1 on %2 - %3<br /><br /><t align='left'>Weapon Type: %4<br />Details: %5",_pylonMagDispName,_pyl,_ownertext,_pylonMagType,_pylonMagDetails];
+
+			if (lbcursel 1502 < 0) then {_pylontext = ""};
+
+			_kills = _veh getVariable ["GOM_fnc_aircraftLoadoutTrackStats",[]];
+
+			_killtext = if (_kills isequalto []) then {"Confirmed kills:<br />None"} else {
+			_kills params ["_infantry","_staticWeapon","_cars","_armored","_chopper","_plane","_ship","_building","_parachute"];
+
+			_typeNamesS = ["infantry","static weapon","vehicle","armored vehicle","helicopter","plane","ship","building","parachuting kitten"];
+			_typeNamesPL = ["infantry","static weapons","vehicles","armored vehicles","helicopters","planes","ships","buildings","parachuting kittens"];
+
+			_out = "Confirmed kills:<br />";
+			_index = -1;
+			_killText = _kills apply {_index = _index + 1;_kind = ([_typeNamesS select _index,_typeNamesPL select _index] select (_x > 1));
+				if (_x > 0) then {
+
+					_out = _out + (format ["%1 %2, ",_x,_kind])};
+
+			};
+	_out = _out select [0,count _out - 2];
+	_out = _out + ".";
+	_out
+			};
+
+	_landings = _veh getvariable ["GOM_fnc_aircraftStatsLandings",0];
+
+	_landingtext = format ["Successful landings: %1<br />",_landings];
+	if (typeof _veh iskindof "Helicopter") then {_landingtext = "<br />"};
+	if (lbcursel 1502 >= 0) then {_landingtext = "";_killtext = ""};
 
 
-	_tailNumber = [] call GOM_fnc_aircraftGetSerialNumber;
+		_tailNumber = [] call GOM_fnc_aircraftGetSerialNumber;
 
 
-	_text = format ["<t align='center' size='0.75'>%1 - %11, Integrity: %2%3<br />Pilot: %4%5<br />Fuel: %6l / %7l<br />%8<br />%9<br />%10",_dispName,_integrity,"%",_rank,_driverName,_fuel,_maxFuel,_pylontext,_landingtext,_killtext,_tailnumber];
+		_text = format ["<t align='center' size='0.75'>%1 - %11, Integrity: %2%3<br />Pilot: %4%5<br />Fuel: %6l / %7l<br />%8<br />%9<br />%10",_dispName,_integrity,"%",_rank,_driverName,_fuel,_maxFuel,_pylontext,_landingtext,_killtext,_tailnumber];
 
-	(finddisplay 66 displayctrl 1100) ctrlSetStructuredText parsetext _text;
-true
+		(finddisplay 66 displayctrl 1100) ctrlSetStructuredText parsetext _text;
+	true
 };
 
 GOM_fnc_updateVehiclesLB = {
@@ -626,7 +626,7 @@ GOM_fnc_CheckComponents = {
 
 	};
 	playSound "Click";
-true
+	true
 };
 
 GOM_fnc_clearAllPylons = {
@@ -645,19 +645,19 @@ GOM_fnc_clearAllPylons = {
 		if (!_nosound) then {
 
 	_sound = [_veh,_foreachindex] call GOM_fnc_pylonSound;
-};
+	};
 
-	} forEach _activePylonMags;
+		} forEach _activePylonMags;
 
-		if (!_nosound) then {
-	playSound "Click";
-};
-	_pylonWeapons = [];
-	{ _pylonWeapons append getArray (_x >> "weapons") } forEach ([_veh, configNull] call BIS_fnc_getTurrets);
-	{ [_veh,_x] remoteexec ["removeWeaponGlobal",0] } forEach ((weapons _veh) - _pylonWeapons);
+			if (!_nosound) then {
+		playSound "Click";
+	};
+		_pylonWeapons = [];
+		{ _pylonWeapons append getArray (_x >> "weapons") } forEach ([_veh, configNull] call BIS_fnc_getTurrets);
+		{ [_veh,_x] remoteexec ["removeWeaponGlobal",0] } forEach ((weapons _veh) - _pylonWeapons);
 
-	systemchat "All pylons cleared!";
-true
+		systemchat "All pylons cleared!";
+	true
 };
 
 GOM_fnc_aircraftSetSerialNumber = {
@@ -679,7 +679,7 @@ GOM_fnc_aircraftSetSerialNumber = {
 	_index = _textures find (_numberTextures select 0);
 
 	if (count _number > 3) then {_number = _number select [0,3];systemchat "Invalid Number, using first 3 digits instead!";ctrlSetText [1400,_number select [0,3]];
-};
+	};
 	_numberArray = toarray _number;
 
 	_zeroesneeded = 3 - count _numberarray;
@@ -706,36 +706,36 @@ GOM_fnc_aircraftSetSerialNumber = {
 
 GOM_fnc_pylonSound = {
 
-params ["_veh",["_pylon",-1]];
+	params ["_veh",["_pylon",-1]];
 
 	_soundpos = getPosASL _veh;
-if (_pylon >= 0) then {
+	if (_pylon >= 0) then {
 
-_selections = selectionnames _veh;
-_presort = _selections select {(toupper _x find "PYLON") >= 0 AND parsenumber (_x select [count _x - 3,3]) > 0};
-_presort apply {[parsenumber (_x select [count _x - 3,3]),_x]};
-_presort sort true;
+	_selections = selectionnames _veh;
+	_presort = _selections select {(toupper _x find "PYLON") >= 0 AND parsenumber (_x select [count _x - 3,3]) > 0};
+	_presort apply {[parsenumber (_x select [count _x - 3,3]),_x]};
+	_presort sort true;
 
-};
+	};
 
-	_rndSound = selectRandom ['FD_Target_PopDown_Large_F','FD_Target_PopDown_Small_F','FD_Target_PopUp_Small_F'];
-	_getPath = getArray (configfile >> "CfgSounds" >> _rndSound >> "sound");
-	_path = _getPath select 0;
+		_rndSound = selectRandom ['FD_Target_PopDown_Large_F','FD_Target_PopDown_Small_F','FD_Target_PopUp_Small_F'];
+		_getPath = getArray (configfile >> "CfgSounds" >> _rndSound >> "sound");
+		_path = _getPath select 0;
 
-true
+	true
 };
 
 GOM_fnc_properWeaponRemoval = {
 
-params ["_veh","_pylonToCheck"];
+	params ["_veh","_pylonToCheck"];
 
-_currentweapons = weapons _veh;
-_pylons = GetPylonMagazines _veh;
-_pylonWeapons = _pylons apply {getText ((configfile >> "CfgMagazines" >> _x >> "pylonWeapon"))};
-_weaponToCheck = _pylonweapons select lbcursel 1501;
-_check = (count (_pylonweapons select {_x isEqualTo _weaponToCheck}) isEqualTo 1);
-_check2 = _pylonweapons select {_x isEqualTo _weaponToCheck};
-if (count (_pylonweapons select {_x isEqualTo _weaponToCheck}) isEqualTo 1) then {_veh removeWeaponGlobal _weaponToCheck;Systemchat ("Removed " + _weaponToCheck)};//remove the current pylon weapon if no other pylon is using it
+	_currentweapons = weapons _veh;
+	_pylons = GetPylonMagazines _veh;
+	_pylonWeapons = _pylons apply {getText ((configfile >> "CfgMagazines" >> _x >> "pylonWeapon"))};
+	_weaponToCheck = _pylonweapons select lbcursel 1501;
+	_check = (count (_pylonweapons select {_x isEqualTo _weaponToCheck}) isEqualTo 1);
+	_check2 = _pylonweapons select {_x isEqualTo _weaponToCheck};
+	if (count (_pylonweapons select {_x isEqualTo _weaponToCheck}) isEqualTo 1) then {_veh removeWeaponGlobal _weaponToCheck;Systemchat ("Removed " + _weaponToCheck)};//remove the current pylon weapon if no other pylon is using it
 
 };
 
@@ -824,7 +824,7 @@ GOM_fnc_pylonInstallWeapon = {
 
 
 	playSound "Click";
-true
+	true
 };
 
 GOM_fnc_aircraftLoadoutPaintjob = {
@@ -853,11 +853,11 @@ GOM_fnc_aircraftLoadoutPaintjob = {
 		_index = (_colorTextures select (lbCurSel 2100)) find _x;
 		_veh setObjectTextureGlobal [_index, (_colorTextures select (lbCurSel 2100)) select _index];
 	} foreach (_colorTextures select (lbCurSel 2100));
-};
-	playSound "Click";
-};
+	};
+		playSound "Click";
+	};
 
-true
+	true
 };
 
 GOM_fnc_aircraftGetSerialNumber = {
@@ -870,7 +870,7 @@ GOM_fnc_aircraftGetSerialNumber = {
 	_numberTextures = _textures select {toUpper _x find "NUMBER" > 0};
 
 	if (_numberTextures isequalto [] AND lbcursel 1501 < 0 AND lbcursel 1502 < 0) exitWith {ctrlSetText [1400,"N/A"];
-"N/A"};
+	"N/A"};
 
 	_texture = _numbertextures select 0;
 	_index = _textures find _texture;
@@ -911,7 +911,7 @@ GOM_fnc_updateAmmoCountDisplay = {
 
 	ctrlSetText [1400,str _count];
 
-true
+	true
 };
 
 GOM_fnc_setPylonPriority = {
@@ -925,55 +925,55 @@ GOM_fnc_setPylonPriority = {
 	_priorities = _veh getVariable ["GOM_fnc_pylonPriorities",(GetPylonMagazines _veh) apply {_count = _count + 1;_count}];//I fucking love apply
 
 	_selectedPriority = _priorities select lbcursel 1501;
-if ("NOCOUNT" in _this) exitWith {
+	if ("NOCOUNT" in _this) exitWith {
 
-	ctrlsettext [1610,format ["Priority: %1", _selectedPriority]];
-	_veh setVariable ["GOM_fnc_pylonPriorities",_priorities,true];
-	[_veh,_priorities] remoteExec ["setPylonsPriority",0,true];
-};
+		ctrlsettext [1610,format ["Priority: %1", _selectedPriority]];
+		_veh setVariable ["GOM_fnc_pylonPriorities",_priorities,true];
+		[_veh,_priorities] remoteExec ["setPylonsPriority",0,true];
+	};
 
-_keys = finddisplay 66 getVariable ["GOM_fnc_keyDown",["","",false,false,false]];
-_keys params ["","",["_keyshift",false],["_keyctrl",false],["_keyALT",false]];
+	_keys = finddisplay 66 getVariable ["GOM_fnc_keyDown",["","",false,false,false]];
+	_keys params ["","",["_keyshift",false],["_keyctrl",false],["_keyALT",false]];
 
-	if (_keyshift) exitWith {
-		_selectedPriority = _selectedPriority - 1;
-	if (_selectedPriority < 1) then {_selectedPriority = count _priorities};
+		if (_keyshift) exitWith {
+			_selectedPriority = _selectedPriority - 1;
+		if (_selectedPriority < 1) then {_selectedPriority = count _priorities};
 
 
-		_priorities set [lbcursel 1501,_selectedPriority];
+			_priorities set [lbcursel 1501,_selectedPriority];
 
-	_veh setVariable ["GOM_fnc_pylonPriorities",_priorities,true];
-	[_veh,_priorities] remoteExec ["setPylonsPriority",0,true];
-	ctrlsettext [1610,format ["Priority: %1", _selectedPriority]];
+		_veh setVariable ["GOM_fnc_pylonPriorities",_priorities,true];
+		[_veh,_priorities] remoteExec ["setPylonsPriority",0,true];
+		ctrlsettext [1610,format ["Priority: %1", _selectedPriority]];
+
+			};
+		if (_keyALT) exitWith {
+			_priorities = _priorities apply {_selectedPriority};
+			systemchat format ["All pylons priority set to %1",_selectedPriority];
+		_veh setVariable ["GOM_fnc_pylonPriorities",_priorities,true];
+		[_veh,_priorities] remoteExec ["setPylonsPriority",0,true];
+		ctrlsettext [1610,format ["Priority: %1",_selectedPriority]];
 
 		};
-	if (_keyALT) exitWith {
-		_priorities = _priorities apply {_selectedPriority};
-		systemchat format ["All pylons priority set to %1",_selectedPriority];
-	_veh setVariable ["GOM_fnc_pylonPriorities",_priorities,true];
-	[_veh,_priorities] remoteExec ["setPylonsPriority",0,true];
-	ctrlsettext [1610,format ["Priority: %1",_selectedPriority]];
 
-	};
+		if (_keyctrl) exitWith {
+	systemchat format ["All pylons priority set to 1",""];
+			_priorities = _priorities apply {1};
+		_veh setVariable ["GOM_fnc_pylonPriorities",_priorities,true];
+		[_veh,_priorities] remoteExec ["setPylonsPriority",0,true];
+		ctrlsettext [1610,format ["Priority: %1", 1]];
 
-	if (_keyctrl) exitWith {
-systemchat format ["All pylons priority set to 1",""];
-		_priorities = _priorities apply {1};
-	_veh setVariable ["GOM_fnc_pylonPriorities",_priorities,true];
-	[_veh,_priorities] remoteExec ["setPylonsPriority",0,true];
-	ctrlsettext [1610,format ["Priority: %1", 1]];
+		};
 
-	};
+	_selectedPriority = _selectedPriority + 1;
 
-_selectedPriority = _selectedPriority + 1;
+		if (_selectedPriority > count _priorities) then {_selectedPriority = 1};
 
-	if (_selectedPriority > count _priorities) then {_selectedPriority = 1};
+			_priorities set [lbcursel 1501,_selectedPriority];
 
-		_priorities set [lbcursel 1501,_selectedPriority];
-
-	_veh setVariable ["GOM_fnc_pylonPriorities",_priorities,true];
-	[_veh,_priorities] remoteExec ["setPylonsPriority",0,true];
-	ctrlsettext [1610,format ["Priority: %1", _selectedPriority]];
+		_veh setVariable ["GOM_fnc_pylonPriorities",_priorities,true];
+		[_veh,_priorities] remoteExec ["setPylonsPriority",0,true];
+		ctrlsettext [1610,format ["Priority: %1", _selectedPriority]];
 
 
 };
@@ -1023,7 +1023,7 @@ GOM_fnc_fillPylonsLB = {
 		lbsetData [1502,_foreachIndex,_x];
 
 	} forEach _validPylonMags;
-true
+	true
 };
 
 GOM_fnc_updatePresetLB = {
@@ -1042,7 +1042,7 @@ GOM_fnc_updatePresetLB = {
 		lbAdd [2101,_x select 1];
 
 	} forEach _validPresets;
-true
+	true
 };
 
 GOM_fnc_setPylonLoadoutLBPylonsUpdate = {
@@ -1072,7 +1072,7 @@ GOM_fnc_setPylonLoadoutLBPylonsUpdate = {
 	findDisplay 66 displayCtrl 2802 cbSetChecked (vehicleReportOwnPosition _veh);
 
 	playSound "Click";
-true
+	true
 };
 
 GOM_fnc_aircraftLoadout = {
@@ -1094,64 +1094,64 @@ GOM_fnc_aircraftLoadout = {
 
 	_getvar = _obj call BIS_fnc_objectVar;
 	finddisplay 66 displayCtrl 1500 ctrlAddEventHandler ["LBSelChanged",format ["lbclear 1502;lbsetcursel [1502,-1];lbclear 1501;lbsetcursel [1501,-1];[%1] call GOM_fnc_setPylonLoadoutLBPylonsUpdate;
-;[%1] call GOM_fnc_aircraftLoadoutPaintjob;",_getvar]];
-	finddisplay 66 displayCtrl 1501 ctrlAddEventHandler ["LBSelChanged",format ["lbclear 1502;[%1] call GOM_fnc_fillPylonsLB;[%1,'NOCOUNT'] call GOM_fnc_setPylonPriority
-",_getvar]];
-	finddisplay 66 displayCtrl 1502 ctrlAddEventHandler ["LBSelChanged",format ["[%1] call GOM_fnc_updateAmmoCountDisplay;",_getvar]];
+	;[%1] call GOM_fnc_aircraftLoadoutPaintjob;",_getvar]];
+		finddisplay 66 displayCtrl 1501 ctrlAddEventHandler ["LBSelChanged",format ["lbclear 1502;[%1] call GOM_fnc_fillPylonsLB;[%1,'NOCOUNT'] call GOM_fnc_setPylonPriority
+	",_getvar]];
+		finddisplay 66 displayCtrl 1502 ctrlAddEventHandler ["LBSelChanged",format ["[%1] call GOM_fnc_updateAmmoCountDisplay;",_getvar]];
 
-	finddisplay 66 displayCtrl 2100 ctrlAddEventHandler ["LBSelChanged",format ["[%1,true] call GOM_fnc_aircraftLoadoutPaintjob",_getvar]];
-	finddisplay 66 displayCtrl 2101 ctrlAddEventHandler ["LBSelChanged",format ["",_getvar]];
-	buttonSetAction [1600, format ["[%1] call GOM_fnc_pylonInstallWeapon;[] call GOM_fnc_aircraftSetSerialNumber",_getvar]];
-	buttonSetAction [1601, format ["[%1] call GOM_fnc_clearAllPylons",_getvar]];
-	buttonSetAction [1602, format ["[%1] call GOM_fnc_setPylonsRepair",_getvar]];
-	buttonSetAction [1603, format ["[%1] call GOM_fnc_setPylonsRefuel",_getvar]];
-	buttonSetAction [1604, format ["[%1] call GOM_fnc_setPylonsReArm",_getvar]];
-	buttonSetAction [1605, format ["[%1] call GOM_fnc_setPylonOwner",_getvar]];
-	buttonSetAction [1606, format ["[%1] call GOM_fnc_aircraftLoadoutSavePreset",_getvar]];
-	buttonSetAction [1607, format ["[%1] call GOM_fnc_aircraftLoadoutDeletePreset",_getvar]];
-	buttonSetAction [1608, format ["[%1] call GOM_fnc_aircraftLoadoutLoadPreset",_getvar]];
-
-
-	buttonSetAction [1609, format ["lbclear 1502;lbSetCurSel [1502,-1];lbclear 1501;lbSetCurSel [1501,-1];lbclear 1500;lbSetCurSel [1500,-1]",""]];
-	buttonSetAction [1610, format ["[%1] call GOM_fnc_setPylonPriority",_getvar]];
-
-	findDisplay 66 displayAddEventHandler ["KeyDown",{finddisplay 66 setVariable ["GOM_fnc_keyDown",_this];if (_this select 3) then {ctrlEnable [1607,true];
-		ctrlSetText [1607,"Delete"];
-		ctrlSetText [1610,format ["Set all to 1",""]];
-	};
-	if (_this select 4) then {
-	_veh = call compile lbdata [1500,lbcursel 1500];
-	_priorities = _veh getVariable ["GOM_fnc_pylonPriorities",[]];
-	if (lbcursel 1501 >= 0) then {
-
-	_selectedPriority = _priorities select lbcursel 1501;
-	ctrlSetText [1610,format ["Set all to %1",_selectedPriority]];
-	}
-	};
+		finddisplay 66 displayCtrl 2100 ctrlAddEventHandler ["LBSelChanged",format ["[%1,true] call GOM_fnc_aircraftLoadoutPaintjob",_getvar]];
+		finddisplay 66 displayCtrl 2101 ctrlAddEventHandler ["LBSelChanged",format ["",_getvar]];
+		buttonSetAction [1600, format ["[%1] call GOM_fnc_pylonInstallWeapon;[] call GOM_fnc_aircraftSetSerialNumber",_getvar]];
+		buttonSetAction [1601, format ["[%1] call GOM_fnc_clearAllPylons",_getvar]];
+		buttonSetAction [1602, format ["[%1] call GOM_fnc_setPylonsRepair",_getvar]];
+		buttonSetAction [1603, format ["[%1] call GOM_fnc_setPylonsRefuel",_getvar]];
+		buttonSetAction [1604, format ["[%1] call GOM_fnc_setPylonsReArm",_getvar]];
+		buttonSetAction [1605, format ["[%1] call GOM_fnc_setPylonOwner",_getvar]];
+		buttonSetAction [1606, format ["[%1] call GOM_fnc_aircraftLoadoutSavePreset",_getvar]];
+		buttonSetAction [1607, format ["[%1] call GOM_fnc_aircraftLoadoutDeletePreset",_getvar]];
+		buttonSetAction [1608, format ["[%1] call GOM_fnc_aircraftLoadoutLoadPreset",_getvar]];
 
 
- 
-	}];
-	findDisplay 66 displayAddEventHandler ["KeyUp",{finddisplay 66 setVariable ["GOM_fnc_keyDown",[]];if (_this select 3) then {ctrlEnable [1607,false];ctrlSetText [1607,"CTRL"];
+		buttonSetAction [1609, format ["lbclear 1502;lbSetCurSel [1502,-1];lbclear 1501;lbSetCurSel [1501,-1];lbclear 1500;lbSetCurSel [1500,-1]",""]];
+		buttonSetAction [1610, format ["[%1] call GOM_fnc_setPylonPriority",_getvar]];
 
-	_veh = call compile lbdata [1500,lbcursel 1500];
-	_priorities = _veh getVariable ["GOM_fnc_pylonPriorities",[]];
+		findDisplay 66 displayAddEventHandler ["KeyDown",{finddisplay 66 setVariable ["GOM_fnc_keyDown",_this];if (_this select 3) then {ctrlEnable [1607,true];
+			ctrlSetText [1607,"Delete"];
+			ctrlSetText [1610,format ["Set all to 1",""]];
+		};
+		if (_this select 4) then {
+		_veh = call compile lbdata [1500,lbcursel 1500];
+		_priorities = _veh getVariable ["GOM_fnc_pylonPriorities",[]];
 		if (lbcursel 1501 >= 0) then {
 
-	_selectedPriority = _priorities select lbcursel 1501;
-	ctrlSetText [1610,format ["Priority: %1",_selectedPriority]];
-};
-	;};
+		_selectedPriority = _priorities select lbcursel 1501;
+		ctrlSetText [1610,format ["Set all to %1",_selectedPriority]];
+		}
+		};
 
 
-if (_this select 4) then {	_veh = call compile lbdata [1500,lbcursel 1500];
-	_priorities = _veh getVariable ["GOM_fnc_pylonPriorities",[]];
-		if (lbcursel 1501 >= 0) then {
+	
+		}];
+		findDisplay 66 displayAddEventHandler ["KeyUp",{finddisplay 66 setVariable ["GOM_fnc_keyDown",[]];if (_this select 3) then {ctrlEnable [1607,false];ctrlSetText [1607,"CTRL"];
 
-	_selectedPriority = _priorities select lbcursel 1501;
-	ctrlSetText [1610,format ["Priority: %1",_selectedPriority]];
-};
-;}
+		_veh = call compile lbdata [1500,lbcursel 1500];
+		_priorities = _veh getVariable ["GOM_fnc_pylonPriorities",[]];
+			if (lbcursel 1501 >= 0) then {
+
+		_selectedPriority = _priorities select lbcursel 1501;
+		ctrlSetText [1610,format ["Priority: %1",_selectedPriority]];
+	};
+		;};
+
+
+	if (_this select 4) then {	_veh = call compile lbdata [1500,lbcursel 1500];
+		_priorities = _veh getVariable ["GOM_fnc_pylonPriorities",[]];
+			if (lbcursel 1501 >= 0) then {
+
+		_selectedPriority = _priorities select lbcursel 1501;
+		ctrlSetText [1610,format ["Priority: %1",_selectedPriority]];
+	};
+	;}
 
 
 

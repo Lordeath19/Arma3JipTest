@@ -36,7 +36,7 @@ class CfgFunctions {
             };
         };
     };
-	
+	/*
 	class GOM
 	{
 		class init
@@ -44,7 +44,7 @@ class CfgFunctions {
 			class aircraftLoadoutInit{file = "\PA\GOM\functions\GOM_fnc_aircraftLoadoutInit.sqf";preInit = 1;};
 		};
 	};
-	
+	*/
 	class R3F_LOG
 	{
 		class init
@@ -787,8 +787,8 @@ class CfgInventoryGlobalVariable {
 };
 
 
-#include "GOM\dialogs\GOM_dialog_parents.hpp"
-#include "GOM\dialogs\GOM_dialog_controls.hpp"
+//#include "GOM\dialogs\GOM_dialog_parents.hpp"
+//#include "GOM\dialogs\GOM_dialog_controls.hpp"
 
 
 #include "R3F_LOG\desc_include.h"
