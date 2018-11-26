@@ -1874,11 +1874,10 @@ script_initCOOLJIPgustav = [] spawn
 						
 					};
 
-
 					comment "clean up your mess..";
 					_veh spawn {
-						waitUntil {sleep 0.1;!alive _this;};
-						sleep 15;
+						waitUntil {sleep 1;!alive _this;};
+						sleep 40;
 						deleteVehicle _this;
 					};
 				};
