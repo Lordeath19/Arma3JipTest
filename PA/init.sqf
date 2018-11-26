@@ -26,6 +26,7 @@ private["_keyDown"];
 	GOM_list_allPylonMags = ("count( getArray (_x >> 'hardpoints')) > 0" configClasses (configfile >> "CfgMagazines")) apply {configname _x};
 	GOM_list_allPylonMags = [GOM_list_allPylonMags, [], {getText (configfile >> "CfgMagazines" >> _x >> "displayName")}, "ASCEND"] call BIS_fnc_sortBy;
 	GOM_list_validDispNames = GOM_list_allPylonMags apply {getText (configfile >> "CfgMagazines" >> _x >> "displayName")};
+	DCON_Garage_Loadout_Controls = [];
 	_load = [] spawn {
 		if(count (missionNamespace getVariable ["allWeapons",[]]) == 0) then {
 			disableSerialization;
@@ -657,11 +658,6 @@ private["_keyDown"];
 		SystemChat "...< Keybinds Initialized >...";
 		hint "-----------------------------\nKEYBINDS\n-----------------------------\nHOME - Main Console\n-----------------------------";
 		};
-				
 
-
-
-
-	
 };
 

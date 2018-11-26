@@ -28,7 +28,7 @@ class PA_main
 		class pa_main_vs: GOMRscButton
 		{
 			idc = 1601;
-			onButtonClick = "closeDialog 1609;_pos = player getPos [30,getDir player];if((AGLToASL _pos) select 2 < 0) then {_pos set [2, 0]; };_vehicle = createVehicle [ 'Land_HelipadEmpty_F', _pos, [], 0, 'CAN_COLLIDE' ];['Open',[ true, _vehicle ]] execVM '\PA\replacement\fn_garage.sqf';";
+			onButtonClick = "closeDialog 1609;[] call DCON_fnc_Garage_Open;";
 			text = "Virtual Garage"; //--- ToDo: Localize;
 			x = 0.454079 * safezoneW + safezoneX;
 			y = 0.345966 * safezoneH + safezoneY;

@@ -40,25 +40,6 @@ class CfgFunctions {
 		};
 	};
 	
-	class A3_Mark
-	{
-		class Vehicles
-		{
-			delete garage;
-		};
-		
-		class Achilles
-		{
-			delete garage;
-		};
-		
-		class AAAAAPersonalArsenal
-		{
-			file = "\PA\replacement";
-			class garage {};
-		};
-	};
-	
 	class Weaponry
 	{
 		tag = "WPN";
@@ -107,6 +88,21 @@ class CfgFunctions {
 		class init
 		{
 			class R3F_LOGInitfile {file = "\PA\R3F_LOG\init.sqf";postInit = 1;};
+		};
+	};
+	
+	class DCON
+	{
+		tag = "DCON";
+		class functions
+		{
+			file = "\PA\DCON";
+			
+			class Garage {};
+			class Garage_Open {};
+			class Garage_UpdateColor {};
+			class Garage_CreateVehicle {};
+			class Garage_CodeEditor_Open {};
 		};
 	};
 
