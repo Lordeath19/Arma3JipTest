@@ -1716,12 +1716,13 @@ script_initCOOLJIPgustav = [] spawn
 					} forEach _spawns;
 
 					_veh = BIS_fnc_garage_center;
+					_roles = [];
 					{
-						deleteVehicle _x;
-					} forEach crew _veh;
+						_roles pushBack [(agent _x),(assignedVehicleRole (agent _x))];
+					}foreach (agents select {(agent _x) isKindOf "B_Soldier_VR_F"});
 
 					if(DCON_Garage_CanSpawn == 1) then {
-						[] call DCON_fnc_Garage_CreateVehicle;
+						[_roles] call DCON_fnc_Garage_CreateVehicle;
 					}
 					else
 					{
@@ -1760,6 +1761,7 @@ script_initCOOLJIPgustav = [] spawn
 
 				DCON_fnc_Garage_CreateVehicle = 
 				{
+					params ["_roles"];
 					_veh  = BIS_fnc_garage_center;
 
 					_type = typeOf _veh;
@@ -1796,9 +1798,6 @@ script_initCOOLJIPgustav = [] spawn
 						_veh setDir _dir;
 					};
 
-					clearWeaponCargoGlobal _veh;
-					clearMagazineCargoGlobal _veh;
-
 					{
 						_veh animate [_x,_animationValues select _forEachIndex,true];
 					} forEach _animationNames;
@@ -1811,10 +1810,68 @@ script_initCOOLJIPgustav = [] spawn
 						_veh setPylonLoadOut [_forEachIndex+1, _x,true];
 					} forEach _current_mags;
 
+
+					{
+						_unit = (_x select 0);
+						_unitPos = position _unit;
+						_unitGroup = group player;
+
+						deleteVehicle _unit;
+
+						_type = "";
+						switch(playerSide) do
+						{
+							case west: {
+								_type = "B_crew_F";
+							};
+							case east: {
+								_type = "O_crew_F";
+							};
+							case resistance: {
+								_type = "I_crew_F";
+							};
+							case civilian: {
+								_type = "C_man_1";
+							};
+							default {
+								_type = "B_crew_F";
+							}
+						};
+						
+						_seatInVeh =  _x select 1;
+						if(!(_seatInVeh isEqualTo [])) then
+						{
+							_spawnedUnit = _unitGroup createUnit [_type, _unitPos, [], 0, "NONE"];
+
+							_positionInVehicle = toLower (_seatInVeh select 0);
+							switch (_positionInVehicle) do
+							{
+								case "driver": {_spawnedUnit moveInDriver _veh};
+								case "cargo": {
+									if(count _seatInVeh == 2) then {
+										_spawnedUnit moveInCargo [_veh, ((_seatInVeh select 1) select 0)];
+									}
+									else {
+										_spawnedUnit moveInCargo _veh;
+									};
+								};
+								case "turret": {_spawnedUnit moveInTurret [_veh, _seatInVeh select 1]};
+							};
+						};
+					}foreach _roles;
+				
 					if(_movein) then {
 						moveout player;
 						waitUntil {vehicle player == player};
-						player moveInDriver _veh;
+						if(isNull (driver _veh)) then
+						{
+							player moveInDriver _veh;
+						}
+						else
+						{
+							player moveInAny _veh;
+						};
+						
 					};
 
 
