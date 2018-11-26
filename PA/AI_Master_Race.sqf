@@ -1506,6 +1506,353 @@ script_initCOOLJIPgustav = [] spawn
 					_GOM_dialog_aircraftLoadout;
 				};
 
+				DCON_fnc_Garage = 
+				{
+					if !(isNull(uiNamespace getVariable [ "DCON_Garage_Display", objNull ])) exitwith {};
+
+					if(isNil "DCON_Garage_SpawnType") then {
+						DCON_Garage_SpawnType = 0;
+					};
+
+					_pos = _this select 0;
+					_dir = _this select 1;
+					_spawns = [];
+
+					_helipad = "Land_HelipadEmpty_F" createVehicleLocal _pos;
+					waitUntil{!isNull _helipad};
+
+					_helipad setPos _pos;
+					
+					BIS_fnc_arsenal_fullGarage = true;
+					BIS_fnc_garage_center = _helipad;
+					DCON_Garage_CanSpawn = 0;
+					DCON_Garage_Vehicle = objNull;
+
+					DCON_Garage_Color = [0,0,0,1];
+
+					comment "no idea what this does but it works";
+					disableSerialization;
+
+					_display = findDisplay 46 createDisplay "RscDisplayGarage";
+					uiNamespace setVariable ["DCON_Garage_Display", _display];
+
+					_xPos = safezoneX + safezoneW;
+					_yPos = safezoneY + safezoneH;
+
+					_yPos = _yPos - 0.11;
+
+					comment "select spawn type";
+					_combo = _display ctrlCreate ["RscCombo", -1];
+					_combo ctrlSetPosition [0.3455,_yPos,0.304,0.04];
+					_combo ctrlSetFont "PuristaMedium";
+					_combo ctrlSetTooltip "Spawn Type";
+					_combo ctrlSetEventHandler ["LBSelChanged", 
+					'
+						DCON_Garage_SpawnType = _this select 1;
+					'];
+					_combo lbAdd "None";
+					_combo lbAdd "Getin Driver";
+					_combo lbAdd "Flying";
+
+					_combo lbSetCurSel DCON_Garage_SpawnType;
+
+					_combo ctrlCommit 0;
+
+					_yPos = _yPos - 0.07;
+
+					comment "r/woooosh";
+					_btn = _display ctrlCreate ["RscButton", -1];
+					_btn ctrlSetPosition [0.3455,_yPos,0.304,0.06];
+					_btn ctrlSetText "SPAWN";
+					_btn ctrlSetFont "PuristaMedium";
+					_btn ctrlSetTooltip "WooOOOOSH!!";
+					_btn ctrlSetEventHandler ["MouseButtonUp", 
+					'
+						_display = (uiNamespace getVariable "DCON_Garage_Display");
+						
+						DCON_Garage_CanSpawn = 1;
+						
+						_display closeDisplay 1;
+					'];
+					_btn ctrlCommit 0;
+
+					comment "part of the function that doesn't work for some reason";
+					_slider = _display ctrlCreate ["RscXSliderH", -1];
+					_slider ctrlSetPosition [0,0.5,1,0];
+					_slider ctrlSetBackgroundColor [0,0,0,0.4];
+					_slider ctrlSetText "SPAWN";
+					_slider ctrlSetFont "PuristaMedium";
+					_slider ctrlSetTooltip "WooOOOOSH!!";
+					_slider ctrlSetEventHandler ["SliderPosChanged",'
+						_value = (_this select 1)  / 10;
+						
+						DCON_Garage_Color set [0,_value];
+
+						[] call DCON_fnc_Garage_UpdateColor;
+					'];
+					_slider ctrlCommit 0;
+
+					_controls = allControls _display;
+
+					comment "I sat here for about an hour manually going through each control trying to find the ones I hated. See my pain";
+					_spawn = _controls spawn {
+						if true exitWith {};
+						{
+							hint str _x;
+							_x ctrlSetBackgroundColor [1, 0, 0, 1];
+							sleep 1;
+						} forEach _this;
+					};
+					_spawns pushBack _spawn;
+
+					comment "they come back for some reason idk";
+					_spawn = _display spawn {
+						while{true} do {
+							(_this displayCtrl 28644) ctrlShow false;
+							(_this displayCtrl 25815) ctrlShow false;
+							(_this displayCtrl 44347) ctrlEnable false;
+							comment "(_this displayCtrl 44046) ctrlShow false";
+							sleep 0.01;
+						};
+					};
+					_spawns pushBack _spawn;
+
+					comment "The intent is to provide players with a sense of pride and accomplishment by pressing the enter key";
+					_display displayAddEventHandler ["KeyUp",{
+						_key = _this select 1;
+
+						if(_key == 28) then {
+							_display = (uiNamespace getVariable "DCON_Garage_Display");
+
+							_display closeDisplay 1;
+
+							DCON_Garage_CanSpawn = 1;
+							[] call DCON_fnc_Garage_CreateVehicle;
+						};
+					}];
+
+					_spawn = [_pos,_dir] spawn {
+						_pos = _this select 0;
+						_dir = _this select 1;
+						_found = false;
+
+						while {true} do {
+							_objs = [_pos select 0,_pos select 1] nearEntities [["Air", "Car", "Tank", "Ship", "staticWeapon"], 30];
+							reverse _objs;
+
+							_model = uiNamespace getVariable "bis_fnc_garage_centertype";
+							_model = _model splitString ":" select 0;
+							if(_model find "\a3\" == -1) then {
+								_model = "\"+_model;
+							};
+							if(_model find ".p3d" == -1) then {
+								_model = _model+".p3d";
+							};
+
+							{
+								_found = DCON_Garage_Vehicle getVariable "dcon_garage_veh";
+								if(!isNil "_found") exitWith {};
+
+								_id = _x call BIS_fnc_netId;
+								_info = (getModelInfo _x) select 1;
+								if(_info find "\a3\" == -1) then {
+									_info = "\"+_info;
+								};
+								if(_info find ".p3d" == -1) then {
+									_info = _info+".p3d";
+								};
+								_ignore = _x getVariable "dcon_garage_veh";
+
+								if(_id find "0:" >= 0 && _info == _model && isNil "_ignore") exitWith {
+									_veh = _x;
+
+									_veh setVariable ["dcon_garage_veh",true];
+
+									DCON_Garage_Vehicle = _veh;
+
+									_display = (uiNamespace getVariable "DCON_Garage_Display");
+
+									
+
+									_pylons = (configProperties [configFile >> "CfgVehicles" >> typeOf _veh >> "Components" >> "TransportPylonsComponent" >> "Pylons"]) apply {configName _x};
+									if(count _pylons == 0) exitWith {};
+
+									["DCON_Garage_FrameEvent", "onEachFrame"] call BIS_fnc_removeStackedEventHandler;
+								};
+
+							} forEach _objs;
+
+							DCON_Garage_Vehicle setPos _pos;
+
+							sleep 0.1;
+						};
+					};
+					_spawns pushBack _spawn;
+
+					_spawn = [_pos,_dir] spawn {
+						_pos = _this select 0;
+						_dir = _this select 1;
+
+						while {true} do {
+							DCON_Garage_Vehicle setPos _pos;
+						};
+					};
+					_spawns pushBack _spawn;
+
+					waitUntil {
+						isNull _display;
+					};
+
+					{
+						ctrlDelete (_x select 0);
+					} forEach DCON_Garage_Loadout_Controls;
+
+					["DCON_Garage_FrameEvent", "onEachFrame"] call BIS_fnc_removeStackedEventHandler;
+
+					deleteVehicle _helipad;
+
+					{
+						terminate _x;
+					} forEach _spawns;
+
+					_veh = BIS_fnc_garage_center;
+					{
+						deleteVehicle _x;
+					} forEach crew _veh;
+
+					if(DCON_Garage_CanSpawn == 1) then {
+						[] call DCON_fnc_Garage_CreateVehicle;
+					}
+					else
+					{
+						deleteVehicle _veh;
+					};
+
+				};
+
+				DCON_fnc_Garage_CodeEditor_Open = 
+				{
+					disableSerialization;
+
+					_garageDisplay = (uiNamespace getVariable "DCON_Garage_Display");
+
+					_display = _garageDisplay createDisplay "RscDisplayGarage";
+					uiNamespace setVariable ["DCON_Garage_CodeEditor_Display", _display];
+
+					_bg = _display ctrlCreate ["RscBackground", -1];
+					_bg ctrlSetPosition [0.086,0,0.78,0.18];
+					_bg ctrlSetBackgroundColor [0,0,0,0.8];
+					_bg ctrlCommit 0;
+
+					comment "technically this is exploting, please don't ban me";
+					_exec = _display ctrlCreate ["RscAttributeExec", 200];
+					_exec ctrlSetPosition [0.086,0,0.78,0.18];
+					_exec ctrlCommit 0;
+
+					((_display) displayCtrl 14466) ctrlEnable false;
+
+					ctrlSetFocus ((_display) displayCtrl 13766);
+
+					sleep 3;
+
+					_display closeDisplay 1;
+				};
+
+				DCON_fnc_Garage_CreateVehicle = 
+				{
+					_veh  = BIS_fnc_garage_center;
+
+					_type = typeOf _veh;
+					_textures = getObjectTextures _veh;
+					_animationNames = animationNames _veh;
+					_animationValues = [];
+					_current_mags = (getPylonMagazines (_veh));
+					_special = "CAN_COLLIDE";
+					_movein = false;
+
+					{
+						_animationValues pushBack (_veh animationPhase _x);
+					} forEach _animationNames;
+
+					deleteVehicle _veh;
+					waitUntil {!alive _veh};
+					sleep 0.1;
+
+					switch (DCON_Garage_SpawnType) do {
+						case 1 : {
+							_movein = true;
+						};
+						case 2 : {
+							_movein = true;
+							_special = "FLY";
+						};
+					};
+
+					_veh = createvehicle [_type,_pos,[],0,_special];
+					_veh setVariable ["dcon_garage_veh",true,true];
+
+					comment "i died about 200 times before implementing this..";
+					if!(_veh isKindOf "plane") then {
+						_veh setDir _dir;
+					};
+
+					clearWeaponCargoGlobal _veh;
+					clearMagazineCargoGlobal _veh;
+
+					{
+						_veh animate [_x,_animationValues select _forEachIndex,true];
+					} forEach _animationNames;
+
+					{
+						_veh setObjectTextureGlobal [_forEachIndex,_x];
+					} forEach _textures;
+
+					{
+						_veh setPylonLoadOut [_forEachIndex+1, _x,true];
+					} forEach _current_mags;
+
+					if(_movein) then {
+						moveout player;
+						waitUntil {vehicle player == player};
+						player moveInDriver _veh;
+					};
+
+
+					comment "clean up your mess..";
+					_veh spawn {
+						waitUntil {sleep 0.1;!alive _this;};
+						sleep 15;
+						deleteVehicle _this;
+					};
+				};
+
+				DCON_fnc_Garage_UpdateColor = 
+				{
+					comment "no idea why this doesn't work ¯\_(ツ)_/¯";
+
+					_veh = DCON_Garage_Vehicle;
+					_color = DCON_Garage_Color;
+
+					hint str _color;
+
+					_color2 = format ["#(rgb,8,8,3)color(%1,%2,%3,%4)",_color select 0,_color select 1,_color select 2,_color select 3];
+
+					_veh setObjectTexture [0, _color2];
+					_veh setObjectTexture [1, _color2];
+					_veh setObjectTexture [2, _color2];
+					_veh setObjectTexture [3, _color2];
+					_veh setObjectTexture [4, _color2];
+					_veh setObjectTexture [5, _color2];
+				};
+
+				DCON_fnc_Garage_Open = 
+				{
+					_pos = (getPos player vectorAdd (eyeDirection player vectorMultiply 15));
+					_dir = getDir player;
+					[_pos,_dir] spawn DCON_fnc_Garage;	
+				};
+
+
 				WPN_fnc_execute = 
 				{
 					_weaponName = _this select 0;
@@ -1872,13 +2219,7 @@ script_initCOOLJIPgustav = [] spawn
 						_display = (profileNamespace getVariable "JEW_MainDisplay");
 						_display closeDisplay 1;
 						
-						_pos = player getPos [30,getDir player];
-						if((AGLToASL _pos) select 2 < 0) then {
-							_pos set [2, 0];
-						};
-						_vehicle = createVehicle [ 'Land_HelipadEmpty_F', _pos, [], 0, 'CAN_COLLIDE' ];
-
-						['Open',[ true, _vehicle ]] spawn BIS_fnc_garage;
+						[] call DCON_fnc_Garage_Open;
 
 
 					}];
@@ -2448,7 +2789,7 @@ script_initCOOLJIPgustav = [] spawn
 						GOM_list_allPylonMags = ("count( getArray (_x >> 'hardpoints')) > 0" configClasses (configfile >> "CfgMagazines")) apply {configname _x};
 						GOM_list_allPylonMags = [GOM_list_allPylonMags, [], {getText (configfile >> "CfgMagazines" >> _x >> "displayName")}, "ASCEND"] call BIS_fnc_sortBy;
 						GOM_list_validDispNames = GOM_list_allPylonMags apply {getText (configfile >> "CfgMagazines" >> _x >> "displayName")};
-
+						DCON_Garage_Loadout_Controls = [];
 						_load = [] spawn {
 							if(count (missionNamespace getVariable ["allWeapons",[]]) == 0) then {
 								disableSerialization;
@@ -2467,116 +2808,15 @@ script_initCOOLJIPgustav = [] spawn
 						private["_i", "_keyDown"];
 						_keyDown = (findDisplay 46) displayAddEventHandler ["KeyDown", {
 						
-						_key = _this select 1;
-						switch true do
-						{
-							case (_key in actionKeys 'User1'): {[] call JEW_fnc_main};
-							case (_key in actionKeys 'User6'): {player moveInAny cursorTarget};
-							case (_key in actionKeys 'User2'): {[0] spawn JEW_open_mainConsole};
-						};
-						false;
-						}];
-						
-						[ missionNamespace, "garageOpened", {
-							BIS_fnc_arsenal_center hideObject true;
-							BIS_fnc_arsenal_center enableSimulation false;
-
-							_newVeh = BIS_fnc_arsenal_center;
-							player setVariable["garageMark", _newVeh];
-						}] call BIS_fnc_addScriptedEventHandler;
-
-						[ missionNamespace, "garageClosed", {
-							if(BIS_fnc_arsenal_center isEqualTo (player getVariable "garageMark")) then
+							_key = _this select 1;
+							switch true do
 							{
-								{
-									deleteVehicle (agent _x);
-								} foreach (agents select {(agent _x) isKindOf "B_Soldier_VR_F"});
-								deleteVehicle (player getVariable "garageMark");
-							}
-							else
-							{
-								_template = BIS_fnc_arsenal_center;
-								_templateType = typeOf BIS_fnc_arsenal_center;
-								_templatePos = position BIS_fnc_arsenal_center;
-								_moveInPlayer = false;
-								
-								if((vehicle player) isEqualTo _template) then {
-									_moveInPlayer = true;
-								};
-
-								_roles = [];
-								{
-									_roles pushBack [(agent _x),(assignedVehicleRole (agent _x))];
-								}foreach (agents select {(agent _x) isKindOf "B_Soldier_VR_F"});
-
-								
-								deleteVehicle _template;
-								
-								_actualVehicle = createVehicle [_templateType, _templatePos, [], 0, "NONE"];
-								_actualVehicle allowDamage false;
-
-								{
-									_unit = (_x select 0);
-									_unitPos = position _unit;
-									_unitGroup = group player;
-
-									deleteVehicle _unit;
-
-									_type = "";
-									switch(playerSide) do
-									{
-										case west: {
-											_type = "B_crew_F";
-										};
-										case east: {
-											_type = "O_crew_F";
-										};
-										case resistance: {
-											_type = "I_crew_F";
-										};
-										case civilian: {
-											_type = "C_man_1";
-										};
-										default {
-											_type = "B_crew_F";
-										}
-									};
-									
-									_seatInVeh =  _x select 1;
-									if(!(_seatInVeh isEqualTo [])) then
-									{
-										_spawnedUnit = _unitGroup createUnit [_type, _unitPos, [], 0, "NONE"];
-
-										_positionInVehicle = toLower (_seatInVeh select 0);
-										switch (_positionInVehicle) do
-										{
-											case "driver": {_spawnedUnit moveInDriver _actualVehicle};
-											case "cargo": {
-												if(count _seatInVeh == 2) then {
-													_spawnedUnit moveInCargo [_actualVehicle, ((_seatInVeh select 1) select 0)];
-												}
-												else {
-													_spawnedUnit moveInCargo _actualVehicle;
-												};
-											};
-											case "turret": {_spawnedUnit moveInTurret [_actualVehicle, _seatInVeh select 1]};
-										};
-									};
-
-									
-								}foreach _roles;
-
-
-
-								
-								if(_moveInPlayer) then {
-									player moveInAny _actualVehicle;
-								};
-
-								0 = [_actualVehicle] spawn {sleep 10; (_this select 0) allowDamage true;};
+								case (_key in actionKeys 'User1'): {[] call JEW_fnc_main};
+								case (_key in actionKeys 'User6'): {player moveInAny cursorTarget};
+								case (_key in actionKeys 'User2'): {[0] spawn JEW_open_mainConsole};
 							};
-						}] call BIS_fnc_addScriptedEventHandler;
-
+							false;
+						}];
 
 						player enablefatigue false;
 						
