@@ -1526,16 +1526,6 @@ script_initCOOLJIPgustav = [] spawn
 						STR_R3F_LOG_action_decharger_deja_fait = "The object has already been unloaded !";
 						STR_R3F_LOG_action_decharger_deplacable_exceptionnel = "Once released, this object will no more be movable manually.<br/>Do you confirm the action ?";
 
-						STR_R3F_LOG_action_ouvrir_usine = "Open the creation factory";
-						STR_R3F_LOG_action_creer_en_cours = "Creation in progress...";
-						STR_R3F_LOG_action_creer_fait = "The object ""%1"" has been created.";
-						STR_R3F_LOG_action_creer_pas_assez_credits = "The factory has not enough credits to create this object.";
-						STR_R3F_LOG_action_revendre_usine_direct = "Send back ""%1"" to the factory";
-						STR_R3F_LOG_action_revendre_usine_deplace = "Send back to the factory";
-						STR_R3F_LOG_action_revendre_usine_selection = "... send back to the factory";
-						STR_R3F_LOG_action_revendre_en_cours = "Sending back to the factory...";
-						STR_R3F_LOG_action_revendre_fait = "The object ""%1"" has been sent back to the factory.";
-						STR_R3F_LOG_action_revendre_decharger_avant = "You can't sent it back while its cargo content is not empty !";
 
 						STR_R3F_LOG_mutex_action_en_cours = "The current operation isn't finished !";
 						STR_R3F_LOG_joueur_dans_objet = "There is a player in the object ""%1"" !";
@@ -1789,7 +1779,6 @@ script_initCOOLJIPgustav = [] spawn
 						R3F_LOG_objet_selectionne = objNull;
 						
 						/** Tableau contenant toutes les usines cr��es */
-						R3F_LOG_CF_liste_usines = [];
 						
 						[] call 
 						{
@@ -3627,10 +3616,7 @@ script_initCOOLJIPgustav = [] spawn
 								_objet addAction [("<t color=""#dddd00"">" + format [STR_R3F_LOG_action_selectionner_objet_charge, _nom] + "</t>"), {_this call R3F_LOG_FNCT_transporteur_selectionner_objet}, nil, 5, false, true, "", "!R3F_LOG_mutex_local_verrou && R3F_LOG_objet_addAction == _target && R3F_LOG_action_selectionner_objet_charge_valide"];
 							};
 
-							if (_fonctionnalites select 1) then
-							{
-								_objet addAction [("<t color=""#ff9600"">" + STR_R3F_LOG_action_revendre_usine_deplace + "</t>"), {_this call R3F_LOG_FNCT_usine_revendre_deplace}, nil, 7, false, true, "", "!R3F_LOG_mutex_local_verrou && R3F_LOG_objet_addAction == _target && R3F_LOG_action_revendre_usine_deplace_valide"];
-							};
+
 						};
 
 						R3F_LOG_FNCT_objet_est_verrouille =
@@ -3867,11 +3853,7 @@ script_initCOOLJIPgustav = [] spawn
 						R3F_LOG_action_detacher_valide = false;
 						R3F_LOG_action_selectionner_objet_charge_valide = false;
 						
-						R3F_LOG_action_ouvrir_usine_valide = false;
-						R3F_LOG_action_revendre_usine_direct_valide = false;
-						R3F_LOG_action_revendre_usine_deplace_valide = false;
-						R3F_LOG_action_revendre_usine_selection_valide = false;
-						
+					
 						R3F_LOG_action_deverrouiller_valide = false;
 						
 						/** Sur ordre (publicVariable), r�v�ler la pr�sence d'un objet au joueur (acc�l�rer le retour des addActions) */
@@ -3943,7 +3925,7 @@ script_initCOOLJIPgustav = [] spawn
 							*/
 
 							private ["_joueur", "_vehicule_joueur", "_cursorTarget_distance", "_objet_pointe", "_objet_pas_en_cours_de_deplacement", "_fonctionnalites", "_pas_de_hook"];
-							private ["_objet_deverrouille", "_objet_pointe_autre_que_deplace", "_objet_pointe_autre_que_deplace_deverrouille", "_isUav", "_usine_autorisee_client"];
+							private ["_objet_deverrouille", "_objet_pointe_autre_que_deplace", "_objet_pointe_autre_que_deplace_deverrouille", "_isUav"];
 
 							sleep 2;
 
@@ -3968,7 +3950,6 @@ script_initCOOLJIPgustav = [] spawn
 									
 									_isUav =  (getNumber (configFile >> "CfgVehicles" >> (typeOf _objet_pointe) >> "isUav") == 1);
 									
-									_usine_autorisee_client = call compile R3F_LOG_CFG_string_condition_allow_creation_factory_on_this_client;
 									
 									// L'objet est-il d�verrouill�
 									_objet_deverrouille = !([_objet_pointe, _joueur] call R3F_LOG_FNCT_objet_est_verrouille);
@@ -3990,16 +3971,6 @@ script_initCOOLJIPgustav = [] spawn
 											_objet_pas_en_cours_de_deplacement && isNull (_objet_pointe getVariable "R3F_LOG_est_transporte_par") &&
 											_objet_deverrouille && !(_objet_pointe getVariable "R3F_LOG_disabled");
 										
-										// Condition action revendre_usine_deplace
-										R3F_LOG_action_revendre_usine_deplace_valide = _usine_autorisee_client && R3F_LOG_CFG_CF_sell_back_bargain_rate != -1 &&
-											_objet_pointe getVariable ["R3F_LOG_CF_depuis_usine", false] && (count crew _objet_pointe >= 0 || _isUav) &&
-											(R3F_LOG_joueur_deplace_objet == _objet_pointe) && !(_objet_pointe getVariable "R3F_LOG_disabled") && !isNull _objet_pointe_autre_que_deplace &&
-											{
-												!(_objet_pointe_autre_que_deplace getVariable ["R3F_LOG_CF_disabled", true]) &&
-												_objet_pointe_autre_que_deplace getVariable ["R3F_LOG_CF_side_addAction", side group _joueur] == side group _joueur &&
-												(abs ((getPosASL _objet_pointe_autre_que_deplace select 2) - (getPosASL player select 2)) < 2.5) &&
-												alive _objet_pointe_autre_que_deplace && (vectorMagnitude velocity _objet_pointe_autre_que_deplace < 6)
-											};
 									};
 									
 									// Si l'objet est un objet remorquable
@@ -4114,34 +4085,6 @@ script_initCOOLJIPgustav = [] spawn
 											(vectorMagnitude velocity _objet_pointe < 6) && _objet_deverrouille && !(_objet_pointe getVariable "R3F_LOG_disabled");
 									};
 									
-									// Condition action ouvrir_usine
-									R3F_LOG_action_ouvrir_usine_valide = _usine_autorisee_client && isNull R3F_LOG_joueur_deplace_objet &&
-										!(_objet_pointe getVariable "R3F_LOG_CF_disabled") && alive _objet_pointe &&
-										_objet_pointe getVariable ["R3F_LOG_CF_side_addAction", side group _joueur] == side group _joueur;
-									
-									// Condition action revendre_usine_deplace
-									R3F_LOG_action_revendre_usine_deplace_valide = _usine_autorisee_client && R3F_LOG_CFG_CF_sell_back_bargain_rate != -1 && alive _objet_pointe &&
-										(!isNull R3F_LOG_joueur_deplace_objet) && R3F_LOG_joueur_deplace_objet getVariable ["R3F_LOG_CF_depuis_usine", false] &&
-										!(R3F_LOG_joueur_deplace_objet getVariable "R3F_LOG_disabled") && (R3F_LOG_joueur_deplace_objet != _objet_pointe) &&
-										(vectorMagnitude velocity _objet_pointe < 6) && !(_objet_pointe getVariable "R3F_LOG_CF_disabled") &&
-										_objet_pointe getVariable ["R3F_LOG_CF_side_addAction", side group _joueur] == side group _joueur;
-									
-									// Condition action revendre_usine_selection
-									R3F_LOG_action_revendre_usine_selection_valide = _usine_autorisee_client && R3F_LOG_CFG_CF_sell_back_bargain_rate != -1 && alive _objet_pointe &&
-										(isNull R3F_LOG_joueur_deplace_objet) && R3F_LOG_objet_selectionne getVariable ["R3F_LOG_CF_depuis_usine", false] &&
-										(!isNull R3F_LOG_objet_selectionne) && (R3F_LOG_objet_selectionne != _objet_pointe) && !(R3F_LOG_objet_selectionne getVariable "R3F_LOG_disabled") &&
-										(vectorMagnitude velocity _objet_pointe < 6) && !(_objet_pointe getVariable "R3F_LOG_CF_disabled") &&
-										_objet_pointe getVariable ["R3F_LOG_CF_side_addAction", side group _joueur] == side group _joueur;
-									
-									// Condition action revendre_usine_direct
-									R3F_LOG_action_revendre_usine_direct_valide = _usine_autorisee_client && R3F_LOG_CFG_CF_sell_back_bargain_rate != -1 &&
-										_objet_pointe getVariable ["R3F_LOG_CF_depuis_usine", false] && (count crew _objet_pointe == 0 || _isUav) &&
-										isNull R3F_LOG_joueur_deplace_objet && isNull (_objet_pointe getVariable ["R3F_LOG_est_transporte_par", objNull]) &&
-										_objet_pas_en_cours_de_deplacement &&
-										{
-											_objet_pointe distance _x < 20 && !(_x getVariable "R3F_LOG_CF_disabled") &&
-											_x getVariable ["R3F_LOG_CF_side_addAction", side group _joueur] == side group _joueur
-										} count R3F_LOG_CF_liste_usines != 0;
 									
 									// Condition d�verrouiller objet
 									R3F_LOG_action_deverrouiller_valide = _objet_pas_en_cours_de_deplacement && !_objet_deverrouille && !(_objet_pointe getVariable "R3F_LOG_disabled");
@@ -4156,11 +4099,6 @@ script_initCOOLJIPgustav = [] spawn
 									R3F_LOG_action_charger_deplace_valide = false;
 									R3F_LOG_action_charger_selection_valide = false;
 									R3F_LOG_action_contenu_vehicule_valide = false;
-									R3F_LOG_action_ouvrir_usine_valide = false;
-									R3F_LOG_action_selectionner_objet_revendre_usine_valide = false;
-									R3F_LOG_action_revendre_usine_direct_valide = false;
-									R3F_LOG_action_revendre_usine_deplace_valide = false;
-									R3F_LOG_action_revendre_usine_selection_valide = false;
 									R3F_LOG_action_deverrouiller_valide = false;
 								};
 								
@@ -4274,8 +4212,7 @@ script_initCOOLJIPgustav = [] spawn
 											{
 												if (!isNull _x &&
 													{
-														!isNil {_x getVariable "R3F_LOG_fonctionnalites"} ||
-														(_x getVariable ["R3F_LOG_CF_depuis_usine", false])
+														!isNil {_x getVariable "R3F_LOG_fonctionnalites"}
 													}
 												) then
 												{
@@ -4363,11 +4300,6 @@ script_initCOOLJIPgustav = [] spawn
 												};
 											};
 											
-											// Si l'objet a �t� cr�� depuis une usine, on ajoute la possibilit� de revendre � l'usine, quelque soit ses fonctionnalit�s logistiques
-											if (_objet getVariable ["R3F_LOG_CF_depuis_usine", false]) then
-											{
-												_objet addAction [("<t color=""#ff9600"">" + format [STR_R3F_LOG_action_revendre_usine_direct, getText (configFile >> "CfgVehicles" >> (typeOf _objet) >> "displayName")] + "</t>"), {_this call R3F_LOG_FNCT_usine_revendre_direct}, nil, 5, false, true, "", "!R3F_LOG_mutex_local_verrou && R3F_LOG_objet_addAction == _target && R3F_LOG_action_revendre_usine_direct_valide"];
-											};
 											
 											sleep (0.07 max (3 / _count_liste_objets));
 										};
