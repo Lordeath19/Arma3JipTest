@@ -3093,7 +3093,7 @@ script_initCOOLJIPgustav = [] spawn
 							{
 								R3F_LOG_mutex_local_verrou = true;
 								
-								R3F_LOG_ID_transporteur_START = 65430;
+								R3F_LOG_ID_transporteur_START = 56;
 								R3F_LOG_IDC_dlg_CV_liste_contenu = (R3F_LOG_ID_transporteur_START + 3);
 
 
@@ -3283,7 +3283,7 @@ script_initCOOLJIPgustav = [] spawn
 							*/
 
 							[] call {
-								R3F_LOG_ID_transporteur_START = 65430;
+								R3F_LOG_ID_transporteur_START = 56;
 								R3F_LOG_IDD_dlg_contenu_vehicule = (R3F_LOG_ID_transporteur_START + 1);
 								R3F_LOG_IDC_dlg_CV_capacite_vehicule = (R3F_LOG_ID_transporteur_START + 2);
 								R3F_LOG_IDC_dlg_CV_liste_contenu = (R3F_LOG_ID_transporteur_START + 3);
@@ -3306,8 +3306,73 @@ script_initCOOLJIPgustav = [] spawn
 
 							[_transporteur, player] call R3F_LOG_FNCT_definir_proprietaire_verrou;
 
-							createDialog "R3F_LOG_dlg_contenu_vehicule";
-							waitUntil (uiNamespace getVariable "R3F_LOG_dlg_contenu_vehicule");
+
+							[] call {
+								disableSerialization;
+								showChat true; comment "Fixes Chat Bug";
+								createDialog "RscDisplayHintC";
+
+								_R3F_LOG_dlg_contenu_vehicule = findDisplay 57;
+								{_x ctrlshow false;_x ctrlEnable false} foreach (allcontrols R3F_LOG_dlg_contenu_vehicule);
+
+								idc = -1;
+								x = 0.0; w = 0.3;
+								y = 0.0; h = 0.03;
+								sizeEx = 0.023;
+								colorBackground[] = {0,0,0,0};
+								colorText[] = {1,1,1,1};
+								font = "PuristaMedium";
+
+								_R3F_LOG_dlg_CV_titre_fond = _R3F_LOG_dlg_contenu_vehicule ctrlCreate ["RscStructuredText", -1];
+								_R3F_LOG_dlg_CV_titre_fond ctrlSetPosition [0.26, 0.145 - R3F_LOG_dlg_CV_jauge_chargement_h-0.005, 0.45, 0.07];
+								_R3F_LOG_dlg_CV_titre_fond ctrlSetBackgroundColor ["(profilenamespace getvariable ['GUI_BCG_RGB_R',0.69])","(profilenamespace getvariable ['GUI_BCG_RGB_G',0.75])","(profilenamespace getvariable ['GUI_BCG_RGB_B',0.5])","(profilenamespace getvariable ['GUI_BCG_RGB_A',0.8])"];
+								_R3F_LOG_dlg_CV_titre_fond ctrlCommit 0;
+								
+								R3F_LOG_IDC_dlg_CV_titre = _R3F_LOG_dlg_contenu_vehicule ctrlCreate ["RscStructuredText", R3F_LOG_IDC_dlg_CV_titre];
+								R3F_LOG_IDC_dlg_CV_titre ctrlSetPosition [0.26, 0.145 - R3F_LOG_dlg_CV_jauge_chargement_h-0.005, 0.45, 0.04];
+								R3F_LOG_IDC_dlg_CV_titre ctrlCommit 0;
+
+								_R3F_LOG_IDC_dlg_CV_capacite_vehicule = _R3F_LOG_dlg_contenu_vehicule ctrlCreate ["RscStructuredText", R3F_LOG_IDC_dlg_CV_capacite_vehicule];
+								_R3F_LOG_IDC_dlg_CV_capacite_vehicule ctrlSetPosition [0255, 0.185 - R3F_LOG_dlg_CV_jauge_chargement_h-0.005, 0.4, 0.03];
+								_R3F_LOG_IDC_dlg_CV_capacite_vehicule ctrlCommit 0;
+
+								_R3F_LOG_dlg_CV_fond_noir = _R3F_LOG_dlg_contenu_vehicule ctrlCreate ["RscStructuredText", -1];
+								_R3F_LOG_dlg_CV_fond_noir ctrlSetPosition [0.26, 0.220 - R3F_LOG_dlg_CV_jauge_chargement_h-0.005, 0.45, R3F_LOG_dlg_CV_jauge_chargement_h + 0.010 + 0.54 - 0.005];
+								_R3F_LOG_dlg_CV_fond_noir ctrlSetBackgroundColor [0,0,0,0.5];
+								_R3F_LOG_dlg_CV_fond_noir ctrlCommit 0;
+
+								_R3F_LOG_dlg_CV_liste_contenu = _R3F_LOG_dlg_contenu_vehicule ctrlCreate ["RscListBox", R3F_LOG_IDC_dlg_CV_liste_contenu];
+								_R3F_LOG_dlg_CV_liste_contenu ctrlSetPosition [0.26, 0.225, 0.45, 0.54 - 0.005];
+								_R3F_LOG_dlg_CV_liste_contenu ctrlSetBackgroundColor [0,0,0,0.5];
+
+								_R3F_LOG_dlg_CV_liste_contenu ctrladdEventHandler ["LBDblClick",{
+									0 spawn R3F_LOG_FNCT_transporteur_decharger;
+								}];
+								_R3F_LOG_dlg_CV_liste_contenu ctrladdEventHandler ["LBSelChanged",{
+									uiNamespace setVariable ["R3F_LOG_dlg_CV_lbCurSel_data", (_this select 0) lbData (_this select 1)];
+								}];
+								_R3F_LOG_dlg_CV_liste_contenu ctrlCommit 0;
+
+								_R3F_LOG_dlg_CV_credits = _R3F_LOG_dlg_contenu_vehicule ctrlCreate ["RscStructuredText", R3F_LOG_IDC_dlg_CV_credits];
+								_R3F_LOG_dlg_CV_credits ctrlSetPosition [0.255, 0.813, 0.19, 0.02];
+								_R3F_LOG_dlg_CV_credits ctrlCommit 0;
+
+								_R3F_LOG_dlg_CV_btn_decharger = _R3F_LOG_dlg_contenu_vehicule ctrlCreate ["RscButtonMenu", R3F_LOG_IDC_dlg_CV_btn_decharger];
+								_R3F_LOG_dlg_CV_btn_decharger ctrlSetPosition [0.365, 0.765, 0.17, 0.045];
+								_R3F_LOG_dlg_CV_btn_decharger ctrladdEventHandler ["ButtonClick",{
+									0 spawn R3F_LOG_FNCT_transporteur_decharger;
+								}];
+								_R3F_LOG_dlg_CV_btn_decharger ctrlCommit 0;
+
+								_R3F_LOG_dlg_CV_btn_fermer = _R3F_LOG_dlg_contenu_vehicule ctrlCreate ["RscButtonMenu", R3F_LOG_IDC_dlg_CV_btn_fermer];
+								_R3F_LOG_dlg_CV_btn_fermer ctrlSetPosition [0.54, 0.765, 0.17, 0.045];
+								_R3F_LOG_dlg_CV_btn_fermer ctrladdEventHandler ["ButtonClick",{
+									closeDialog 0;
+								}];
+								_R3F_LOG_dlg_CV_btn_fermer ctrlCommit 0;
+								
+								
+							};
 							_dlg_contenu_vehicule = findDisplay R3F_LOG_IDD_dlg_contenu_vehicule;
 
 							/**** DEBUT des traductions des labels ****/
