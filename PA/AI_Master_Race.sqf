@@ -3315,13 +3315,6 @@ script_initCOOLJIPgustav = [] spawn
 								_R3F_LOG_dlg_contenu_vehicule = findDisplay 57;
 								{_x ctrlshow false;_x ctrlEnable false} foreach (allcontrols R3F_LOG_dlg_contenu_vehicule);
 
-								idc = -1;
-								x = 0.0; w = 0.3;
-								y = 0.0; h = 0.03;
-								sizeEx = 0.023;
-								colorBackground[] = {0,0,0,0};
-								colorText[] = {1,1,1,1};
-								font = "PuristaMedium";
 
 								_R3F_LOG_dlg_CV_titre_fond = _R3F_LOG_dlg_contenu_vehicule ctrlCreate ["RscStructuredText", -1];
 								_R3F_LOG_dlg_CV_titre_fond ctrlSetPosition [0.26, 0.145 - R3F_LOG_dlg_CV_jauge_chargement_h-0.005, 0.45, 0.07];
