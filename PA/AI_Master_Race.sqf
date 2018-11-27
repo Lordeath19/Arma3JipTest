@@ -3093,7 +3093,10 @@ script_initCOOLJIPgustav = [] spawn
 							{
 								R3F_LOG_mutex_local_verrou = true;
 								
-								#include "dlg_constantes.h"
+								R3F_LOG_ID_transporteur_START = 65430;
+								R3F_LOG_IDC_dlg_CV_liste_contenu = (R3F_LOG_ID_transporteur_START + 3);
+
+
 								private ["_transporteur", "_objets_charges", "_type_objet_a_decharger", "_objet_a_decharger", "_action_confirmee", "_est_deplacable"];
 								
 								_transporteur = uiNamespace getVariable "R3F_LOG_dlg_CV_transporteur";
@@ -3279,7 +3282,17 @@ script_initCOOLJIPgustav = [] spawn
 							* along with this program.  If not, see <http://www.gnu.org/licenses/>.
 							*/
 
-							#include "dlg_constantes.h"
+							[] call {
+								R3F_LOG_ID_transporteur_START = 65430;
+								R3F_LOG_IDD_dlg_contenu_vehicule = (R3F_LOG_ID_transporteur_START + 1);
+								R3F_LOG_IDC_dlg_CV_capacite_vehicule = (R3F_LOG_ID_transporteur_START + 2);
+								R3F_LOG_IDC_dlg_CV_liste_contenu = (R3F_LOG_ID_transporteur_START + 3);
+								R3F_LOG_IDC_dlg_CV_btn_decharger = (R3F_LOG_ID_transporteur_START + 4);
+								R3F_LOG_IDC_dlg_CV_titre = (R3F_LOG_ID_transporteur_START + 10);
+								R3F_LOG_IDC_dlg_CV_credits = (R3F_LOG_ID_transporteur_START + 11);
+								R3F_LOG_IDC_dlg_CV_btn_fermer = (R3F_LOG_ID_transporteur_START + 12);
+								R3F_LOG_IDC_dlg_CV_jauge_chargement = (R3F_LOG_ID_transporteur_START + 13);
+							};
 
 							disableSerialization; // A cause des displayCtrl
 
