@@ -36,14 +36,14 @@ else
 	{
 		if !(_objet getVariable "R3F_LOG_disabled") then
 		{
-			if (isNull (_objet getVariable "R3F_LOG_est_transporte_par") && (isNull (_objet getVariable "R3F_LOG_est_deplace_par") || (!alive (_objet getVariable "R3F_LOG_est_deplace_par")) || (!isPlayer (_objet getVariable "R3F_LOG_est_deplace_par")))) then
+			if ((isNull (_objet getVariable "R3F_LOG_est_deplace_par") || (!alive (_objet getVariable "R3F_LOG_est_deplace_par")) || (!isPlayer (_objet getVariable "R3F_LOG_est_deplace_par")))) then
 			{
 				// Finalement on autorise l'héliport d'un véhicule avec du personnel à bord
 				//if (count crew _objet == 0 || getNumber (configFile >> "CfgVehicles" >> (typeOf _objet) >> "isUav") == 1) then
 				//{
 					// Ne pas héliporter quelque chose qui remorque autre chose
-					if (isNull (_objet getVariable ["R3F_LOG_remorque", objNull])) then
-					{
+					//if (isNull (_objet getVariable ["R3F_LOG_remorque", objNull])) then
+					//{
 						private ["_duree", "_ctrl_titre", "_ctrl_fond", "_ctrl_jauge", "_time_debut", "_attente_valide", "_pas_de_hook"];
 						
 						_heliporteur setVariable ["R3F_LOG_heliporte", _objet, true];
@@ -93,11 +93,11 @@ else
 							};
 						};
 
-					}
-					else
-					{
-						systemChat format [STR_R3F_LOG_objet_remorque_en_cours, getText (configFile >> "CfgVehicles" >> (typeOf _objet) >> "displayName")];
-					};
+					//}
+					//else
+					//{
+					//	systemChat format [STR_R3F_LOG_objet_remorque_en_cours, getText (configFile >> "CfgVehicles" >> (typeOf _objet) >> "displayName")];
+					//};
 				//}
 				//else
 				//{
