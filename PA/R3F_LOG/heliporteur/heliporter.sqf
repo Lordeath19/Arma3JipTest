@@ -1,7 +1,7 @@
 /**
- * Héliporte un objet avec un héliporteur
+ * HÃ©liporte un objet avec un hÃ©liporteur
  * 
- * @param 0 l'héliporteur
+ * @param 0 l'hÃ©liporteur
  * 
  * Copyright (C) 2014 Team ~R3F~
  * 
@@ -22,7 +22,7 @@ else
 	
 	_heliporteur = _this select 0;
 	
-	// Recherche de l'objet à héliporter
+	// Recherche de l'objet Ã  hÃ©liporter
 	_objet = objNull;
 	{
 		if (
@@ -38,10 +38,10 @@ else
 		{
 			if (isNull (_objet getVariable "R3F_LOG_est_transporte_par") && (isNull (_objet getVariable "R3F_LOG_est_deplace_par") || (!alive (_objet getVariable "R3F_LOG_est_deplace_par")) || (!isPlayer (_objet getVariable "R3F_LOG_est_deplace_par")))) then
 			{
-				// Finalement on autorise l'héliport d'un véhicule avec du personnel à bord
+				// Finalement on autorise l'hÃ©liport d'un vÃ©hicule avec du personnel Ã  bord
 				//if (count crew _objet == 0 || getNumber (configFile >> "CfgVehicles" >> (typeOf _objet) >> "isUav") == 1) then
 				//{
-					// Ne pas héliporter quelque chose qui remorque autre chose
+					// Ne pas hÃ©liporter quelque chose qui remorque autre chose
 					if (isNull (_objet getVariable ["R3F_LOG_remorque", objNull])) then
 					{
 						private ["_duree", "_ctrl_titre", "_ctrl_fond", "_ctrl_jauge", "_time_debut", "_attente_valide", "_pas_de_hook"];
@@ -49,14 +49,14 @@ else
 						_heliporteur setVariable ["R3F_LOG_heliporte", _objet, true];
 						_objet setVariable ["R3F_LOG_est_transporte_par", _heliporteur, true];
 						
-						// Attacher sous l'héliporteur au ras du sol
+						// Attacher sous l'hÃ©liporteur au ras du sol
 						_objet attachTo [_heliporteur, [
 							0,
 							0,
 							(boundingBoxReal _heliporteur select 0 select 2) - (boundingBoxReal _objet select 0 select 2) - (getPos _heliporteur select 2) + 0.5
 						]];
 						
-						// Ré-aligner dans le sens de la longueur si besoin
+						// RÃ©-aligner dans le sens de la longueur si besoin
 						if (((boundingBoxReal _objet select 1 select 0) - (boundingBoxReal _objet select 0 select 0)) >
 							((boundingBoxReal _objet select 1 select 1) - (boundingBoxReal _objet select 0 select 1))) then
 						{
@@ -65,7 +65,7 @@ else
 						
 						systemChat format [STR_R3F_LOG_action_heliporter_fait, getText (configFile >> "CfgVehicles" >> (typeOf _objet) >> "displayName")];
 						
-						// Boucle de contrôle pendant l'héliportage
+						// Boucle de contrÃ´le pendant l'hÃ©liportage
 						[_heliporteur, _objet] spawn
 						{
 							private ["_heliporteur", "_objet", "_a_ete_souleve"];
@@ -73,23 +73,18 @@ else
 							_heliporteur = _this select 0;
 							_objet = _this select 1;
 							
-							_a_ete_souleve = false;
 							
 							while {_heliporteur getVariable "R3F_LOG_heliporte" == _objet} do
 							{
-								// Mémoriser si l'objet a déjà été soulevé (cables tendus)
-								if (!_a_ete_souleve && getPos _objet select 2 > 3) then
-								{
-									_a_ete_souleve = true;
-								};
 								
-								// Si l'hélico se fait détruire ou si l'objet héliporté entre en contact avec le sol, on largue l'objet
-								if (!alive _heliporteur || (_a_ete_souleve && getPos _objet select 2 < 0)) exitWith
+								
+								// Si l'hÃ©lico se fait dÃ©truire ou si l'objet hÃ©liportÃ© entre en contact avec le sol, on largue l'objet
+								if (!alive _heliporteur) exitWith
 								{
 									_heliporteur setVariable ["R3F_LOG_heliporte", objNull, true];
 									_objet setVariable ["R3F_LOG_est_transporte_par", objNull, true];
 									
-									// Détacher l'objet et lui appliquer la vitesse de l'héliporteur (inertie)
+									// DÃ©tacher l'objet et lui appliquer la vitesse de l'hÃ©liporteur (inertie)
 									[_objet, "detachSetVelocity", velocity _heliporteur] call R3F_LOG_FNCT_exec_commande_MP;
 									
 									systemChat format [STR_R3F_LOG_action_heliport_larguer_fait, getText (configFile >> "CfgVehicles" >> (typeOf _objet) >> "displayName")];
