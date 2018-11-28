@@ -36,22 +36,6 @@ class CfgFunctions {
             };
         };
     };
-	/*
-	class GOM
-	{
-		class init
-		{
-			class aircraftLoadoutInit{file = "\PA\GOM\functions\GOM_fnc_aircraftLoadoutInit.sqf";preInit = 1;};
-		};
-	};
-	*/
-	class R3F_LOG
-	{
-		class init
-		{
-			class R3F_LOGInitFile { file = "\PA\R3F_LOG\init.sqf";preInit = 1;};
-		};
-	};
 
 };
 
@@ -786,9 +770,3 @@ class CfgInventoryGlobalVariable {
 	maxSoldierLoad = 9999000;
 };
 
-
-//#include "GOM\dialogs\GOM_dialog_parents.hpp"
-//#include "GOM\dialogs\GOM_dialog_controls.hpp"
-
-
-#include "R3F_LOG\desc_include.h"
