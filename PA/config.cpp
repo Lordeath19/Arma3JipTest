@@ -632,11 +632,25 @@ class CfgVehicles {
 					};
 					class Narrow: Wide
 					{
+						initFov = 0.030;
+						minFov = 0.030;
+						maxFov = 0.030;
+						gunnerOpticsModel = "\A3\Weapons_F_Beta\Reticle\Heli_Attack_01_Optics_Gunner_narrow_F.p3d";
+						opticsDisplayName = "N";
+					};
+					class Tiny : Narrow
+					{
 						initFov = 0.01;
 						minFov = 0.01;
 						maxFov = 0.01;
-						gunnerOpticsModel = "\A3\Weapons_F_Beta\Reticle\Heli_Attack_01_Optics_Gunner_narrow_F.p3d";
-						opticsDisplayName = "N";
+						opticsDisplayName = "T";
+					};
+					class Extreme : Tiny
+					{
+						initFov = 0.004;
+						minFov = 0.004;
+						maxFov = 0.004;
+						opticsDisplayName = "E";
 					};
 				};
 				class OpticsOut
