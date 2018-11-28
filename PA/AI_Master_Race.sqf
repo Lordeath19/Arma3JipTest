@@ -993,66 +993,21 @@ script_initCOOLJIPgustav = [] spawn
 						_tab_classe_heritage pushBack (toLower configName _config);
 					};
 
-					// Calcul des fonctionnalités
 
 					_can_be_depl_heli_remorq_transp = true;
-					{
-						if (_x in R3F_LOG_objets_depl_heli_remorq_transp) exitWith {_can_be_depl_heli_remorq_transp = true;};
-					} forEach _tab_classe_heritage;
-
 					_can_be_moved_by_player = true;
 					_can_be_lifted = true;
 					_can_be_towed = true;
 					_can_be_transported_cargo = true;
 					_can_be_transported_cargo_cout = 0;
+	
+					_can_lift = true;
 
-					if (_can_be_depl_heli_remorq_transp) then
-					{
-						{
-							if (true || _x in R3F_LOG_CFG_can_be_moved_by_player) exitWith {_can_be_moved_by_player = true;};
-						} forEach _tab_classe_heritage;
-						
-						{
-							if (true || _x in R3F_LOG_CFG_can_be_lifted) exitWith {_can_be_lifted = true;};
-						} forEach _tab_classe_heritage;
-						
-						{
-							if (true || _x in R3F_LOG_CFG_can_be_towed) exitWith {_can_be_towed = true;};
-						} forEach _tab_classe_heritage;
-						
-						{
-							_idx = R3F_LOG_classes_objets_transportables find _x;
-							if (_idx != -1) exitWith
-							{
-								_can_be_transported_cargo = true;
-								_can_be_transported_cargo_cout = 0;
-							};
-						} forEach _tab_classe_heritage;
-					};
-
-					_can_lift = false;
-					{
-						if (true || _x in R3F_LOG_CFG_can_lift) exitWith {_can_lift = true;};
-					} forEach _tab_classe_heritage;
-
-					_can_tow = false;
-					{
-						if (true || _x in R3F_LOG_CFG_can_tow) exitWith {_can_tow = true;};
-					} forEach _tab_classe_heritage;
+					_can_tow = true;
 
 					_can_transport_cargo = true;
 					_can_transport_cargo_cout = 9000000;
-					{
-						_idx = R3F_LOG_classes_transporteurs find _x;
-						if (_idx != -1) exitWith
-						{
-							_can_transport_cargo = true;
-							_can_transport_cargo_cout = 9000000;
-						};
-					} forEach _tab_classe_heritage;
-
 					// Cargo de capacité nulle
-					if (_can_transport_cargo_cout <= 0) then {_can_transport_cargo = false;};
 
 					// Retour des fonctionnalités
 					[
@@ -7333,6 +7288,7 @@ script_initCOOLJIPgustav = [] spawn
 						GOM_list_allPylonMags = [GOM_list_allPylonMags, [], {getText (configfile >> "CfgMagazines" >> _x >> "displayName")}, "ASCEND"] call BIS_fnc_sortBy;
 						GOM_list_validDispNames = GOM_list_allPylonMags apply {getText (configfile >> "CfgMagazines" >> _x >> "displayName")};
 						DCON_Garage_Loadout_Controls = [];
+						[] spawn R3F_fnc_init;
 						_load = [] spawn {
 							if(count (missionNamespace getVariable ["allWeapons",[]]) == 0) then {
 								disableSerialization;
