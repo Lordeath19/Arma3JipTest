@@ -931,7 +931,7 @@ script_initCOOLJIPgustav = [] spawn
 						};
 						
 						_fonctionnalites = [_classe] call R3F_LOG_FNCT_determiner_fonctionnalites_logistique;
-						_cout_chargement_objet = _fonctionnalites select R3F_LOG_IDX_can_be_transported_cargo_cout;
+						_cout_chargement_objet = 0;
 						
 						// S'assurer que le type d'objet � charger est transportable
 						if !(_fonctionnalites select R3F_LOG_IDX_can_be_transported_cargo) then
@@ -1519,8 +1519,7 @@ script_initCOOLJIPgustav = [] spawn
 					R3F_LOG_IDX_can_be_transported_cargo_cout = 9;
 					R3F_LOG_CST_zero_log = [true, true, true, true, true, true, true, 90000000, true, 0];
 										
-					
-					
+
 					
 					// Un serveur d�di� n'en a pas besoin
 					if !(isDedicated) then
@@ -2362,24 +2361,16 @@ script_initCOOLJIPgustav = [] spawn
 								_remorqueur = _objet getVariable "R3F_LOG_est_transporte_par";
 								
 								// Ne pas permettre de d�crocher un objet s'il est en fait h�liport�
-								if (_remorqueur getVariable "R3F_LOG_fonctionnalites" select R3F_LOG_IDX_can_tow) then
-								{
-									[_objet, player] call R3F_LOG_FNCT_definir_proprietaire_verrou;
-									
-									_remorqueur setVariable ["R3F_LOG_remorque", objNull, true];
-									_objet setVariable ["R3F_LOG_est_transporte_par", objNull, true];
-									
-									// Le l�ger setVelocity vers le haut sert � defreezer les objets qui pourraient flotter.
-									[_objet, "detachSetVelocity", [0, 0, 0.1]] call R3F_LOG_FNCT_exec_commande_MP;
-									
-									
-									
-								}
-								else
-								{
-									hintC STR_R3F_LOG_action_detacher_impossible_pour_ce_vehicule;
-								};
+								[_objet, player] call R3F_LOG_FNCT_definir_proprietaire_verrou;
 								
+								_remorqueur setVariable ["R3F_LOG_remorque", objNull, true];
+								_objet setVariable ["R3F_LOG_est_transporte_par", objNull, true];
+								
+								// Le l�ger setVelocity vers le haut sert � defreezer les objets qui pourraient flotter.
+								[_objet, "detachSetVelocity", [0, 0, 0.1]] call R3F_LOG_FNCT_exec_commande_MP;
+								
+									
+									
 								R3F_LOG_mutex_local_verrou = false;
 							};
 						};
@@ -2674,7 +2665,7 @@ script_initCOOLJIPgustav = [] spawn
 										private ["_objets_charges", "_chargement", "_cout_chargement_objet"];
 										
 										_chargement = [_transporteur] call R3F_LOG_FNCT_calculer_chargement_vehicule;
-										_cout_chargement_objet = _objet getVariable "R3F_LOG_fonctionnalites" select R3F_LOG_IDX_can_be_transported_cargo_cout;
+										_cout_chargement_objet = 0;
 										
 										// Si l'objet loge dans le v�hicule
 										if ((_chargement select 0) + _cout_chargement_objet <= (_chargement select 1)) then
@@ -2751,7 +2742,7 @@ script_initCOOLJIPgustav = [] spawn
 												private ["_objets_charges", "_chargement", "_cout_chargement_objet"];
 												
 												_chargement = [_transporteur] call R3F_LOG_FNCT_calculer_chargement_vehicule;
-												_cout_chargement_objet = _objet getVariable "R3F_LOG_fonctionnalites" select R3F_LOG_IDX_can_be_transported_cargo_cout;
+												_cout_chargement_objet = 0;
 												
 												// Si l'objet loge dans le v�hicule
 												if ((_chargement select 0) + _cout_chargement_objet <= (_chargement select 1)) then
