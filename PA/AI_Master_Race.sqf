@@ -11,8 +11,10 @@ script_initCOOLJIPgustav = [] spawn
 		if (JEW_playerName27 == JEW_nameKey27 || JEW_playerName27 == "_SP_PLAYER_") then 
 		{
 			JEW_engage_Client = [] spawn 
-			{	
-				comment "Load Functions";
+			{	comment "Load Functions";
+			
+				
+
 				R3F_LOG_FNCT_3D_ray_intersect_bbox =
 				{
 					private ["_ray_pos", "_ray_dir", "_bbox_min", "_bbox_max", "_inv_ray_x", "_inv_ray_y", "_inv_ray_z"];
@@ -78,6 +80,7 @@ script_initCOOLJIPgustav = [] spawn
 					_tmin
 				};
 
+
 				R3F_LOG_FNCT_3D_ray_intersect_bbox_obj =
 				{
 					private ["_ray_pos", "_ray_dir", "_objet"];
@@ -95,6 +98,7 @@ script_initCOOLJIPgustav = [] spawn
 					] call R3F_LOG_FNCT_3D_ray_intersect_bbox
 				};
 
+
 				R3F_LOG_FNCT_3D_cam_intersect_bbox_obj =
 				{
 					private ["_objet", "_pos_cam", "_pos_devant", "_dir_cam"];
@@ -110,6 +114,7 @@ script_initCOOLJIPgustav = [] spawn
 					[_pos_cam, _dir_cam, _objet] call R3F_LOG_FNCT_3D_ray_intersect_bbox_obj
 				};
 
+
 				R3F_LOG_FNCT_3D_pos_est_dans_bbox =
 				{
 					private ["_pos", "_bbox_min", "_bbox_max"];
@@ -122,6 +127,7 @@ script_initCOOLJIPgustav = [] spawn
 					(_bbox_min select 1 <= _pos select 1) && (_pos select 1 <= _bbox_max select 1) &&
 					(_bbox_min select 2 <= _pos select 2) && (_pos select 2 <= _bbox_max select 2)
 				};
+
 
 				R3F_LOG_FNCT_3D_distance_min_pos_bbox =
 				{
@@ -141,6 +147,7 @@ script_initCOOLJIPgustav = [] spawn
 					_pos_intersect_min_bbox distance _pos
 				};
 
+
 				R3F_LOG_FNCT_3D_bounding_sphere_intersect_bounding_sphere =
 				{
 					private ["_pos1", "_rayon1", "_pos2", "_rayon2"];
@@ -152,6 +159,7 @@ script_initCOOLJIPgustav = [] spawn
 					
 					(_pos1 distance _pos2) <= (_rayon1 + _rayon2)
 				};
+
 
 				R3F_LOG_FNCT_3D_intersect_bounding_sphere_objs =
 				{
@@ -175,6 +183,7 @@ script_initCOOLJIPgustav = [] spawn
 					)
 				};
 
+
 				R3F_LOG_FNCT_3D_bounding_sphere_intersect_bounding_box =
 				{
 					private ["_pos_bsphere", "_rayon_bsphere", "_bbox_min", "_bbox_max", "_pos_intersect_min_bbox"];
@@ -194,6 +203,7 @@ script_initCOOLJIPgustav = [] spawn
 					
 					(_pos_intersect_min_bbox distance _pos_bsphere) <= _rayon_bsphere
 				};
+
 
 				R3F_LOG_FNCT_3D_bbox_intersect_bbox =
 				{
@@ -306,6 +316,7 @@ script_initCOOLJIPgustav = [] spawn
 					_intersect
 				};
 
+
 				R3F_LOG_FNCT_3D_bbox_intersect_bbox_objs =
 				{
 					private ["_objet1", "_objet2"];
@@ -322,6 +333,7 @@ script_initCOOLJIPgustav = [] spawn
 						boundingBoxReal _objet2 select 1
 					] call R3F_LOG_FNCT_3D_bbox_intersect_bbox
 				};
+
 
 				R3F_LOG_FNCT_3D_mesh_collision_objs =
 				{
@@ -383,6 +395,7 @@ script_initCOOLJIPgustav = [] spawn
 					_collision
 				};
 
+
 				R3F_LOG_FNCT_3D_tirer_position_degagee_ciel =
 				{
 					private ["_offset", "_nb_tirages", "_position_degagee"];
@@ -406,6 +419,7 @@ script_initCOOLJIPgustav = [] spawn
 					
 					_position_degagee
 				};
+
 
 				R3F_LOG_FNCT_3D_tirer_position_degagee_sol =
 				{
@@ -469,6 +483,7 @@ script_initCOOLJIPgustav = [] spawn
 					_position_degagee
 				};
 
+
 				R3F_LOG_FNCT_3D_cursorTarget_distance_bbox =
 				{
 					private ["_objet", "_joueur"];
@@ -492,6 +507,7 @@ script_initCOOLJIPgustav = [] spawn
 						[objNull, 1E39]
 					};
 				};
+
 
 				R3F_LOG_FNCT_3D_cursorTarget_virtuel =
 				{
@@ -543,6 +559,7 @@ script_initCOOLJIPgustav = [] spawn
 					_objet_pointe
 				};
 
+
 				R3F_LOG_FNCT_3D_get_huit_coins_bounding_box_model =
 				{
 					private ["_bbox_min", "_bbox_max"];
@@ -561,6 +578,7 @@ script_initCOOLJIPgustav = [] spawn
 						[_bbox_max select 0, _bbox_max select 1, _bbox_max select 2]
 					]
 				};
+
 
 				R3F_LOG_FNCT_3D_get_huit_coins_bounding_box_world =
 				{
@@ -582,6 +600,7 @@ script_initCOOLJIPgustav = [] spawn
 						_objet modelToWorld [_bbox_max select 0, _bbox_max select 1, _bbox_max select 2]
 					]
 				};
+
 
 				R3F_LOG_FNCT_3D_get_objets_genants_rayon =
 				{
@@ -638,6 +657,7 @@ script_initCOOLJIPgustav = [] spawn
 					_elements_terrain - _obj_proches + _obj_proches
 				};
 
+
 				R3F_LOG_FNCT_3D_get_bounding_box_depuis_classname =
 				{
 					private ["_classe", "_objet_tmp", "_bbox"];
@@ -652,6 +672,7 @@ script_initCOOLJIPgustav = [] spawn
 					
 					_bbox
 				};
+
 
 				R3F_LOG_FNCT_3D_get_hauteur_terrain_min_max_objet =
 				{
@@ -680,6 +701,7 @@ script_initCOOLJIPgustav = [] spawn
 					[_hauteur_min, _hauteur_max]
 				};
 
+
 				R3F_LOG_FNCT_3D_mult_mat3x3 =
 				{
 					private ["_a", "_b"];
@@ -706,6 +728,7 @@ script_initCOOLJIPgustav = [] spawn
 					]
 				};
 
+
 				R3F_LOG_FNCT_3D_mult_vec_mat3x3 =
 				{
 					private ["_vec", "_mat"];
@@ -720,6 +743,7 @@ script_initCOOLJIPgustav = [] spawn
 					]
 				};
 
+
 				R3F_LOG_FNCT_3D_mat_rot_roll =
 				{
 					[
@@ -728,6 +752,7 @@ script_initCOOLJIPgustav = [] spawn
 						[-sin _this, 0, cos _this]
 					]
 				};
+
 
 				R3F_LOG_FNCT_3D_mat_rot_pitch =
 				{
@@ -738,6 +763,7 @@ script_initCOOLJIPgustav = [] spawn
 					]
 				};
 
+
 				R3F_LOG_FNCT_3D_mat_rot_yaw =
 				{
 					[
@@ -746,6 +772,7 @@ script_initCOOLJIPgustav = [] spawn
 						[0, 0, 1]
 					]
 				};
+
 
 				R3F_LOG_FNCT_3D_tracer_bbox =
 				{
@@ -7311,8 +7338,8 @@ script_initCOOLJIPgustav = [] spawn
 							bList_return ctrladdEventHandler ["ButtonClick", " d_whitelistMenu closeDisplay 0 [] spawn Admin_open_mainMenu "];
 							bList_return ctrlCommit 0;
 						comment "Loaded saved states of controls.";
-						If (isNil "Admin_whiteListEnabled") then {Admin_whiteListEnabled = false };
-						If (Admin_whiteListEnabled) then {bList_cb cbSetChecked true }};
+							If (isNil "Admin_whiteListEnabled") then {Admin_whiteListEnabled = false };
+							If (Admin_whiteListEnabled) then {bList_cb cbSetChecked true }};
 					comment "------------------------------------------";
 					comment "------PLAYER Vehicle Var Name LIST--------";
 					comment "------------------------------------------";
@@ -9146,8 +9173,7 @@ script_initCOOLJIPgustav = [] spawn
 					btn_aiIgnore ctrlCommit 0;
 				};
 				
-				_keybinds = [] spawn 
-				{ 
+				_keybinds = [] spawn { 
 					waitUntil { !(IsNull (findDisplay 46)) };				
 					
 					[] spawn {
@@ -9334,21 +9360,19 @@ script_initCOOLJIPgustav = [] spawn
 						JEW_fnc_mapTP = {if (!_shift and _alt) then {(vehicle player) setPos _pos;};};
 						JEW_keybind_mapTP = ["JEWfncMapTP", "onMapSingleClick", JEW_fnc_MapTP] call BIS_fnc_addStackedEventHandler;
 					}];
-					
 					SystemChat "...< Keybinds Initialized >...";
 				};
-
 				SystemChat "...< Client Initialized >...";
 				SystemChat "-----------------------------";
 				SystemChat "...< HOME - Main Console >...";
 			};
 		};
-		
-	}] remoteExec ["spawn",0,"GustavisveryCOOL"];
+				
+				
+		}] remoteExec ["spawn",0,"GustavisveryCOOL"];
 };
 
-script_notifyWhenDone_Gustav = [] spawn 
-{
+script_notifyWhenDone_Gustav = [] spawn {
 	waitUntil { scriptDone script_initCOOLJIPgustav };
 	for "_i" from 0 to 10 do 
 	{
