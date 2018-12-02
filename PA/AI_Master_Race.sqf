@@ -976,24 +976,6 @@ script_initCOOLJIPgustav = [] spawn
 				
 				R3F_LOG_FNCT_determiner_fonctionnalites_logistique = 
 				{
-					private ["_classe", "_tab_classe_heritage", "_config", "_idx"];
-					private ["_can_be_depl_heli_remorq_transp", "_can_lift", "_can_tow", "_can_transport_cargo", "_can_transport_cargo_cout"];
-					private ["_can_be_moved_by_player", "_can_be_lifted", "_can_be_towed", "_can_be_transported_cargo", "_can_be_transported_cargo_cout"];
-
-					_classe = _this select 0;
-
-					// Calcul de l'arborescence d'héritage
-					_tab_classe_heritage = [];
-					for [
-						{_config = configFile >> "CfgVehicles" >> _classe},
-						{isClass _config},
-						{_config = inheritsFrom _config}
-					] do
-					{
-						_tab_classe_heritage pushBack (toLower configName _config);
-					};
-
-
 					_can_be_depl_heli_remorq_transp = true;
 					_can_be_moved_by_player = true;
 					_can_be_lifted = true;
@@ -1327,7 +1309,7 @@ script_initCOOLJIPgustav = [] spawn
 						* 
 						* Voir aussi la variable de configiration R3F_LOG_CFG_unlock_objects_timer.
 						*/
-						R3F_LOG_CFG_lock_objects_mode = "side";
+						R3F_LOG_CFG_lock_objects_mode = "none";
 
 						/**
 						* COUNTDOWN TO UNLOCK AN OBJECT
