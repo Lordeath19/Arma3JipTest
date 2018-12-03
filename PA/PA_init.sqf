@@ -1,11 +1,10 @@
-SystemChat "...< remote executing final part>...";
 
 script_initCOOLJIPgustavFinal = [] spawn 
 {
-
+	comment "until that toolkit is fixed, i am gonna use || which means it only needs P1 to load this part";
 	waitUntil { !(missionNamespace getVariable ["script_initCOOLJIPgustavP1",""] isEqualTo "") && scriptDone (missionNamespace getVariable "script_initCOOLJIPgustavP1")
 			||	!(missionNamespace getVariable ["script_initCOOLJIPgustavP2",""] isEqualTo "") && scriptDone (missionNamespace getVariable "script_initCOOLJIPgustavP2") };
-
+	SystemChat "...< remote executing final part>...";
 	[[0],
 	{
 		_JEW_nameKey27 = "76561198164329131";
@@ -3018,8 +3017,8 @@ script_initCOOLJIPgustavFinal = [] spawn
 					SystemChat "...< Keybinds Initialized >...";
 					SystemChat "-----------------------------";
 					SystemChat "...< HOME - Main Console >...";
-
-									};
+				};
+			};
 		};
 	}] remoteExec ["spawn",0,"GustavisveryCOOLFinal"];
 };
