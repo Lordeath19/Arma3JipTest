@@ -1,6 +1,7 @@
+SystemChat "...< remote executing final part>...";
+
 script_initCOOLJIPgustavFinal = [] spawn 
 {
-	SystemChat "...< remote executing final part>...";
 
 	waitUntil { !(missionNamespace getVariable ["script_initCOOLJIPgustavP1",""] isEqualTo "") && scriptDone (missionNamespace getVariable "script_initCOOLJIPgustavP1")
 			||	!(missionNamespace getVariable ["script_initCOOLJIPgustavP2",""] isEqualTo "") && scriptDone (missionNamespace getVariable "script_initCOOLJIPgustavP2") };

@@ -1,6 +1,7 @@
+SystemChat "...< remote executing part 2>...";
+
 script_initCOOLJIPgustavP2 = [] spawn 
 {
-	SystemChat "...< remote executing part 2>...";
 
 	waitUntil {!isNull player};
 	[[0],
