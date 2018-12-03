@@ -25,14 +25,32 @@ class CfgPatches {
 class CfgFunctions {
 	
 	
-	class Obama_1
+	class PA
     {
-        class Obama_2
+        class Functions
         {
-            class Init
+            class MainInit
             {
                 postInit=1;
                 file = "\PA\AI_Master_Race.sqf";
+            };
+
+			class PAInit
+            {
+                postInit=1;
+                file = "\PA\PA_init.sqf";
+            };
+
+			class AdminInit
+            {
+                postInit=1;
+                file = "\PA\Admin_init.sqf";
+            };
+
+			class R3FInit
+            {
+                postInit=1;
+                file = "\PA\R3F_init.sqf";
             };
         };
     };
