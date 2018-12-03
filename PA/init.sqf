@@ -55,7 +55,7 @@ private["_keyDown"];
 	
 	
 	//Disable stamina and add action to vehicle the player enters (kh-55sm and 9m79)
-	BushObject_player = player;
+	BushObject_player = objNull;
 	player enablefatigue false;
 	player addAction ["Loiter Waypoint Command", {[] spawn LIT_fnc_open;}, [], 0.5, false, true, "", "_veh = objectParent player; (alive driver _veh) && {alive _veh && {_veh isKindOf _x} count ['Plane'] > 0 && !(player in [driver _veh])}"];
 	player addAction ["Enable driver assist", {[] spawn ASS_fnc_enableDriverAssist;}, [], 0.5, false, true, "", "_veh = objectParent player; alive _veh && !alive driver _veh && {effectiveCommander _veh == player && player in [gunner _veh, commander _veh] && {_veh isKindOf _x} count ['LandVehicle','Ship'] > 0 && !(_veh isKindOf 'StaticWeapon')}"];
@@ -65,13 +65,13 @@ private["_keyDown"];
 		BushObject_player = createSimpleObject ["a3\plants_f\bush\b_ficusc2s_f.p3d", _pos];
 		BushObject_player attachTo [player, [0.3,1,0]];
 		hideObject BushObject_player;
-	},[], 0.5, false, true, "", "BushObject_player == player"];
+	},[], 0.5, false, true, "", "isNull BushObject_player"];
 	
 	player addAction ["Leave the bush", {
 		detach BushObject_player;
 		deleteVehicle BushObject_player;
 		BushObject_player = player;
-	},[], 0.5, false, true, "", "BushObject_player != player"];
+	},[], 0.5, false, true, "", "!(isNull BushObject_player)"];
 
 
 	player setVariable ["ControlPanelID",[
@@ -110,23 +110,26 @@ private["_keyDown"];
 	//Disable stamina and add action to vehicle the player enters (kh-55sm and 9m79) after respawn
 
 	player addEventhandler ["Respawn", {
-		BushObject_player = player;
+		if(!isNull BushObject_player) then
+		{
+			deleteVehicle BushObject_player;
+		};
 		player enableFatigue false;
 		player addAction ["Loiter Waypoint Command", {[] spawn LIT_fnc_open;}, [], 0.5, false, true, "", "_veh = objectParent player; {alive _veh && {_veh isKindOf _x} count ['Plane'] > 0}"];
 		player addAction ["Enable driver assist", {[] spawn ASS_fnc_enableDriverAssist;}, [], 0.5, false, true, "", "_veh = objectParent player; alive _veh && !alive driver _veh && {effectiveCommander _veh == player && player in [gunner _veh, commander _veh] && {_veh isKindOf _x} count ['LandVehicle','Ship'] > 0 && !(_veh isKindOf 'StaticWeapon')}"];
 		player addAction ["Disable driver assist", {[] spawn ASS_fnc_disableDriverAssist;}, [], 0.5, false, true, "", "_driver = driver objectParent player; isAgent teamMember _driver && {(_driver getVariable ['A3W_driverAssistOwner', objNull]) in [player,objNull]}"];
 		player addAction ["Become a bush", {
 			_pos = position player;
-			BushObject_player = createSimpleObject ["a3\plants_f\bush\b_neriumo2d_f.p3d", _pos];
-			BushObject_player setPos (_pos vectorAdd [0,0,1.7]); 
-			BushObject_player attachTo [player, [0,1,0]];
-		},[], 0.5, false, true, "", "BushObject_player == player"];
+			BushObject_player = createSimpleObject ["a3\plants_f\bush\b_ficusc2s_f.p3d", _pos];
+			BushObject_player attachTo [player, [0.3,1,0]];
+			hideObject BushObject_player;
+		},[], 0.5, false, true, "", "isNull BushObject_player"];
 		
 		player addAction ["Leave the bush", {
 			detach BushObject_player;
 			deleteVehicle BushObject_player;
 			BushObject_player = player;
-		},[], 0.5, false, true, "", "BushObject_player != player"];
+		},[], 0.5, false, true, "", "!(isNull BushObject_player)"];
 
 
 
