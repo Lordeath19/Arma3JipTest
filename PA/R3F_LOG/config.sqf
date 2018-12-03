@@ -78,7 +78,7 @@ R3F_LOG_CFG_disabled_by_default = false;
  * 
  * Voir aussi la variable de configiration R3F_LOG_CFG_unlock_objects_timer.
  */
-R3F_LOG_CFG_lock_objects_mode = "side";
+R3F_LOG_CFG_lock_objects_mode = "none";
 
 /**
  * COUNTDOWN TO UNLOCK AN OBJECT

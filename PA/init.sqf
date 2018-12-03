@@ -110,7 +110,7 @@ private["_keyDown"];
 	//Disable stamina and add action to vehicle the player enters (kh-55sm and 9m79) after respawn
 
 	player addEventhandler ["Respawn", {
-		
+		BushObject_player = player;
 		player enableFatigue false;
 		player addAction ["Loiter Waypoint Command", {[] spawn LIT_fnc_open;}, [], 0.5, false, true, "", "_veh = objectParent player; {alive _veh && {_veh isKindOf _x} count ['Plane'] > 0}"];
 		player addAction ["Enable driver assist", {[] spawn ASS_fnc_enableDriverAssist;}, [], 0.5, false, true, "", "_veh = objectParent player; alive _veh && !alive driver _veh && {effectiveCommander _veh == player && player in [gunner _veh, commander _veh] && {_veh isKindOf _x} count ['LandVehicle','Ship'] > 0 && !(_veh isKindOf 'StaticWeapon')}"];

@@ -11,6 +11,12 @@ for "_i" from 0 to _amount-1 do
 {
 	vehicle player addMagazine _magName;
 };
+
+if(vehicle player != player && { toLower (assignedVehicleRole player select 0) == "turret"}) then
+{ 
+	(vehicle player) addWeaponTurret [_weaponName, (assignedVehicleRole player select 1)];
+
+};
 (vehicle player) addWeapon _weaponName;
 
 hint ctrlText 1400;
