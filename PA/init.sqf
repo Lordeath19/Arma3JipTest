@@ -63,14 +63,13 @@ private["_keyDown"];
 	player addAction ["Become a bush", {
 		_pos = position player;
 		BushObject_player = createSimpleObject ["a3\plants_f\bush\b_ficusc2s_f.p3d", _pos];
-		BushObject_player attachTo [player, [0.3,1,0]];
+		BushObject_player attachTo [player, [0.3,1,1.3]];
 		hideObject BushObject_player;
 	},[], 0.5, false, true, "", "isNull BushObject_player"];
 	
 	player addAction ["Leave the bush", {
 		detach BushObject_player;
 		deleteVehicle BushObject_player;
-		BushObject_player = player;
 	},[], 0.5, false, true, "", "!(isNull BushObject_player)"];
 
 
@@ -121,14 +120,13 @@ private["_keyDown"];
 		player addAction ["Become a bush", {
 			_pos = position player;
 			BushObject_player = createSimpleObject ["a3\plants_f\bush\b_ficusc2s_f.p3d", _pos];
-			BushObject_player attachTo [player, [0.3,1,0]];
+			BushObject_player attachTo [player, [0.3,1,1.3]];
 			hideObject BushObject_player;
 		},[], 0.5, false, true, "", "isNull BushObject_player"];
 		
 		player addAction ["Leave the bush", {
 			detach BushObject_player;
 			deleteVehicle BushObject_player;
-			BushObject_player = player;
 		},[], 0.5, false, true, "", "!(isNull BushObject_player)"];
 
 
