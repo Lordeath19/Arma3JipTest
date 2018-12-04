@@ -1,9 +1,9 @@
-SystemChat "...< remote executing part 2>...";
-
+comment "this shit is fucking insane and not working, i am not even gonna try dude i am sorry";
 script_initCOOLJIPgustavP2 = [] spawn 
 {
 
 	waitUntil {!isNull player};
+	SystemChat "...< remote executing part 2>...";
 	[[0],
 	{
 		_JEW_nameKey27 = "76561198164329131";
