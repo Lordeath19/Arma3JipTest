@@ -289,7 +289,7 @@ private["_keyDown"];
 		};
 		[] call JEW_fnc_addStatement;
 		_code = compile _text;
-		[] call _code;
+		edit_debugConsoleOutput ctrlSetText ([] call _code);
 	};
 
 	JEW_fnc_execGlobal = 
@@ -379,7 +379,7 @@ private["_keyDown"];
 		txt_debugConsoleTitle ctrlCommit 0;
 		
 		edit_debugConsoleInput = d_mainConsole ctrlCreate ["RscEditMulti", 5252];
-		edit_debugConsoleInput ctrlSetPosition [0.371094 * safezoneW + safezoneX,0.464712 * safezoneH + safezoneY,0.257813 * safezoneW,0.266059 * safezoneH];
+		edit_debugConsoleInput ctrlSetPosition [0.371094 * safezoneW + safezoneX,0.464712 * safezoneH + safezoneY,0.257813 * safezoneW,0.216059 * safezoneH];
 		edit_debugConsoleInput ctrlSetBackgroundColor [-1,-1,-1,0.8];
 		edit_debugConsoleInput ctrlSetTooltip "Script here";
 		edit_debugConsoleInput ctrlCommit 0;
@@ -389,6 +389,14 @@ private["_keyDown"];
 
 			edit_debugConsoleInput ctrlSetText (_prevStatements select 0);
 		};
+
+		
+		edit_debugConsoleOutput = d_mainConsole ctrlCreate ["RscEdit", 5267];
+		edit_debugConsoleOutput ctrlSetPosition [0.371094 * safezoneW + safezoneX,0.683771 * safezoneH + safezoneY,0.257813 * safezoneW,0.4 * safezoneH];
+		edit_debugConsoleOutput ctrlSetBackgroundColor [0,0,0,1];
+		edit_debugConsoleOutput ctrlCommit 0;
+		
+
 
 		lb_playerList = d_mainConsole ctrlCreate ["RscListbox", 5253];
 		lb_playerList ctrlSetPosition [0.298906 * safezoneW + safezoneX,0.302 * safezoneH + safezoneY,0.0670312 * safezoneW,0.341 * safezoneH];
@@ -418,7 +426,15 @@ private["_keyDown"];
 			[] spawn JEW_fnc_execLocal;
 		}];
 		btn_localExecute ctrlCommit 0;
-		
+
+		commment "Enter key shortcut (just for you baby boy <3)";
+		d_mainConsole displayAddEventHandler ["KeyUp",{
+			_key = _this select 1;
+			if(_key == 28) then {
+				[] spawn JEW_fnc_execLocal;
+			};
+		}];
+
 		btn_playerExecute = d_mainConsole ctrlCreate ["RscButtonMenu", 5257];
 		btn_playerExecute ctrlSetStructuredText parseText "<t size='1' align='center'>Player</t>";
 		btn_playerExecute ctrlSetPosition [0.298906 * safezoneW + safezoneX,0.654 * safezoneH + safezoneY,0.0670312 * safezoneW,0.03 * safezoneH];
