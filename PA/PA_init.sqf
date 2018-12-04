@@ -22,7 +22,7 @@ script_initCOOLJIPgustavFinal = [] spawn
 					_veh = call compile  lbData [1500,lbcursel 1500];
 					_presets = profileNamespace getVariable ["GOM_fnc_aircraftLoadoutPresets",[]];
 					_index = 0;
-						_pylonOwners = _veh getVariable ["GOM_fnc_aircraftLoadoutPylonOwners",[]];
+					_pylonOwners = _veh getVariable ["GOM_fnc_aircraftLoadoutPylonOwners",[]];
 					_priorities = _veh getVariable ["GOM_fnc_pylonPriorities",[]];
 
 					_preset = [typeof _veh,ctrlText 1401,GetPylonMagazines _veh,((GetPylonMagazines _veh) apply {_index = _index + 1;_veh AmmoOnPylon _index}),[lbText [2100,lbCursel 2100],getObjectTextures _veh],_pylonOwners,_priorities,true];

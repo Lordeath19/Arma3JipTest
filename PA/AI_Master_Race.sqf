@@ -1,7 +1,5 @@
 SystemChat "...< Loading >...";		
 
-
-
 script_notifyWhenDone_Gustav = [] spawn 
 {
 	waitUntil { !(missionNamespace getVariable ["script_initCOOLJIPgustavFinal",""] isEqualTo "") && scriptDone (missionNamespace getVariable "script_initCOOLJIPgustavFinal") };
