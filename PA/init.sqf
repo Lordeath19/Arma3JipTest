@@ -289,7 +289,7 @@ private["_keyDown"];
 		};
 		[] call JEW_fnc_addStatement;
 		_code = compile _text;
-		edit_debugConsoleOutput ctrlSetText ([] call _code);
+		edit_debugConsoleOutput ctrlSetText (str ([] call _code));
 	};
 
 	JEW_fnc_execGlobal = 
@@ -392,10 +392,9 @@ private["_keyDown"];
 
 		
 		edit_debugConsoleOutput = d_mainConsole ctrlCreate ["RscEdit", 5267];
-		edit_debugConsoleOutput ctrlSetPosition [0.371094 * safezoneW + safezoneX,0.683771 * safezoneH + safezoneY,0.257813 * safezoneW,0.4 * safezoneH];
+		edit_debugConsoleOutput ctrlSetPosition [0.371094 * safezoneW + safezoneX,0.688771 * safezoneH + safezoneY,0.257813 * safezoneW,0.04 * safezoneH];
 		edit_debugConsoleOutput ctrlSetBackgroundColor [0,0,0,1];
 		edit_debugConsoleOutput ctrlCommit 0;
-		
 
 
 		lb_playerList = d_mainConsole ctrlCreate ["RscListbox", 5253];
@@ -427,7 +426,7 @@ private["_keyDown"];
 		}];
 		btn_localExecute ctrlCommit 0;
 
-		commment "Enter key shortcut (just for you baby boy <3)";
+		comment "Enter key shortcut (just for you baby boy <3)";
 		d_mainConsole displayAddEventHandler ["KeyUp",{
 			_key = _this select 1;
 			if(_key == 28) then {
