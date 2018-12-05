@@ -1,6 +1,17 @@
 disableSerialization;
 if !(isNull(uiNamespace getVariable [ "DCON_Garage_Display", objNull ])) exitwith {};
 
+
+KK_fnc_setPosAGLS = {
+	params ["_obj", "_pos", "_offset"];
+	_offset = _pos select 2;
+	if (isNil "_offset") then {_offset = 0};
+	_pos set [2, worldSize]; 
+	_obj setPosASL _pos;
+	_pos set [2, vectorMagnitude (_pos vectorDiff getPosVisual _obj) + _offset];
+	_obj setPosASL _pos;
+};
+
 if(isNil "DCON_Garage_SpawnType") then {
 	DCON_Garage_SpawnType = 0;
 };
@@ -14,10 +25,13 @@ waitUntil{!isNull _helipad};
 
 _helipad setPos _pos;
 
+
+
 BIS_fnc_arsenal_fullGarage = true;
 BIS_fnc_garage_center = _helipad;
 DCON_Garage_CanSpawn = 0;
 DCON_Garage_Vehicle = objNull;
+
 
 DCON_Garage_Color = [0,0,0,1];
 
@@ -26,7 +40,6 @@ disableSerialization;
 
 _display = findDisplay 46 createDisplay "RscDisplayGarage";
 uiNamespace setVariable ["DCON_Garage_Display", _display];
-
 _xPos = safezoneX + safezoneW;
 _yPos = safezoneY + safezoneH;
 
