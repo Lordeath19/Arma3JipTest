@@ -37,7 +37,6 @@ DCON_helipad = _helipad;
 ["DCON_Garage_FrameEvent", "onEachFrame", {
 	if(missionnamespace getvariable ["BIS_fnc_arsenal_center",DCON_helipad] != DCON_helipad) then
 	{
-		hint "aha!";
 		_veh = missionnamespace getvariable ["BIS_fnc_arsenal_center",DCON_helipad];
 
 		_z = (getPosASL _veh) select 2; 

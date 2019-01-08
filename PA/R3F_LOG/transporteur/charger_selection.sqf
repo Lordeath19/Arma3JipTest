@@ -51,9 +51,7 @@ else
 							_objet setVariable ["R3F_LOG_est_transporte_par", _transporteur, true];
 							
 							systemChat STR_R3F_LOG_action_charger_en_cours;
-							
-							sleep 2;
-							
+														
 							// Gestion conflit d'accès
 							if (_objet getVariable "R3F_LOG_est_transporte_par" == _transporteur && _objet in (_transporteur getVariable "R3F_LOG_objets_charges")) then
 							{

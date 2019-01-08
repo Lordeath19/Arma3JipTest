@@ -31,28 +31,6 @@ else
 		_remorqueur setVariable ["R3F_LOG_remorque", _objet, true];
 		_objet setVariable ["R3F_LOG_est_transporte_par", _remorqueur, true];
 		
-		// On place le joueur sur le côté du véhicule en fonction qu'il se trouve à sa gauche ou droite
-		if ((_remorqueur worldToModel (player modelToWorld [0,0,0])) select 0 > 0) then
-		{
-			player attachTo [_remorqueur, [
-				(boundingBoxReal _remorqueur select 1 select 0) + 0.5,
-				(boundingBoxReal _remorqueur select 0 select 1),
-				(boundingBoxReal _remorqueur select 0 select 2) - (boundingBoxReal player select 0 select 2)
-			]];
-			
-			player setDir 270;
-		}
-		else
-		{
-			player attachTo [_remorqueur, [
-				(boundingBoxReal _remorqueur select 0 select 0) - 0.5,
-				(boundingBoxReal _remorqueur select 0 select 1),
-				(boundingBoxReal _remorqueur select 0 select 2) - (boundingBoxReal player select 0 select 2)
-			]];
-			
-			player setDir 90;
-		};
-		
 		// Faire relacher l'objet au joueur
 		R3F_LOG_joueur_deplace_objet = objNull;
 		
@@ -68,9 +46,7 @@ else
 			(boundingBoxReal _remorqueur select 0 select 1) + (boundingBoxReal _objet select 0 select 1) + _offset_attach_y,
 			(boundingBoxReal _remorqueur select 0 select 2) - (boundingBoxReal _objet select 0 select 2)
 		]];
-		
-		detach player;
-		
+				
 		// Si l'objet est une arme statique, on corrige l'orientation en fonction de la direction du canon
 		if (_objet isKindOf "StaticWeapon") then
 		{
@@ -87,7 +63,6 @@ else
 			[_objet, "setDir", (getDir _objet)-_azimut_canon] call R3F_LOG_FNCT_exec_commande_MP;
 		};
 		
-		sleep 7;
 	};
 	
 	R3F_LOG_mutex_local_verrou = false;

@@ -3,7 +3,7 @@
 class CfgPatches {
 
 	
-	class PA_arsenal {
+	class Lordeath_arsenal {
 		units[] = {"VTOL_01_armed_base_F","Tank","Car","Air","B_Carryall_Base"};
 		weapons[] = {"weapon_VLS_01","cannon_105mm_VTOL_01","gatling_20mm_VTOL_01","autocannon_40mm_VTOL_01"};
 		requiredAddons[] = {
@@ -28,15 +28,15 @@ class CfgFunctions {
 	{
 		class init
 		{
-			class aircraftLoadoutInit {file = "\PA\GOM\functions\GOM_fnc_aircraftLoadoutInit.sqf";preInit = 1;};
+			class aircraftLoadoutInit {file = "\Lordeath\GOM\functions\GOM_fnc_aircraftLoadoutInit.sqf";preInit = 1;};
 		};
 	};
 	
-	class PA
+	class Lordeath
 	{
 		class init 
 		{
-			class personalArsenalInit {file = "\PA\init.sqf";preInit = 1;};
+			class personalArsenalInit {file = "\Lordeath\init.sqf";preInit = 1;};
 		};
 	};
 	
@@ -45,7 +45,7 @@ class CfgFunctions {
 		tag = "WPN";
 		class functions 
 		{			
-			file = "\PA\Weaponry\functions";	
+			file = "\Lordeath\Weaponry\functions";	
 			
 			class execute {};
 			class open {};
@@ -61,7 +61,7 @@ class CfgFunctions {
 		tag = "LIT";
 		class functions 
 		{			
-			file = "\PA\Loiter\functions";	
+			file = "\Lordeath\Loiter\functions";	
 			
 			class execute {};
 			class open {};
@@ -75,7 +75,7 @@ class CfgFunctions {
 		tag = "ASS";
 		class functions 
 		{			
-			file = "\PA";	
+			file = "\Lordeath";	
 			
 			class disableDriverAssist {};
 			class enableDriverAssist {};
@@ -87,7 +87,7 @@ class CfgFunctions {
 	{
 		class init
 		{
-			class R3F_LOGInitfile {file = "\PA\R3F_LOG\init.sqf";postInit = 1;};
+			class R3F_LOGInitfile {file = "\Lordeath\R3F_LOG\init.sqf";postInit = 1;};
 		};
 	};
 	
@@ -96,7 +96,7 @@ class CfgFunctions {
 		tag = "DCON";
 		class functions
 		{
-			file = "\PA\DCON";
+			file = "\Lordeath\DCON";
 			
 			class Garage {};
 			class Garage_Open {};
