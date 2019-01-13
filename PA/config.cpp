@@ -83,6 +83,23 @@ class CfgFunctions {
 		};
 	};
 	
+	class Debug
+	{
+		tag = "JEW";
+		class functions 
+		{			
+			file = "\Lordeath\Debug\functions";	
+			
+			class execGlobal {};
+			class execLocal {};
+			class execPlayer {};
+			class execServer {};
+			class nextStatement {};
+			class prevStatement {};
+			class open {};
+		};
+	};
+
 	class R3F_LOG
 	{
 		class init
@@ -858,7 +875,7 @@ class CfgInventoryGlobalVariable {
 #include "GOM\dialogs\GOM_dialog_controls.hpp"
 #include "Loiter\dialogs\dialog.hpp"
 #include "Weaponry\dialogs\dialog.hpp"
-//#include "Debug\dialogs\dialog.hpp"
+#include "Debug\dialogs\dialog.hpp"
 #include "Main\dialogs\dialog.hpp"
 
 #include "R3F_LOG\desc_include.h"
