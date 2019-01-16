@@ -20,7 +20,11 @@ _pos = _this select 0;
 _dir = _this select 1;
 _spawns = [];
 
-_helipad = "Land_HelipadEmpty_F" createVehicleLocal _pos;
+_helipad = "C_Offroad_01_F" createVehicleLocal _pos;
+_helipad enableSimulation false;
+_helipad hideObject true;
+
+
 waitUntil{!isNull _helipad};
 
 _z = (getPos _helipad) select 2; 
@@ -29,7 +33,7 @@ if(_z < 0) then
 	[_helipad, [(getPos _helipad) select 0,(getPos _helipad) select 1,0.5]] call KK_fnc_setPosAGLS;
 };
 
-_pos = getPos _helipad;
+_pos = getPosASL _helipad;
 
 BIS_fnc_arsenal_fullGarage = true;
 BIS_fnc_garage_center = _helipad;
@@ -37,7 +41,6 @@ missionnamespace setVariable ["BIS_fnc_arsenal_center",_helipad];
 DCON_Garage_CanSpawn = 0;
 DCON_Garage_Vehicle = objNull;
 DCON_helipad = _helipad;
-
 
 DCON_Garage_Color = [0,0,0,1];
 
@@ -191,7 +194,7 @@ _spawn = [_pos,_dir] spawn {
 
 		} forEach _objs;
 
-		DCON_Garage_Vehicle setPos _pos;
+		DCON_Garage_Vehicle setPosASL _pos;
 
 		sleep 0.1;
 	};
@@ -203,7 +206,7 @@ _spawn = [_pos,_dir] spawn {
 	_dir = _this select 1;
 
 	while {true} do {
-		DCON_Garage_Vehicle setPos _pos;
+		DCON_Garage_Vehicle setPosASL _pos;
 	};
 };
 _spawns pushBack _spawn;
