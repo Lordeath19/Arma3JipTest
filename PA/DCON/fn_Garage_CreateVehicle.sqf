@@ -128,6 +128,7 @@ if(_movein) then {
 };
 
 comment "clean up your mess..";
+
 _veh spawn {
 	waitUntil {sleep 1;!alive _this;};
 	sleep 40;

@@ -23,9 +23,13 @@ _spawns = [];
 _helipad = "Land_HelipadEmpty_F" createVehicleLocal _pos;
 waitUntil{!isNull _helipad};
 
-_helipad setPosASL (getPosASL player);
+_z = (getPos _helipad) select 2; 
+if(_z < 0) then
+{
+	[_helipad, [(getPos _helipad) select 0,(getPos _helipad) select 1,0.5]] call KK_fnc_setPosAGLS;
+};
 
-
+_pos = getPos _helipad;
 
 BIS_fnc_arsenal_fullGarage = true;
 BIS_fnc_garage_center = _helipad;
@@ -33,21 +37,6 @@ missionnamespace setVariable ["BIS_fnc_arsenal_center",_helipad];
 DCON_Garage_CanSpawn = 0;
 DCON_Garage_Vehicle = objNull;
 DCON_helipad = _helipad;
-
-["DCON_Garage_FrameEvent", "onEachFrame", {
-	if(missionnamespace getvariable ["BIS_fnc_arsenal_center",DCON_helipad] != DCON_helipad) then
-	{
-		_veh = missionnamespace getvariable ["BIS_fnc_arsenal_center",DCON_helipad];
-
-		_z = (getPosASL _veh) select 2; 
-		if(_z < 5) then
-		{
-			_veh setPosASL [(getPos _veh) select 0,(getPos _veh) select 1,(getPosASL DCON_helipad) select 2];
-		};
-
-	}
-}] call BIS_fnc_addStackedEventHandler;
-
 
 
 DCON_Garage_Color = [0,0,0,1];
