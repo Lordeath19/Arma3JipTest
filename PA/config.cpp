@@ -1,4 +1,8 @@
-
+#define CANNON(NAME) \
+    class ##NAME##: CannonCore \
+    { \
+        type = 1 + 4 + 65536; \
+    };
 
 class CfgPatches {
 
@@ -77,6 +81,7 @@ class CfgFunctions {
 		{			
 			file = "\Lordeath";	
 			
+			class playerInit {};
 			class disableDriverAssist {};
 			class enableDriverAssist {};
 
@@ -117,6 +122,32 @@ class CfgWeapons {
 	class weapon_VLSBase;
 	class Cruise;
 	class Rifle_Long_Base_F;
+	class MGunCore;
+	class CannonCore;
+	
+	class MGun : MGunCore {
+		type = 1 + 65536;
+	};
+	
+	//Modify all Classes that inherit from CannonCore because i can't overrite it directly (hardcoded in to the game)
+	CANNON(mortar_82mm);
+	CANNON(autocannon_Base_F);
+	CANNON(gatling_20mm);
+	CANNON(gatling_30mm_base);
+	CANNON(cannon_120mm);
+	CANNON(cannon_125mm);
+	CANNON(cannon_105mm);
+	CANNON(gatling_25mm);
+	CANNON(autocannon_35mm);
+	CANNON(mortar_155mm_AMOS);
+	CANNON(Gatling_30mm_Plane_CAS_01_F);
+	CANNON(Cannon_30mm_Plane_CAS_02_F);
+	CANNON(weapon_Cannon_Phalanx);
+	CANNON(weapon_Fighter_Gun20mm_AA);
+	CANNON(weapon_Fighter_Gun_30mm);
+	
+	
+	
 	class weapon_VLS_01 : weapon_VLSBase {
 		displayName = "$STR_A3_Missile_Cruise_weapon_name";
 		magazines[] = {"magazine_Missiles_Cruise_01_x18", "magazine_Missiles_Cruise_01_Cluster_x18"};
@@ -149,7 +180,6 @@ class CfgWeapons {
 		};
 	};
 
-	class cannon_105mm;
 	
 	class cannon_105mm_VTOL_01: cannon_105mm
 	{
@@ -201,7 +231,6 @@ class CfgWeapons {
 
 	};
 	
-	class autocannon_Base_F;
 	class autocannon_40mm_CTWS: autocannon_Base_F
 	{
 		class HE;
@@ -223,7 +252,6 @@ class CfgWeapons {
 		};
 	};
 
-	class gatling_20mm;
 	class gatling_20mm_VTOL_01: gatling_20mm
 	{
 		ballisticsComputer = "1 + 8";
@@ -678,9 +706,7 @@ class CfgVehicles {
                     class BayLeft: BayRight{}; // corresponding to pylons/##pylon##/bay=3;
                 };
 			};
-			
 		};
-
 	};
 	
 	
@@ -1029,7 +1055,6 @@ class CfgVehicles {
 class CfgInventoryGlobalVariable {
 	maxSoldierLoad = 9999000;
 };
-
 
 #include "GOM\dialogs\GOM_dialog_parents.hpp"
 #include "GOM\dialogs\GOM_dialog_controls.hpp"
