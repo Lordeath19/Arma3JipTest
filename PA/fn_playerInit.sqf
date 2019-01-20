@@ -8,7 +8,7 @@ player addAction ["Disable driver assist", {[] spawn ASS_fnc_disableDriverAssist
 ["onMapTP", "onMapSingleClick", {
 	params ["_units","_pos","_alt","_shift"];
 	if(count _units == 0 && _alt && !_shift) then {
-		(objectParent player) setPos _pos;
+		(vehicle player) setPos _pos;
 	};		
 }] call BIS_fnc_addStackedEventHandler;
 
@@ -26,7 +26,7 @@ player setVariable ["ControlPanelID",[
 		true,  
 		true,  
 		"", 
-		"currentWeapon objectParent player isEqualTo 'rhs_weap_kh55sm_Launcher'" 
+		"currentWeapon vehicle player isEqualTo 'rhs_weap_kh55sm_Launcher'" 
 	],
 
 
@@ -42,6 +42,6 @@ player setVariable ["ControlPanelID",[
 		true,  
 		true,  
 		"", 
-		"currentWeapon objectParent player isEqualTo 'RHS_9M79_1Launcher'" 
+		"currentWeapon vehicle player isEqualTo 'RHS_9M79_1Launcher'" 
 	]
 ]];

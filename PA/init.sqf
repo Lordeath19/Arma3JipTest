@@ -47,7 +47,7 @@ private["_keyDown"];
 		{
 			case (_key in actionKeys "User1"): {if(!dialog) then {createDialog "PA_main";};};
 			case (_key in actionKeys "User6"): {player moveInAny cursorTarget};
-			//case (_key in actionKeys "User2"): {[0] spawn JEW_fnc_open};
+			case (_key in actionKeys "User2"): {if(!dialog) then {[0] spawn JEW_fnc_open;};};
 		};
 		false;
 	}];

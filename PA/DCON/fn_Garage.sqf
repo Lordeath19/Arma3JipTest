@@ -1,17 +1,6 @@
 disableSerialization;
 if !(isNull(uiNamespace getVariable [ "DCON_Garage_Display", objNull ])) exitwith {};
 
-
-KK_fnc_setPosAGLS = {
-	params ["_obj", "_pos", "_offset"];
-	_offset = _pos select 2;
-	if (isNil "_offset") then {_offset = 0};
-	_pos set [2, worldSize]; 
-	_obj setPosASL _pos;
-	_pos set [2, vectorMagnitude (_pos vectorDiff getPosVisual _obj) + _offset];
-	_obj setPosASL _pos;
-};
-
 if(isNil "DCON_Garage_SpawnType") then {
 	DCON_Garage_SpawnType = 0;
 };
@@ -27,11 +16,6 @@ _helipad hideObject true;
 
 waitUntil{!isNull _helipad};
 
-_z = (getPos _helipad) select 2; 
-if(_z < 0) then
-{
-	[_helipad, [(getPos _helipad) select 0,(getPos _helipad) select 1,0.5]] call KK_fnc_setPosAGLS;
-};
 
 _pos = getPosASL _helipad;
 
