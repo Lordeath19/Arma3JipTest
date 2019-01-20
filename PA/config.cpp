@@ -4,9 +4,7 @@
         type = 1 + 4 + 65536; \
     };
 
-class CfgPatches {
-
-	
+class CfgPatches {	
 	class Lordeath_arsenal {
 		units[] = {"VTOL_01_armed_base_F","Tank","Car","Air","B_Carryall_Base"};
 		weapons[] = {"weapon_VLS_01","cannon_105mm_VTOL_01","gatling_20mm_VTOL_01","autocannon_40mm_VTOL_01"};

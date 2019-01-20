@@ -1,5 +1,4 @@
 //Replace the dummy launcher for the actual one when using the pylon from GOM
-
 [] spawn {
 	while {true} do {
 
@@ -23,10 +22,17 @@ private["_keyDown"];
 	waitUntil {!isNull player && player == player};
 	waitUntil{!isNil "BIS_fnc_init"};
 	waitUntil {!(IsNull (findDisplay 46))};
+
+	//Get all possible pylons
 	GOM_list_allPylonMags = ("count( getArray (_x >> 'hardpoints')) > 0" configClasses (configfile >> "CfgMagazines")) apply {configname _x};
 	GOM_list_allPylonMags = [GOM_list_allPylonMags, [], {getText (configfile >> "CfgMagazines" >> _x >> "displayName")}, "ASCEND"] call BIS_fnc_sortBy;
+	
+	//Get all display names of the pylons
 	GOM_list_validDispNames = GOM_list_allPylonMags apply {getText (configfile >> "CfgMagazines" >> _x >> "displayName")};
+	
 	DCON_Garage_Loadout_Controls = [];
+	
+	//Load all weapons in the game
 	_load = [] spawn {
 		if(count (missionNamespace getVariable ["allWeapons",[]]) == 0) then {
 			disableSerialization;
@@ -38,7 +44,8 @@ private["_keyDown"];
 		};
 		systemChat "All weapons loaded";
 	}; 
-	systemChat "Personal arsenal loaded";
+
+	//Keybind configuration
 	private["_i", "_keyDown"];
    	_keyDown = (findDisplay 46) displayAddEventHandler ["KeyDown", {
 	
@@ -61,6 +68,8 @@ private["_keyDown"];
 		[] call ASS_fnc_playerInit;
 	}];
 	
+	//Everytime the player gets inside a vehicle
+	//Add control panels to the vehicles (the tu-95 and the 9m79)
 	player addEventHandler ["GetInMan", {
 		params ["_vehicle", "_role", "_unit", "_turret"];
 		
@@ -70,6 +79,7 @@ private["_keyDown"];
 		if(_vehicle getVariable ["ControlPanelID",-1] isEqualTo -1) then {
 		
 			_vehicle setVariable ["ControlPanelID",
+				//The tu-95's dialog
 				[_vehicle addAction  
 				[
 				   "Open control panel",  
@@ -85,7 +95,7 @@ private["_keyDown"];
 				   "currentWeapon vehicle player isEqualTo 'rhs_weap_kh55sm_Launcher'" 
 				],
 				   
-				   
+				//The 9m79's dialog
 				_vehicle addAction  
 				[ 
 				   "Open control panel",  
@@ -103,5 +113,7 @@ private["_keyDown"];
 			];
 		};	
 	}];
+	systemChat "Personal arsenal loaded";
 };
+	
 
