@@ -1,13 +1,3 @@
-KK_fnc_setPosAGLS = {
-	params ["_obj", "_pos", "_offset"];
-	_offset = _pos select 2;
-	if (isNil "_offset") then {_offset = 0};
-	_pos set [2, worldSize]; 
-	_obj setPosASL _pos;
-	_pos set [2, vectorMagnitude (_pos vectorDiff getPosVisual _obj) + _offset];
-	_obj setPosASL _pos;
-};
-
 params ["_roles"];
 _veh  = BIS_fnc_garage_center;
 
@@ -28,6 +18,7 @@ waitUntil {!alive _veh};
 sleep 0.1;
 
 switch (DCON_Garage_SpawnType) do {
+
 	case 1 : {
 		_movein = true;
 	};
@@ -39,11 +30,11 @@ switch (DCON_Garage_SpawnType) do {
 
 _veh = createvehicle [_type,_pos,[],0,_special];
 
-_z = (getPos _veh) select 2; 
-if(_z < 0) then
+if(DCON_Garage_SpawnType != 2) then
 {
-	[_veh, [(getPos _veh) select 0,(getPos _veh) select 1,0.5]] call KK_fnc_setPosAGLS;
-};
+	_veh setPosASL DCON_position;
+}
+
 _veh setVariable ["dcon_garage_veh",true,true];
 
 comment "i died about 200 times before implementing this..";
