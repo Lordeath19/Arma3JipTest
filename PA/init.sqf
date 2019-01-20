@@ -116,4 +116,3 @@ private["_keyDown"];
 	systemChat "Personal arsenal loaded";
 };
 	
-
