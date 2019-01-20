@@ -78,32 +78,8 @@ class CfgFunctions {
 		};
 	};
 
-<<<<<<< HEAD
-	class Debug
-	{
-		tag = "JEW";
-		class functions 
-		{			
-			file = "\Lordeath\Debug\functions";	
-			
-			class execGlobal {};
-			class execLocal {};
-			class execPlayer {};
-			class execServer {};
-			class nextStatement {};
-			class prevStatement {};
-			class open {};
-		};
-	};
-	
-	class R3F_LOG
-	{
-		class init
-		{
-=======
 	class R3F_LOG {
 		class init {
->>>>>>> d5951bf21620803a10583ebdbb7103d3be3cdb52
 			class R3F_LOGInitfile {file = "\Lordeath\R3F_LOG\init.sqf";postInit = 1;};
 		};
 	};
@@ -245,11 +221,7 @@ class CfgWeapons {
 			autoFire = 0;
 			dispersion = 0.0;
 		};
-<<<<<<< HEAD
-	};	
-=======
 	};
->>>>>>> d5951bf21620803a10583ebdbb7103d3be3cdb52
 	
 	class LMG_Mk200_F : Rifle_Long_Base_F {
 		//Literally every single vehicle round can get into that weapon
