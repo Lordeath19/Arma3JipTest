@@ -92,8 +92,6 @@ class CfgFunctions {
 			class addStatement {};
 			class prevStatement {};
 			class nextStatement {};
-			class addStatement {};
-			class addStatement {};
 			class open {};
 			class execGlobal {};
 			class execLocal {};
@@ -134,7 +132,7 @@ class CfgWeapons {
 	//CANNON(autocannon_Base_F);
 	class autocannon_Base_F;
 	//CANNON(gatling_20mm);
-	class gatling_20mm
+	class gatling_20mm;
 	//CANNON(gatling_30mm_base);
 	//CANNON(cannon_120mm);
 	//CANNON(cannon_125mm);
@@ -335,7 +333,6 @@ class CfgVehicles {
 	class Land;
 	class Bag_Base;
 	class ContainerSupply;
-	class LandVehicle;
 	class Plane;
 	class Plane_Base_F: Plane {
 		class MarkerLights;
@@ -409,7 +406,7 @@ class CfgVehicles {
 	
 	class Supply40 : Supply5 {};
 	
-	class Supply50 : Supply5 {}:
+	class Supply50 : Supply5 {};
 	
 	class Supply60 : Supply5 {};
 	
