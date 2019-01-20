@@ -9,7 +9,7 @@ _statementIndex = (_statementIndex + 1) min ((count _prevStatements - 1) max 0);
 profileNamespace setVariable ["DebugStatementsIndex", _statementIndex];
 
 private _prevStatement = _prevStatements select _statementIndex;
-ctrlSetText[_prevStatement, _expression];
+ctrlSetText [_prevStatement, _expression];
 
 ctrlEnable [_prevButton, (_statementIndex < count _prevStatements - 1)];
 ctrlEnable [_nextButton, (_statementIndex > 0)];

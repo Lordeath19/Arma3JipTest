@@ -1,4 +1,3 @@
-params ["_control"];
 private _prevButton = 90110;
 private _nextButton = 90111;
 private _expression = 5252;

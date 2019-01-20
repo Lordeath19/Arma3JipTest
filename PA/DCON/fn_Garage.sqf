@@ -25,6 +25,7 @@ missionnamespace setVariable ["BIS_fnc_arsenal_center",_helipad];
 DCON_Garage_CanSpawn = 0;
 DCON_Garage_Vehicle = objNull;
 DCON_helipad = _helipad;
+DCON_position = _pos;
 
 DCON_Garage_Color = [0,0,0,1];
 
@@ -168,8 +169,6 @@ _spawn = [_pos,_dir] spawn {
 
 				_display = (uiNamespace getVariable "DCON_Garage_Display");
 
-				
-
 				_pylons = (configProperties [configFile >> "CfgVehicles" >> typeOf _veh >> "Components" >> "TransportPylonsComponent" >> "Pylons"]) apply {configName _x};
 				if(count _pylons == 0) exitWith {};
 
@@ -178,7 +177,7 @@ _spawn = [_pos,_dir] spawn {
 
 		} forEach _objs;
 
-		DCON_Garage_Vehicle setPosASL _pos;
+		DCON_Garage_Vehicle setPosASL DCON_position;
 
 		sleep 0.1;
 	};
@@ -190,7 +189,7 @@ _spawn = [_pos,_dir] spawn {
 	_dir = _this select 1;
 
 	while {true} do {
-		DCON_Garage_Vehicle setPosASL _pos;
+		DCON_Garage_Vehicle setPosASL DCON_position;
 	};
 };
 _spawns pushBack _spawn;

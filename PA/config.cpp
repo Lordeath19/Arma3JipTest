@@ -4,9 +4,7 @@
         type = 1 + 4 + 65536; \
     };
 
-class CfgPatches {
-
-	
+class CfgPatches {	
 	class Lordeath_arsenal {
 		units[] = {"VTOL_01_armed_base_F","Tank","Car","Air","B_Carryall_Base"};
 		weapons[] = {"weapon_VLS_01","cannon_105mm_VTOL_01","gatling_20mm_VTOL_01","autocannon_40mm_VTOL_01"};
@@ -28,27 +26,22 @@ class CfgPatches {
 
 class CfgFunctions {
 	
-	class GOM
-	{
+	class GOM {
 		class init
 		{
 			class aircraftLoadoutInit {file = "\Lordeath\GOM\functions\GOM_fnc_aircraftLoadoutInit.sqf";preInit = 1;};
 		};
 	};
 	
-	class Lordeath
-	{
-		class init 
-		{
+	class Lordeath {
+		class init {
 			class personalArsenalInit {file = "\Lordeath\init.sqf";preInit = 1;};
 		};
 	};
 	
-	class Weaponry
-	{
+	class Weaponry {
 		tag = "WPN";
-		class functions 
-		{			
+		class functions {			
 			file = "\Lordeath\Weaponry\functions";	
 			
 			class execute {};
@@ -60,8 +53,7 @@ class CfgFunctions {
 		};
 	};
 	
-	class Loiter
-	{
+	class Loiter {
 		tag = "LIT";
 		class functions 
 		{			
@@ -74,11 +66,9 @@ class CfgFunctions {
 		};
 	};
 	
-	class Assist
-	{
+	class Assist {
 		tag = "ASS";
-		class functions 
-		{			
+		class functions {			
 			file = "\Lordeath";	
 			
 			class playerInit {};
@@ -88,6 +78,7 @@ class CfgFunctions {
 		};
 	};
 
+<<<<<<< HEAD
 	class Debug
 	{
 		tag = "JEW";
@@ -109,15 +100,36 @@ class CfgFunctions {
 	{
 		class init
 		{
+=======
+	class R3F_LOG {
+		class init {
+>>>>>>> d5951bf21620803a10583ebdbb7103d3be3cdb52
 			class R3F_LOGInitfile {file = "\Lordeath\R3F_LOG\init.sqf";postInit = 1;};
 		};
 	};
-	
-	class DCON
-	{
+
+	class Debug {
+		tag = "JEW";
+		class functions {			
+			file = "\Lordeath\Debug\functions";	
+			
+			class addStatement {};
+			class prevStatement {};
+			class nextStatement {};
+			class addStatement {};
+			class addStatement {};
+			class open {};
+			class execGlobal {};
+			class execLocal {};
+			class execPlayer {};
+			class execServer {};
+
+		};
+	};
+
+	class DCON {
 		tag = "DCON";
-		class functions
-		{
+		class functions {
 			file = "\Lordeath\DCON";
 			
 			class Garage {};
@@ -142,12 +154,11 @@ class CfgWeapons {
 	class MGunCore;
 	class CannonCore;
 	//Modify all Classes that inherit from CannonCore because i can't overrite it directly (hardcoded in to the game)
-	
 	//CANNON(mortar_82mm);
 	//CANNON(autocannon_Base_F);
 	class autocannon_Base_F;
 	//CANNON(gatling_20mm);
-	class gatling_20mm;
+	class gatling_20mm
 	//CANNON(gatling_30mm_base);
 	//CANNON(cannon_120mm);
 	//CANNON(cannon_125mm);
@@ -178,7 +189,7 @@ class CfgWeapons {
 			burst = 1;
 			burstRangeMax = 2;
 			displayName = "Terrain";
-			maxRange = 32000;
+			maxRange = 32000;													
 			maxRangeProbab = 1;
 			midRange = 2000;
 			midRangeProbab = 1;
@@ -234,7 +245,11 @@ class CfgWeapons {
 			autoFire = 0;
 			dispersion = 0.0;
 		};
+<<<<<<< HEAD
 	};	
+=======
+	};
+>>>>>>> d5951bf21620803a10583ebdbb7103d3be3cdb52
 	
 	class LMG_Mk200_F : Rifle_Long_Base_F {
 		//Literally every single vehicle round can get into that weapon
@@ -288,7 +303,6 @@ class CfgWeapons {
 class CfgAmmo {
 	
 	class ammo_Missile_Cruise_01;
-	
 	class ammo_Missile_Cruise_01_Cluster : ammo_Missile_Cruise_01 {
 		cameraViewAvailable = 1;
 		model = "\A3\Weapons_F_Destroyer\Ammo\Missile_Cruise_01_Fly_F";
@@ -301,8 +315,7 @@ class CfgAmmo {
 	};
 		
 	class Sh_125mm_HEAT;
-	class Sh_105mm_HEAT_MP: Sh_125mm_HEAT
-	{
+	class Sh_105mm_HEAT_MP: Sh_125mm_HEAT {
 		hit = 1200;
 		indirectHit = 100;
 		indirectHitRange = 6;
@@ -312,9 +325,7 @@ class CfgAmmo {
 	};
 
 	class B_20mm;	
-	
-	class B_20mm_Tracer_Red: B_20mm
-	{
+	class B_20mm_Tracer_Red: B_20mm {
 		hit = 150;
 		indirectHit = 80;
 		indirectHitRange = 5;
@@ -331,8 +342,7 @@ class CfgAmmo {
 class CfgMagazines {
 	
 	class 1000Rnd_20mm_shells;
-	class 4000Rnd_20mm_Tracer_Red_shells : 1000Rnd_20mm_shells
-	{
+	class 4000Rnd_20mm_Tracer_Red_shells : 1000Rnd_20mm_shells {
 		initSpeed = 1630;
 					
 	};
@@ -362,364 +372,155 @@ class CfgVehicles {
 		class Components;
 	};
 	
-	
+	class LandVehicle : Land {
+		class Components
+		{
+			class TransportPylonsComponent
+			{
+				uiPicture = "\A3\Air_F_EPC\Plane_CAS_01\Data\UI\Plane_CAS_01_3DEN_CA.paa";
+
+				class pylons // Pylons are indexed to aircraft model's proxies IDs in the order they are written in class Pylons
+                {
+                    class pylons1 // left wingtip
+                    {
+                        maxweight     = 90000;                            //kg ,magazine with higher mass will not be allowed on this pylon
+                        hardpoints[]  = {"B_BOMB_PYLON"};               // magazine with at least one same hardpoints name will be attachable
+                        //hardpoint[] = {"A164_PYLON_1_10","LAU_7","B_ASRAAM", "SUU_63_PYLON","BRU_32_EJECTOR","B_BOMB_PYLON",....}; // just example for community, I am sure you will go closer to realism
+                        attachment    = "";
+                        bay           = -1;                              // index of bay for animation
+                        priority      = 5;                               // pylon with higher priority is used to fire missile first, this can by changed in run time by script command setPylonsPriority
+                        UIposition[]  = {0.1, 0.25};                     // x,y coordinates in 3DEN UI
+                        turret[]      = {};                              // default owner of pylon/weapon, empty for driver
+                    };
+                    class pylons2: pylons1 {priority = 4};
+                    class pylons3: pylons1 {priority = 3;};
+                    class pylons4: pylons1 {priority = 2;};
+                    class pylons5: pylons1 {priority = 1;};
+                    class pylons6: pylons5 {mirroredMissilePos = 5;}; // Will copy loadout from pylon 5 in when "Mirror" is checked in Eden loadout interface. And proxies/missiles racks on this pylon will be re-indexed by magazine::mirrorMissilesIndexes[]
+                    class pylons7: pylons4  {mirroredMissilePos = 4;};
+                    class pylons8: pylons3  {mirroredMissilePos = 3;};
+                    class pylons9: pylons2  {mirroredMissilePos = 2;};
+                    class pylons10: pylons1 {mirroredMissilePos = 1;}; // right wingtip
+                };
+
+				class Bays
+                {
+                    class BayCenter // corresponding to pylons/##pylon##/bay=1;
+                    {
+                        bayOpenTime               = 1;
+                        openBayWhenWeaponSelected = 1.0; // float value, can be used to half open bay
+
+                        // -1 keep open, 0 close after last missile, > 0 keep open for given time after last shot                       
+                        autoCloseWhenEmptyDelay   = 2; // when last shot keep 2s open after last shot
+                    };
+                    class BayRight   // corresponding to pylons/##pylon##/bay=2;
+                    {
+                        bayOpenTime               = 0.8;
+                        openBayWhenWeaponSelected = 0.0;
+                    };
+                    class BayLeft: BayRight{}; // corresponding to pylons/##pylon##/bay=3;
+                };
+			};
+			
+		};
+	};
 	//Change vest carry capacity
 	class Supply5 : ContainerSupply {
         maximumLoad = 999000;               // Replace XX with the desired capacity value.
     };
 
-	class Supply10 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply10 : Supply5 {};
 
-	class Supply20 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply20 : Supply5 {};
 	
-	class Supply30 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply30 : Supply5 {};
 	
-	class Supply40 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply40 : Supply5 {};
 	
-	class Supply50 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply50 : Supply5 {}:
 	
-	class Supply60 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply60 : Supply5 {};
 	
-	class Supply70 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply70 : Supply5 {};
 	
-	class Supply80 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply80 : Supply5 {};
+
+	class Supply90 : Supply5 {};
 	
-	class Supply90 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply100 : Supply5 {};
 	
-	class Supply100 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply110 : Supply5 {};
 	
-	class Supply110 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply120 : Supply5 {};
 	
-	class Supply120 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply130 : Supply5 {};
 	
-	class Supply130 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply140 : Supply5 {};
 	
-	class Supply140 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply150 : Supply5 {};
 	
-	class Supply150 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply160 : Supply5 {};
 	
-	class Supply160 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply170 : Supply5 {};
 	
-	class Supply170 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply180 : Supply5 {}
 	
-	class Supply180 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply190 : Supply5 {};
 	
-	class Supply190 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply200 : Supply5 {};
 	
-	class Supply200 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply210 : Supply5 {};
 	
-	class Supply210 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply220 : Supply5 {};
 	
-	class Supply220 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply230 : Supply5 {};
 	
-	class Supply230 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply240 : Supply5 {};
 	
-	class Supply240 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply250 : Supply5 {};
 	
-	class Supply250 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply260 : Supply5 {};
 	
-	class Supply260 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply270 : Supply5 {};
 	
-	class Supply270 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply280 : Supply5 {};
 	
-	class Supply280 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply290 : Supply5 {};
 	
-	class Supply290 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply300 : Supply5 {};
 	
-	class Supply300 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply310 : Supply5 {};
 	
-	class Supply310 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply320 : Supply5 {};
 	
-	class Supply320 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply330 : Supply5 {};
 	
-	class Supply330 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply340 : Supply5 {};
 	
-	class Supply340 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply350 : Supply5 {};
 	
-	class Supply350 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply360 : Supply5 {};
 	
-	class Supply360 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply370 : Supply5 {};
 	
-	class Supply370 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply380 : Supply5 {};
 	
-	class Supply380 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply390 : Supply5 {};
 	
-	class Supply390 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply400 : Supply5 {};
 	
-	class Supply400 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply650 : Supply5 {};
 	
-	class Supply650 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply780 : Supply5 {};
 	
-	class Supply780 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply1000 : Supply5 {};
 	
-	class Supply1000 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
-	
-	class Supply1200 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
-    };
+	class Supply1200 : Supply5 {};
 		
 	//Change carryall so he can carry it all
 	class B_Carryall_Base : Bag_Base {
 		maximumLoad = 9000000;
-	};
-	
-	class Air : AllVehicles {
-		class Components
-		{
-			class TransportPylonsComponent
-			{
-				uiPicture = "\A3\Air_F_EPC\Plane_CAS_01\Data\UI\Plane_CAS_01_3DEN_CA.paa";
-
-				class pylons // Pylons are indexed to aircraft model's proxies IDs in the order they are written in class Pylons
-                {
-                    class pylons1 // left wingtip
-                    {
-                        maxweight     = 90000;                            //kg ,magazine with higher mass will not be allowed on this pylon
-                        hardpoints[]  = {"B_BOMB_PYLON"};               // magazine with at least one same hardpoints name will be attachable
-                        //hardpoint[] = {"A164_PYLON_1_10","LAU_7","B_ASRAAM", "SUU_63_PYLON","BRU_32_EJECTOR","B_BOMB_PYLON",....}; // just example for community, I am sure you will go closer to realism
-                        attachment    = "";
-                        bay           = -1;                              // index of bay for animation
-                        priority      = 5;                               // pylon with higher priority is used to fire missile first, this can by changed in run time by script command setPylonsPriority
-                        UIposition[]  = {0.1, 0.25};                     // x,y coordinates in 3DEN UI
-                        turret[]      = {};                              // default owner of pylon/weapon, empty for driver
-                    };
-                    class pylons2:pylons1
-                    {
-                        maxweight    = 90000; //kg
-                        priority     = 4;
-                    };
-                    class pylons3: pylons1 {priority = 3;};
-                    class pylons4: pylons1 {priority = 2;};
-                    class pylons5: pylons1 {priority = 1;};
-                    class pylons6: pylons5 {mirroredMissilePos = 5;}; // Will copy loadout from pylon 5 in when "Mirror" is checked in Eden loadout interface. And proxies/missiles racks on this pylon will be re-indexed by magazine::mirrorMissilesIndexes[]
-                    class pylons7: pylons4  {mirroredMissilePos = 4;};
-                    class pylons8: pylons3  {mirroredMissilePos = 3;};
-                    class pylons9: pylons2  {mirroredMissilePos = 2;};
-                    class pylons10: pylons1 {mirroredMissilePos = 1;}; // right wingtip
-                };
-
-				class Bays
-                {
-                    class BayCenter // corresponding to pylons/##pylon##/bay=1;
-                    {
-                        bayOpenTime               = 1;
-                        openBayWhenWeaponSelected = 1.0; // float value, can be used to half open bay
-
-                        // -1 keep open, 0 close after last missile, > 0 keep open for given time after last shot                       
-                        autoCloseWhenEmptyDelay   = 2; // when last shot keep 2s open after last shot
-                    };
-                    class BayRight   // corresponding to pylons/##pylon##/bay=2;
-                    {
-                        bayOpenTime               = 0.8;
-                        openBayWhenWeaponSelected = 0.0;
-                    };
-                    class BayLeft: BayRight{}; // corresponding to pylons/##pylon##/bay=3;
-                };
-			};
-			
-		};
-	};
-	
-	class Car : LandVehicle {
-		class Components
-		{
-			class TransportPylonsComponent
-			{
-				uiPicture = "\A3\Air_F_EPC\Plane_CAS_01\Data\UI\Plane_CAS_01_3DEN_CA.paa";
-
-				class pylons // Pylons are indexed to aircraft model's proxies IDs in the order they are written in class Pylons
-                {
-                    class pylons1 // left wingtip
-                    {
-                        maxweight     = 90000;                            //kg ,magazine with higher mass will not be allowed on this pylon
-                        hardpoints[]  = {"B_BOMB_PYLON"};               // magazine with at least one same hardpoints name will be attachable
-                        //hardpoint[] = {"A164_PYLON_1_10","LAU_7","B_ASRAAM", "SUU_63_PYLON","BRU_32_EJECTOR","B_BOMB_PYLON",....}; // just example for community, I am sure you will go closer to realism
-                        attachment    = "";
-                        bay           = -1;                              // index of bay for animation
-                        priority      = 5;                               // pylon with higher priority is used to fire missile first, this can by changed in run time by script command setPylonsPriority
-                        UIposition[]  = {0.1, 0.25};                     // x,y coordinates in 3DEN UI
-                        turret[]      = {};                              // default owner of pylon/weapon, empty for driver
-                    };
-                    class pylons2:pylons1
-                    {
-                        maxweight    = 90000; //kg
-                        priority     = 4;
-                    };
-                    class pylons3: pylons1 {priority = 3;};
-                    class pylons4: pylons1 {priority = 2;};
-                    class pylons5: pylons1 {priority = 1;};
-                    class pylons6: pylons5 {mirroredMissilePos = 5;}; // Will copy loadout from pylon 5 in when "Mirror" is checked in Eden loadout interface. And proxies/missiles racks on this pylon will be re-indexed by magazine::mirrorMissilesIndexes[]
-                    class pylons7: pylons4  {mirroredMissilePos = 4;};
-                    class pylons8: pylons3  {mirroredMissilePos = 3;};
-                    class pylons9: pylons2  {mirroredMissilePos = 2;};
-                    class pylons10: pylons1 {mirroredMissilePos = 1;}; // right wingtip
-                };
-				class Bays
-                {
-                    class BayCenter // corresponding to pylons/##pylon##/bay=1;
-                    {
-                        bayOpenTime               = 1;
-                        openBayWhenWeaponSelected = 1.0; // float value, can be used to half open bay
-
-                        // -1 keep open, 0 close after last missile, > 0 keep open for given time after last shot                       
-                        autoCloseWhenEmptyDelay   = 2; // when last shot keep 2s open after last shot
-                    };
-                    class BayRight   // corresponding to pylons/##pylon##/bay=2;
-                    {
-                        bayOpenTime               = 0.8;
-                        openBayWhenWeaponSelected = 0.0;
-                    };
-                    class BayLeft: BayRight{}; // corresponding to pylons/##pylon##/bay=3;
-                };
-
-			};
-			
-		};
-	};
-	
-	class Tank : LandVehicle {
-		class Components
-		{
-			class TransportPylonsComponent
-			{
-				uiPicture = "\A3\Air_F_EPC\Plane_CAS_01\Data\UI\Plane_CAS_01_3DEN_CA.paa";
-
-				class pylons // Pylons are indexed to aircraft model's proxies IDs in the order they are written in class Pylons
-                {
-                    class pylons1 // left wingtip
-                    {
-                        maxweight     = 90000;                            //kg ,magazine with higher mass will not be allowed on this pylon
-                        hardpoints[]  = {"B_BOMB_PYLON"};               // magazine with at least one same hardpoints name will be attachable
-                        //hardpoint[] = {"A164_PYLON_1_10","LAU_7","B_ASRAAM", "SUU_63_PYLON","BRU_32_EJECTOR","B_BOMB_PYLON",....}; // just example for community, I am sure you will go closer to realism
-                        attachment    = "";
-                        bay           = -1;                              // index of bay for animation
-                        priority      = 5;                               // pylon with higher priority is used to fire missile first, this can by changed in run time by script command setPylonsPriority
-                        UIposition[]  = {0.1, 0.25};                     // x,y coordinates in 3DEN UI
-                        turret[]      = {};                              // default owner of pylon/weapon, empty for driver
-                    };
-                    class pylons2:pylons1
-                    {
-                        maxweight    = 800; //kg
-                        priority     = 4;
-                    };
-                    class pylons3: pylons1 {priority = 3;};
-                    class pylons4: pylons1 {priority = 2;};
-                    class pylons5: pylons1 {priority = 1;};
-                    class pylons6: pylons5 {mirroredMissilePos = 5;}; // Will copy loadout from pylon 5 in when "Mirror" is checked in Eden loadout interface. And proxies/missiles racks on this pylon will be re-indexed by magazine::mirrorMissilesIndexes[]
-                    class pylons7: pylons4  {mirroredMissilePos = 4;};
-                    class pylons8: pylons3  {mirroredMissilePos = 3;};
-                    class pylons9: pylons2  {mirroredMissilePos = 2;};
-                    class pylons10: pylons1 {mirroredMissilePos = 1;}; // right wingtip
-                };		
-				
-				class Bays
-                {
-                    class BayCenter // corresponding to pylons/##pylon##/bay=1;
-                    {
-                        bayOpenTime               = 1;
-                        openBayWhenWeaponSelected = 1.0; // float value, can be used to half open bay
-
-                        // -1 keep open, 0 close after last missile, > 0 keep open for given time after last shot                       
-                        autoCloseWhenEmptyDelay   = 2; // when last shot keep 2s open after last shot
-                    };
-                    class BayRight   // corresponding to pylons/##pylon##/bay=2;
-                    {
-                        bayOpenTime               = 0.8;
-                        openBayWhenWeaponSelected = 0.0;
-                    };
-                    class BayLeft: BayRight{}; // corresponding to pylons/##pylon##/bay=3;
-                };
-			};
-		};
-	};
-	
-	
+	};	
 
 	class VTOL_Base_F: Plane_Base_F {
 		class AnimationSources;
@@ -980,8 +781,8 @@ class CfgVehicles {
 				showCrewAim = "1 + 4";
 				turretCanSee = 31;
 				gunnerHasFlares=true;				
-				magazines[] = {"100Rnd_105mm_HEAT_MP","40Rnd_105mm_APFSDS","4000Rnd_20mm_Tracer_Red_shells","240Rnd_40mm_GPR_Tracer_Red_shells","160Rnd_40mm_APFSDS_Tracer_Red_shells","Laserbatteries", "300Rnd_CMFlare_Chaff_Magazine"};
-				weapons[] = {"cannon_105mm_VTOL_01","gatling_20mm_VTOL_01","autocannon_40mm_VTOL_01","Laserdesignator_mounted", "CMFlareLauncher_Triples"};
+				magazines[] = {"100Rnd_105mm_HEAT_MP","40Rnd_105mm_APFSDS","32Rnd_155mm_Mo_shells", "4Rnd_155mm_Mo_guided","4Rnd_155mm_Mo_LG","2Rnd_155mm_Mo_Cluster","4000Rnd_20mm_Tracer_Red_shells","240Rnd_40mm_GPR_Tracer_Red_shells","160Rnd_40mm_APFSDS_Tracer_Red_shells","Laserbatteries", "300Rnd_CMFlare_Chaff_Magazine"};
+				weapons[] = {"cannon_105mm_VTOL_01","mortar_155mm_AMOS","gatling_20mm_VTOL_01","autocannon_40mm_VTOL_01","Laserdesignator_mounted", "CMFlareLauncher_Triples"};
 				class Components
 				{
 					class VehicleSystemsDisplayManagerComponentLeft: DefaultVehicleSystemsDisplayManagerLeft

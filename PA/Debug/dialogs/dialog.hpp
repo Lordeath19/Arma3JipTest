@@ -9,7 +9,11 @@ class PA_debug
 		{
 			idc = 90110;
 
+<<<<<<< HEAD
 			onMouseButtonUp = "[] call JEW_fnc_prevStatement; true;";
+=======
+			onMouseButtonUp = "[] call JEW_fnc_prevStatement";
+>>>>>>> d5951bf21620803a10583ebdbb7103d3be3cdb52
 			text = "Prev Statement";
 			x = 0.371094 * safezoneW + safezoneX;
 			y = 0.783229 * safezoneH + safezoneY;
@@ -21,7 +25,11 @@ class PA_debug
 		{
 			idc = 90111;
 
+<<<<<<< HEAD
 			onMouseButtonUp = "[] call JEW_fnc_nextStatement; true;";
+=======
+			onMouseButtonUp = "[] call JEW_fnc_nextStatement";
+>>>>>>> d5951bf21620803a10583ebdbb7103d3be3cdb52
 			text = "Next Statement";
 			x = 0.5257817 * safezoneW + safezoneX;
 			y = 0.783229 * safezoneH + safezoneY;
@@ -57,10 +65,19 @@ class PA_debug
 		{
 			idc = 5252;
 			
+<<<<<<< HEAD
 			style = "0x10 + 0x40";
 
 			colorBackground[] = {-1,-1,-1,0.8}; 
 			tooltip = "Script here";
+=======
+			style = 16;
+			lineSpacing = 1;
+
+			colorBackground[] = {-1,-1,-1,0.8}; 
+			tooltip = "Script here";
+			
+>>>>>>> d5951bf21620803a10583ebdbb7103d3be3cdb52
 			x = 0.371094 * safezoneW + safezoneX;
 			y = 0.464712 * safezoneH + safezoneY;
 			w = 0.257813 * safezoneW;
@@ -108,7 +125,11 @@ class PA_debug
 
 			text = "Server";
 
+<<<<<<< HEAD
 			action = "[] spawn JEW_fnc_execServer;";
+=======
+			action = "[] spawn JEW_fnc_execServer";
+>>>>>>> d5951bf21620803a10583ebdbb7103d3be3cdb52
 
 			x = 0.371094 * safezoneW + safezoneX;
 			y = 0.742 * safezoneH + safezoneY;
