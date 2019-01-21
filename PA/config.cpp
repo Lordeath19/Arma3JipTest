@@ -4,6 +4,12 @@
         type = 1 + 4 + 65536; \
     };
 
+#define SUPPLY(NAME) \
+	class ##NAME## : Supply5 { \
+		maximumLoad = 9999000; \
+	};
+	
+	
 class CfgPatches {	
 	class Lordeath_arsenal {
 		units[] = {"VTOL_01_armed_base_F","Tank","Car","Air","B_Carryall_Base"};
@@ -11,19 +17,23 @@ class CfgPatches {
 		requiredAddons[] = {
 			"A3_Data_F",
 			"A3_Functions_F",
+			"A3Data",
+			"a3_3den",
+			"A3_Anims_F",
+			"A3_Characters_F",
 			"A3_Functions_F_Curator",
 			"A3_Functions_F_Mark",
 			"A3_Weapons_F",
 			"A3_Weapons_F_Ammoboxes",
 			"A3_Weapons_F_Exp",
-			//"A3_Weapons_F_Destroyer",
+			"A3_Weapons_F_Mark",
+			"A3_Weapons_F_Destroyer",
 			"A3_Air_F_Beta",
 			"A3_Air_F_Exp",
 			"A3_Air_F_Exp_VTOL_01"};
-		author[] = {"Drakeziel"};
+		author[] = {"Lordeath18"};
 	};
 };
-
 class CfgFunctions {
 	
 	class GOM {
@@ -395,96 +405,94 @@ class CfgVehicles {
 	};
 	//Change vest carry capacity
 	class Supply5 : ContainerSupply {
-        maximumLoad = 999000;               // Replace XX with the desired capacity value.
+        maximumLoad = 9999000;               // Replace XX with the desired capacity value.
     };
 
-	class Supply10 : Supply5 {};
+	SUPPLY(Supply20);
+	
+	SUPPLY(Supply30);
+	
+	SUPPLY(Supply40);
+	
+	SUPPLY(Supply50);
+	
+	SUPPLY(Supply60);
+	
+	SUPPLY(Supply70);
+	
+	SUPPLY(Supply80);
 
-	class Supply20 : Supply5 {};
+	SUPPLY(Supply90);
 	
-	class Supply30 : Supply5 {};
+	SUPPLY(Supply100);
 	
-	class Supply40 : Supply5 {};
+	SUPPLY(Supply110);
 	
-	class Supply50 : Supply5 {};
+	SUPPLY(Supply120);
 	
-	class Supply60 : Supply5 {};
+	SUPPLY(Supply130);
 	
-	class Supply70 : Supply5 {};
+	SUPPLY(Supply140);
 	
-	class Supply80 : Supply5 {};
+	SUPPLY(Supply150);
+	
+	SUPPLY(Supply160);
+	
+	SUPPLY(Supply170);
+	
+	SUPPLY(Supply180);
+	
+	SUPPLY(Supply190);
+	
+	SUPPLY(Supply200);
+	
+	SUPPLY(Supply210);
+	
+	SUPPLY(Supply220);
+	
+	SUPPLY(Supply230);
+	
+	SUPPLY(Supply240);
 
-	class Supply90 : Supply5 {};
+	SUPPLY(Supply250);
 	
-	class Supply100 : Supply5 {};
+	SUPPLY(Supply260);
 	
-	class Supply110 : Supply5 {};
+	SUPPLY(Supply270);
 	
-	class Supply120 : Supply5 {};
+	SUPPLY(Supply280);
 	
-	class Supply130 : Supply5 {};
+	SUPPLY(Supply290);
 	
-	class Supply140 : Supply5 {};
+	SUPPLY(Supply300);
 	
-	class Supply150 : Supply5 {};
+	SUPPLY(Supply310);
 	
-	class Supply160 : Supply5 {};
+	SUPPLY(Supply320);
 	
-	class Supply170 : Supply5 {};
+	SUPPLY(Supply330);
 	
-	class Supply180 : Supply5 {}
+	SUPPLY(Supply340);
 	
-	class Supply190 : Supply5 {};
+	SUPPLY(Supply350);
 	
-	class Supply200 : Supply5 {};
+	SUPPLY(Supply360);
 	
-	class Supply210 : Supply5 {};
+	SUPPLY(Supply370);
 	
-	class Supply220 : Supply5 {};
+	SUPPLY(Supply380);
 	
-	class Supply230 : Supply5 {};
+	SUPPLY(Supply390);
 	
-	class Supply240 : Supply5 {};
+	SUPPLY(Supply400);
 	
-	class Supply250 : Supply5 {};
+	SUPPLY(Supply650);
 	
-	class Supply260 : Supply5 {};
+	SUPPLY(Supply780);
 	
-	class Supply270 : Supply5 {};
+	SUPPLY(Supply1000);
 	
-	class Supply280 : Supply5 {};
-	
-	class Supply290 : Supply5 {};
-	
-	class Supply300 : Supply5 {};
-	
-	class Supply310 : Supply5 {};
-	
-	class Supply320 : Supply5 {};
-	
-	class Supply330 : Supply5 {};
-	
-	class Supply340 : Supply5 {};
-	
-	class Supply350 : Supply5 {};
-	
-	class Supply360 : Supply5 {};
-	
-	class Supply370 : Supply5 {};
-	
-	class Supply380 : Supply5 {};
-	
-	class Supply390 : Supply5 {};
-	
-	class Supply400 : Supply5 {};
-	
-	class Supply650 : Supply5 {};
-	
-	class Supply780 : Supply5 {};
-	
-	class Supply1000 : Supply5 {};
-	
-	class Supply1200 : Supply5 {};
+	SUPPLY(Supply1200);
 		
 	//Change carryall so he can carry it all
 	class B_Carryall_Base : Bag_Base {

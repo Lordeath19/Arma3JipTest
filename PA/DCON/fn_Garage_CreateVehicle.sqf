@@ -30,10 +30,7 @@ switch (DCON_Garage_SpawnType) do {
 
 _veh = createvehicle [_type,_pos,[],0,_special];
 
-if(DCON_Garage_SpawnType != 2) then
-{
-	_veh setPosASL DCON_position;
-}
+
 
 _veh setVariable ["dcon_garage_veh",true,true];
 
@@ -119,6 +116,11 @@ if(_movein) then {
 };
 
 comment "clean up your mess..";
+
+if(DCON_Garage_SpawnType != 2) then
+{
+	_veh setPosASL DCON_position;
+};
 
 _veh spawn {
 	waitUntil {sleep 1;!alive _this;};
