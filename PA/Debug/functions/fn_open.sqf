@@ -11,7 +11,7 @@ if(!(profileNamespace getVariable["DebugStatements", []] isEqualTo [])) then
 {
 	_prevStatements = profileNamespace getVariable ["DebugStatements", []];
 
-	ctrlSetText [5252, (_prevStatements select 0)];
+	_inputControl ctrlSetText (_prevStatements select 0);
 };
 
 

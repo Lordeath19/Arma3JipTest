@@ -371,7 +371,7 @@ class CfgVehicles {
                         UIposition[]  = {0.1, 0.25};                     // x,y coordinates in 3DEN UI
                         turret[]      = {};                              // default owner of pylon/weapon, empty for driver
                     };
-                    class pylons2: pylons1 {priority = 4};
+                    class pylons2: pylons1 {priority = 4;};
                     class pylons3: pylons1 {priority = 3;};
                     class pylons4: pylons1 {priority = 2;};
                     class pylons5: pylons1 {priority = 1;};
@@ -577,23 +577,23 @@ class CfgVehicles {
 				minTurn = 10;
 				maxTurn = 160;
 				initTurn = 90;
-				missileBeg = "";
-				missileEnd = "";
+				missileBeg = "Howitzer_barrel_end";
+				missileEnd = "Howitzer_barrel_beg";
 				outGunnerMayFire = 1;
 				particlesDir = "Howitzer_barrel_end";
 				particlesPos = "Howitzer_barrel_beg";
 				primaryGunner = 1;
 				proxyIndex = 2;
 				selectionFireAnim = "";
-				showAllTargets = 2;
+				showAllTargets = 4;
 				showCrewAim = "1 + 4";
 				stabilizedInAxes = 3;
 				startEngine = 0;
 				turretInfoType = "RscOptics_Heli_Attack_01_gunner";
 				usePip = 1;
 				gunnerHasFlares=true;
-				magazines[] = {"100Rnd_105mm_HEAT_MP", "40Rnd_105mm_APFSDS","32Rnd_155mm_Mo_shells", "4Rnd_155mm_Mo_guided","4Rnd_155mm_Mo_LG","2Rnd_155mm_Mo_Cluster","4000Rnd_20mm_Tracer_Red_shells", "Laserbatteries", "300Rnd_CMFlare_Chaff_Magazine"};
-				weapons[] = {"cannon_105mm_VTOL_01","gatling_20mm_VTOL_01","mortar_155mm_AMOS","Laserdesignator_mounted", "CMFlareLauncher_Triples"};
+				magazines[] = {"100Rnd_105mm_HEAT_MP", "40Rnd_105mm_APFSDS","32Rnd_155mm_Mo_shells", "4Rnd_155mm_Mo_guided","4Rnd_155mm_Mo_LG","2Rnd_155mm_Mo_Cluster","240Rnd_40mm_GPR_Tracer_Red_shells","160Rnd_40mm_APFSDS_Tracer_Red_shells","4000Rnd_20mm_Tracer_Red_shells", "Laserbatteries", "300Rnd_CMFlare_Chaff_Magazine"};
+				weapons[] = {"cannon_105mm_VTOL_01","gatling_20mm_VTOL_01","autocannon_40mm_VTOL_01","mortar_155mm_AMOS","Laserdesignator_mounted", "CMFlareLauncher_Triples"};
 				class OpticsIn
 				{
 					class Wide
@@ -743,91 +743,15 @@ class CfgVehicles {
 				memoryPointGunnerOptics = "Cannon_pip_pos";
 				memoryPointsGetInGunner = "GetIn_gunner_right_pos";
 				memoryPointsGetInGunnerDir = "GetIn_gunner_right_dir";
+				missileBeg = "Howitzer_barrel_end";
+				missileEnd = "Howitzer_barrel_beg";
 				particlesDir = "Cannon_barrel_end";
 				particlesPos = "Cannon_barrel_beg";
 				primaryGunner = 0;
 				proxyIndex = 3;
 				selectionFireAnim = "";
 				showAllTargets = 4;
-				showCrewAim = "1 + 4";
 				turretCanSee = 31;
-				gunnerHasFlares=true;				
-				magazines[] = {"100Rnd_105mm_HEAT_MP","40Rnd_105mm_APFSDS","4000Rnd_20mm_Tracer_Red_shells","240Rnd_40mm_GPR_Tracer_Red_shells","160Rnd_40mm_APFSDS_Tracer_Red_shells","Laserbatteries", "300Rnd_CMFlare_Chaff_Magazine"};
-				weapons[] = {"cannon_105mm_VTOL_01","gatling_20mm_VTOL_01","autocannon_40mm_VTOL_01","Laserdesignator_mounted", "CMFlareLauncher_Triples"};
-				class Components
-				{
-					class VehicleSystemsDisplayManagerComponentLeft: DefaultVehicleSystemsDisplayManagerLeft
-					{
-						class Components
-						{
-							class EmptyDisplay
-							{
-								componentType = "EmptyDisplayComponent";
-							};
-							class MinimapDisplay
-							{
-								componentType = "MinimapDisplayComponent";
-								resource = "RscCustomInfoMiniMap";
-							};
-							class CrewDisplay
-							{
-								componentType = "CrewDisplayComponent";
-								resource = "RscCustomInfoCrew";
-							};
-							class UAVDisplay
-							{
-								componentType = "UAVFeedDisplayComponent";
-							};
-							class VehiclePrimaryGunnerDisplay
-							{
-								componentType = "TransportFeedDisplayComponent";
-								source = "PrimaryGunner";
-							};
-							class SensorDisplay
-							{
-								componentType = "SensorsDisplayComponent";
-								range[] = {4000,2000,16000,8000};
-								resource = "RscCustomInfoSensors";
-							};
-						};
-					};
-					class VehicleSystemsDisplayManagerComponentRight: DefaultVehicleSystemsDisplayManagerRight
-					{
-						defaultDisplay = "SensorDisplay";
-						class Components
-						{
-							class EmptyDisplay
-							{
-								componentType = "EmptyDisplayComponent";
-							};
-							class MinimapDisplay
-							{
-								componentType = "MinimapDisplayComponent";
-								resource = "RscCustomInfoMiniMap";
-							};
-							class CrewDisplay
-							{
-								componentType = "CrewDisplayComponent";
-								resource = "RscCustomInfoCrew";
-							};
-							class UAVDisplay
-							{
-								componentType = "UAVFeedDisplayComponent";
-							};
-							class VehiclePrimaryGunnerDisplay
-							{
-								componentType = "TransportFeedDisplayComponent";
-								source = "PrimaryGunner";
-							};
-							class SensorDisplay
-							{
-								componentType = "SensorsDisplayComponent";
-								range[] = {4000,2000,16000,8000};
-								resource = "RscCustomInfoSensors";
-							};
-						};
-					};
-				};
 			};
 		};
 	};
