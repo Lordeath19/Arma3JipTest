@@ -1,4 +1,4 @@
-_debugDisplay = findDisplay 46 findDisplay 1728;
+_debugDisplay = (findDisplay 46) findDisplay 1728;
 
 
 _output = _debugDisplay displayCtrl 5267;

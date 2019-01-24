@@ -1,7 +1,7 @@
 
 params ["_playerName"];
 
-_debugDisplay = findDisplay 46 findDisplay 1728;
+_debugDisplay = (findDisplay 46) findDisplay 1728;
 
 _expression = _debugDisplay displayCtrl 5252;
 _playerList = _debugDisplay displayCtrl 5253;
