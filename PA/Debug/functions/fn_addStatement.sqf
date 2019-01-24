@@ -1,6 +1,8 @@
-private _prevButton = 90110;
-private _nextButton = 90111;
-private _expression = 5252;
+_debugDisplay = findDisplay 46 findDisplay 1728;
+
+_expression = _debugDisplay displayCtrl 5252;
+_prevButton = _debugDisplay displayCtrl 90110;
+_nextBUtton = _debugDisplay displayCtrl 90111;
 
 private _statement = ctrlText _expression;
 
@@ -20,6 +22,6 @@ if !((_prevStatements param [0, ""]) isEqualTo _statement) then {
 	profileNamespace setVariable ["DebugStatementsIndex", 0];
 	profileNamespace setVariable ["DebugStatements", _prevStatements];
 
-	ctrlEnable [_prevButton, (count _prevStatements > 1)];
-	ctrlEnable [_nextButton, false];
+	_prevButton ctrlEnable (count _prevStatements > 1);
+	_nextButton ctrlEnable false;
 };

@@ -571,11 +571,11 @@ class CfgVehicles {
 				memoryPointGun[] = {"Gatling_barrel_beg"};
 				memoryPointsGetInGunner = "GetIn_gunner_left_pos";
 				memoryPointsGetInGunnerDir = "GetIn_gunner_left_dir";
-				minElev = -45;
-				maxElev = 60;
+				minElev = -80;
+				maxElev = 80;
 				initElev = 0;
-				minTurn = 50;
-				maxTurn = 120;
+				minTurn = 10;
+				maxTurn = 160;
 				initTurn = 90;
 				missileBeg = "";
 				missileEnd = "";
@@ -592,8 +592,8 @@ class CfgVehicles {
 				turretInfoType = "RscOptics_Heli_Attack_01_gunner";
 				usePip = 1;
 				gunnerHasFlares=true;
-				magazines[] = {"100Rnd_105mm_HEAT_MP", "40Rnd_105mm_APFSDS","4000Rnd_20mm_Tracer_Red_shells", "Laserbatteries", "300Rnd_CMFlare_Chaff_Magazine"};
-				weapons[] = {"cannon_105mm_VTOL_01","gatling_20mm_VTOL_01","Laserdesignator_mounted", "CMFlareLauncher_Triples"};
+				magazines[] = {"100Rnd_105mm_HEAT_MP", "40Rnd_105mm_APFSDS","32Rnd_155mm_Mo_shells", "4Rnd_155mm_Mo_guided","4Rnd_155mm_Mo_LG","2Rnd_155mm_Mo_Cluster","4000Rnd_20mm_Tracer_Red_shells", "Laserbatteries", "300Rnd_CMFlare_Chaff_Magazine"};
+				weapons[] = {"cannon_105mm_VTOL_01","gatling_20mm_VTOL_01","mortar_155mm_AMOS","Laserdesignator_mounted", "CMFlareLauncher_Triples"};
 				class OpticsIn
 				{
 					class Wide
@@ -743,12 +743,6 @@ class CfgVehicles {
 				memoryPointGunnerOptics = "Cannon_pip_pos";
 				memoryPointsGetInGunner = "GetIn_gunner_right_pos";
 				memoryPointsGetInGunnerDir = "GetIn_gunner_right_dir";
-				minElev = -45;
-				maxElev = 60;
-				initElev = 0;
-				minTurn = 50;
-				maxTurn = 120;
-				initTurn = 90;
 				particlesDir = "Cannon_barrel_end";
 				particlesPos = "Cannon_barrel_beg";
 				primaryGunner = 0;
@@ -758,8 +752,8 @@ class CfgVehicles {
 				showCrewAim = "1 + 4";
 				turretCanSee = 31;
 				gunnerHasFlares=true;				
-				magazines[] = {"100Rnd_105mm_HEAT_MP","40Rnd_105mm_APFSDS","32Rnd_155mm_Mo_shells", "4Rnd_155mm_Mo_guided","4Rnd_155mm_Mo_LG","2Rnd_155mm_Mo_Cluster","4000Rnd_20mm_Tracer_Red_shells","240Rnd_40mm_GPR_Tracer_Red_shells","160Rnd_40mm_APFSDS_Tracer_Red_shells","Laserbatteries", "300Rnd_CMFlare_Chaff_Magazine"};
-				weapons[] = {"cannon_105mm_VTOL_01","mortar_155mm_AMOS","gatling_20mm_VTOL_01","autocannon_40mm_VTOL_01","Laserdesignator_mounted", "CMFlareLauncher_Triples"};
+				magazines[] = {"100Rnd_105mm_HEAT_MP","40Rnd_105mm_APFSDS","4000Rnd_20mm_Tracer_Red_shells","240Rnd_40mm_GPR_Tracer_Red_shells","160Rnd_40mm_APFSDS_Tracer_Red_shells","Laserbatteries", "300Rnd_CMFlare_Chaff_Magazine"};
+				weapons[] = {"cannon_105mm_VTOL_01","gatling_20mm_VTOL_01","autocannon_40mm_VTOL_01","Laserdesignator_mounted", "CMFlareLauncher_Triples"};
 				class Components
 				{
 					class VehicleSystemsDisplayManagerComponentLeft: DefaultVehicleSystemsDisplayManagerLeft

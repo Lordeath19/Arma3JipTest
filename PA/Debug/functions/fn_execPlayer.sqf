@@ -1,6 +1,14 @@
 
 params ["_playerName"];
-_text = ctrlText 5252;
+
+_debugDisplay = findDisplay 46 findDisplay 1728;
+
+_expression = _debugDisplay displayCtrl 5252;
+_playerList = _debugDisplay displayCtrl 5253;
+
+_text = ctrlText _expression;
+_playerName = _playerList lbText (lbCurSel _playerList);
+
 if (_text isEqualTo "") exitWith
 {
 	hint "JEW: Console Error: No code to execute.";

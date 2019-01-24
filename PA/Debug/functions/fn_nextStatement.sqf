@@ -1,6 +1,8 @@
-private _prevButton = 90110;
-private _nextButton = 90111;
-private _expression = 5252;
+_debugDisplay = findDisplay 46 findDisplay 1728;
+
+_expression = _debugDisplay displayCtrl 5252;
+_prevButton = _debugDisplay displayCtrl 90110;
+_nextBUtton = _debugDisplay displayCtrl 90111;
 
 private _statementIndex = profileNamespace getVariable ["DebugStatementsIndex", 0];
 private _prevStatements = profileNamespace getVariable ["DebugStatements", []];
@@ -9,7 +11,7 @@ _statementIndex = (_statementIndex - 1) max 0;
 profileNamespace setVariable ["DebugStatementsIndex", _statementIndex];
 
 private _nextStatement = _prevStatements select _statementIndex;
-ctrlSetText [_nextStatement, _expression];
+_expression ctrlSetText _nextStatement;
 
-ctrlEnable [_prevButton, (_statementIndex < count _prevStatements - 1)];
-ctrlEnable [_nextButton, (_statementIndex > 0)];
+_prevButton ctrlEnable (_statementIndex < count _prevStatements - 1);
+_nextButton ctrlEnable (_statementIndex > 0);

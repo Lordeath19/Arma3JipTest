@@ -1,5 +1,8 @@
-																																																																																																																																				
-_text = ctrlText 5252;
+_debugDisplay = findDisplay 46 findDisplay 1728;
+
+_expression = _debugDisplay displayCtrl 5252;
+
+_text = ctrlText _expression;
 if (_text isEqualTo "") exitWith
 {
 	hint "JEW: Console Error: No code to execute.";

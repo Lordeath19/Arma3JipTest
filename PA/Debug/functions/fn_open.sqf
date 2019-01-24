@@ -1,6 +1,10 @@
 
-createDialog "PA_debug";
+_debugDisplay = findDisplay 46 createDisplay "PA_debug";
 
+_inputControl = _debugDisplay displayCtrl 5252;
+_prevButton = _debugDisplay displayCtrl 90110;
+_nextBUtton = _debugDisplay displayCtrl 90111;
+_playerList = _debugDisplay displayCtrl 5253;
 disableSerialization;																																										
 
 if(!(profileNamespace getVariable["DebugStatements", []] isEqualTo [])) then
@@ -14,14 +18,14 @@ if(!(profileNamespace getVariable["DebugStatements", []] isEqualTo [])) then
 _statementIndex = profileNamespace getVariable ["DebugStatementsIndex", 0];
 _prevStatements = profileNamespace getVariable ["DebugStatements", []];
 
-ctrlEnable [90110, (_statementIndex < count _prevStatements - 1)];
-ctrlEnable [90111, (_statementIndex > 0)];
+_nextButton ctrlEnable (_statementIndex < count _prevStatements - 1);
+_prevButton ctrlEnable (_statementIndex > 0);
 
 if(!(profileNamespace getVariable["DebugStatements", []] isEqualTo [])) then {
 	_prevStatements = profileNamespace getVariable ["DebugStatements", []];
-	ctrlSetText [5252, (_prevStatements select 0)];
+	_inputControl ctrlSetText (_prevStatements select 0);
 };
 
 {
-	lbAdd[5253,name _x];
+	_playerList lbAdd name _x;
 } forEach allPlayers;

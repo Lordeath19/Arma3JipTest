@@ -152,7 +152,7 @@ class PA_debug
 
 			text = "Player";
 
-			action = "[lbText [5253, (lbCurSel lb_playerList)]] spawn JEW_fnc_execPlayer";
+			action = "[] spawn JEW_fnc_execPlayer";
 
 			x = 0.298906 * safezoneW + safezoneX;
 			y = 0.654 * safezoneH + safezoneY;
