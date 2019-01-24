@@ -1,3 +1,4 @@
+disableSerialization;																																										
 
 _debugDisplay = findDisplay 46 createDisplay "PA_debug";
 
@@ -5,7 +6,6 @@ _inputControl = _debugDisplay displayCtrl 5252;
 _prevButton = _debugDisplay displayCtrl 90110;
 _nextBUtton = _debugDisplay displayCtrl 90111;
 _playerList = _debugDisplay displayCtrl 5253;
-disableSerialization;																																										
 
 if(!(profileNamespace getVariable["DebugStatements", []] isEqualTo [])) then
 {

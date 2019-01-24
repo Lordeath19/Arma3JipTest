@@ -1,4 +1,5 @@
-_debugDisplay = (findDisplay 46) findDisplay 1728;
+disableSerialization;
+_debugDisplay = findDisplay 1728;
 
 _expression = _debugDisplay displayCtrl 5252;
 
