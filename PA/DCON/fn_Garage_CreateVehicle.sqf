@@ -60,6 +60,7 @@ if!(_veh isKindOf "plane") then {
 	deleteVehicle _unit;
 
 	_type = "";
+	
 	switch(playerSide) do
 	{
 		case west: {

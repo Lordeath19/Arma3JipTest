@@ -491,7 +491,7 @@ class CfgVehicles {
 	SUPPLY(Supply780);
 	
 	SUPPLY(Supply1000);
-	
+
 	SUPPLY(Supply1200);
 		
 	//Change carryall so he can carry it all
@@ -755,7 +755,6 @@ class CfgVehicles {
 			};
 		};
 	};
-	
 };
 
 class CfgInventoryGlobalVariable {

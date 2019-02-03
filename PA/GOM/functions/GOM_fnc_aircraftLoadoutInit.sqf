@@ -574,7 +574,7 @@ GOM_fnc_updateVehiclesLB = {
 	params ["_obj"];
 
 
-	_vehicles = (_obj nearEntities [["Air", "Car", "Motorcycle", "Tank", "StaticWeapon"],50]) select {alive _x};
+	_vehicles = (_obj nearEntities [["Man","Air", "Car", "Motorcycle", "Tank", "StaticWeapon"],50]) select {alive _x};
 	_lastVehs = _obj getVariable ["GOM_fnc_setPylonLoadoutVehicles",[]];
 	if (_vehicles isEqualTo []) exitWith {true};
 	if (_vehicles isEqualTo _lastVehs AND !(lbsize 1500 isequalto 0)) exitWith {true};//only update this when really needed, called on each frame
