@@ -45,3 +45,7 @@ player setVariable ["ControlPanelID",[
 		"currentWeapon vehicle player isEqualTo 'RHS_9M79_1Launcher'" 
 	]
 ]];
+
+[player,"CARGO"] call BIS_fnc_addCommMenuItem;
+
+[player,"Transport"] call BIS_fnc_addCommMenuItem;

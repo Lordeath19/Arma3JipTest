@@ -113,6 +113,12 @@ private["_keyDown"];
 			];
 		};	
 	}];
+		
+	[] spawn SUPP_fnc_comm_menusub;
+	_vehlist = [] spawn SUPP_fnc_vehiclelist;
+	_airlist = [] spawn SUPP_fnc_aircraftlist;
+	_boatlist = [] spawn SUPP_fnc_boatlist;
+	ghst_local_vehicles = [];
+
 	systemChat "Personal arsenal loaded";
 };
-	

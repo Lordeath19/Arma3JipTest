@@ -1,9 +1,3 @@
-//GOM_fnc_aircraftLoadout V1.342 made by Grumpy Old Man 17-5-2017
-
-///////////////////////////////////////////////////////////////////////////
-/// Styles
-///////////////////////////////////////////////////////////////////////////
-
 // Control types
 #define CT_STATIC           0
 #define CT_BUTTON           1
@@ -22,6 +16,7 @@
 #define CT_CONTEXT_MENU     14
 #define CT_CONTROLS_GROUP   15
 #define CT_SHORTCUTBUTTON   16
+#define CT_HITZONES         17
 #define CT_XKEYDESC         40
 #define CT_XBUTTON          41
 #define CT_XLISTBOX         42
@@ -37,6 +32,7 @@
 #define CT_MAP              100
 #define CT_MAP_MAIN         101
 #define CT_LISTNBOX         102
+#define CT_ITEMSLOT         103
 #define CT_CHECKBOX         77
 
 // Static styles
@@ -63,6 +59,8 @@
 #define ST_TILE_PICTURE   0x90
 #define ST_WITH_RECT      0xA0
 #define ST_LINE           0xB0
+#define ST_UPPERCASE      0xC0
+#define ST_LOWERCASE      0xD0
 
 #define ST_SHADOW         0x100
 #define ST_NO_RECT        0x200
@@ -77,7 +75,7 @@
 
 #define SL_TEXTURES       0x10
 
-// progress bar
+// progress bar 
 #define ST_VERTICAL       0x01
 #define ST_HORIZONTAL     0
 
@@ -93,8 +91,51 @@
 #define MB_BUTTON_OK      1
 #define MB_BUTTON_CANCEL  2
 #define MB_BUTTON_USER    4
+#define MB_ERROR_DIALOG   8
 
+// Xbox buttons
+#define KEY_XINPUT                0x00050000
+#define KEY_XBOX_A                KEY_XINPUT + 0
+#define KEY_XBOX_B                KEY_XINPUT + 1
+#define KEY_XBOX_X                KEY_XINPUT + 2
+#define KEY_XBOX_Y                KEY_XINPUT + 3
+#define KEY_XBOX_Up               KEY_XINPUT + 4
+#define KEY_XBOX_Down             KEY_XINPUT + 5
+#define KEY_XBOX_Left             KEY_XINPUT + 6
+#define KEY_XBOX_Right            KEY_XINPUT + 7
+#define KEY_XBOX_Start            KEY_XINPUT + 8
+#define KEY_XBOX_Back             KEY_XINPUT + 9
+#define KEY_XBOX_LeftBumper       KEY_XINPUT + 10
+#define KEY_XBOX_RightBumper      KEY_XINPUT + 11
+#define KEY_XBOX_LeftTrigger      KEY_XINPUT + 12
+#define KEY_XBOX_RightTrigger     KEY_XINPUT + 13
+#define KEY_XBOX_LeftThumb        KEY_XINPUT + 14
+#define KEY_XBOX_RightThumb       KEY_XINPUT + 15
+#define KEY_XBOX_LeftThumbXRight  KEY_XINPUT + 16
+#define KEY_XBOX_LeftThumbYUp     KEY_XINPUT + 17
+#define KEY_XBOX_RightThumbXRight KEY_XINPUT + 18
+#define KEY_XBOX_RightThumbYUp    KEY_XINPUT + 19
+#define KEY_XBOX_LeftThumbXLeft   KEY_XINPUT + 20
+#define KEY_XBOX_LeftThumbYDown   KEY_XINPUT + 21
+#define KEY_XBOX_RightThumbXLeft  KEY_XINPUT + 22
+#define KEY_XBOX_RightThumbYDown  KEY_XINPUT + 23
 
+// Fonts
+#define GUI_FONT_NORMAL			PuristaMedium
+#define GUI_FONT_BOLD			PuristaSemibold
+#define GUI_FONT_THIN			PuristaLight
+#define GUI_FONT_MONO			EtelkaMonospacePro
+#define GUI_FONT_NARROW			EtelkaNarrowMediumPro
+#define GUI_FONT_CODE			LucidaConsoleB
+#define GUI_FONT_SYSTEM			TahomaB
+
+// Grids
+#define GUI_GRID_CENTER_WAbs		((safezoneW / safezoneH) min 1.2)
+#define GUI_GRID_CENTER_HAbs		(GUI_GRID_CENTER_WAbs / 1.2)
+#define GUI_GRID_CENTER_W		(GUI_GRID_CENTER_WAbs / 40)
+#define GUI_GRID_CENTER_H		(GUI_GRID_CENTER_HAbs / 25)
+#define GUI_GRID_CENTER_X		(safezoneX + (safezoneW - GUI_GRID_CENTER_WAbs)/2)
+#define GUI_GRID_CENTER_Y		(safezoneY + (safezoneH - GUI_GRID_CENTER_HAbs)/2)
 ///////////////////////////////////////////////////////////////////////////
 /// Base Classes
 ///////////////////////////////////////////////////////////////////////////
@@ -250,6 +291,11 @@ class GOMRscPicture
 		0,
 		0.65
 	};
+};
+
+class GOMRscPictureKeepAspect : GOMRscPicture
+{
+	style = "0x30 + 0x800";
 };
 class GOMRscEdit
 {

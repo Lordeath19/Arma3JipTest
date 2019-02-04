@@ -124,6 +124,30 @@ class CfgFunctions {
 		};
 	};
 
+	class Support {
+		tag = "SUPP";
+		class functions {
+			file = "\Lordeath\Support\functions";
+			
+			class aircraftlist {};
+			class boatlist {};
+			class vehiclelist {};
+			class cargodrop {};
+			class comm_menusub {};
+			class createwaypoint {};
+			class dest_transport {};
+			class init_airlift {};
+			class init_transport {};
+			class mark_local {};
+			class mark_point {};
+			class rtb_transport {};
+			class tracker {};
+			class map_click {};
+
+
+		};
+	};
+
 };
 
 class Mode_SemiAuto;
@@ -761,11 +785,15 @@ class CfgInventoryGlobalVariable {
 	maxSoldierLoad = 9999000;
 };
 
+#include "Support\functions\comm_menu.h"
 #include "GOM\dialogs\GOM_dialog_parents.hpp"
+#include "Support\dialogs\defines.hpp"
 #include "GOM\dialogs\GOM_dialog_controls.hpp"
 #include "Loiter\dialogs\dialog.hpp"
 #include "Weaponry\dialogs\dialog.hpp"
 #include "Main\dialogs\dialog.hpp"
 #include "Debug\dialogs\dialog.hpp"
+#include "Support\dialogs\Spawnveh.hpp"
+#include "Support\dialogs\objlist.hpp"
 
 #include "R3F_LOG\desc_include.h"
