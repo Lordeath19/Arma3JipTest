@@ -15,6 +15,9 @@ _flyheight = _this select 4;
 if(_spawnmark isEqualTo [0,0,0]) then 
 {
 	_spawnmark = ["Mark the base's location"] call SUPP_fnc_map_click;
+	if(_spawnmark isEqualTo [0,0,0]) exitwith {
+		hint "Cargo Drop Ready";
+	};
 };
 
 //_vehiclelist = ghst_vehiclelist2;

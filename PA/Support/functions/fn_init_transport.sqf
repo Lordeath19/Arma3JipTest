@@ -13,6 +13,9 @@ _includeSupport = _this select 4;
 if(_spawnmark isEqualTo [0,0,0]) then 
 {
 	_spawnmark = ["Mark the base's location"] call SUPP_fnc_map_click;
+	if(_spawnmark isEqualTo [0,0,0]) exitwith {
+		hint "Helicopter Transport Ready";
+	};
 };
 
 private ["_lzpad","_lzpad2","_lzpad_mark","_lzpad2_mark","_wpgetout","_destact","_destrtb"];
