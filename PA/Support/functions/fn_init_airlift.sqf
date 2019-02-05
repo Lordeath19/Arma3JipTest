@@ -21,8 +21,6 @@ if(_spawnmark isEqualTo [0,0,0]) then
 	};
 };
 
-
-
 openMap true;
 
 hint "Left click on the map where you want sling load";
@@ -125,12 +123,6 @@ _air1 lockCargo true;
 {_air1 lockTurret [_x, true];} foreach allTurrets _air1;
 //_crewcount = count crew _air1;
 
-	if !(_air1 canSlingLoad _liftObject) exitwith {hint format ["Cannot sling load %1", _liftobj_name];
-		deletevehicle _air1;
-		{if !(isnil "_x") then {deletevehicle _x;};} foreach units _airliftgrp;
-		deletegroup _airliftgrp;
-	};
-
 _airliftgrp setBehaviour "CARELESS";
 
 
@@ -146,62 +138,63 @@ _liftpad_mark = [_pos,"ColorGreen","Airlift Sling Load","hd_pickup"] call SUPP_f
 _trackname = format ["%1 Airlift", name player];
 [_air1, "ColorGreen", _trackname, true] spawn SUPP_fnc_tracker;
 			
-	while { (alive _air1) and (canmove _air1) and (alive (driver _air1)) and (_pos distance2D _air1 > 400) } do {
-		   sleep 1;
-	};
+while { (alive _air1) and (canmove _air1) and (alive (driver _air1)) and (_pos distance2D _air1 > 400) } do {
+	sleep 1;
+};
+_smoke = "SmokeShellGreen" createVehicle _pos;
+	
+if ((alive _air1) and (canmove _air1) and (alive (driver _air1))) then {
 
-		_smoke = "SmokeShellGreen" createVehicle _pos;
-		
-	if ((alive _air1) and (canmove _air1) and (alive (driver _air1))) then {
+	//_air1 flyInHeight 10;
 	
-		//_air1 flyInHeight 30;
-		
-		waituntil { ((getpos _air1) select 2 < 45) or !(alive _air1) or !(canmove _air1) or !(alive (driver _air1))};
-		
-		//_liftRope = ropeCreate [_air1, [0,0,-2], _liftObject, [0,0,0], 45];
-		_liftObjectmass = getMass _liftObject;
-		if (_liftObjectmass > 3000) then {_liftObject setMass 3000;};
-	};	
-	
-	//waituntil { ((ropeAttachedTo _liftObject) == _air1) or !(alive _air1) or !(canmove _air1) or !(alive (driver _air1)) };
-	waituntil { (getSlingLoad _air1 == _liftObject) or !(alive _air1) or !(canmove _air1) or !(alive (driver _air1)) };
-	
-	//Attach in addition to sling loading because arma physics
-	[_air1,_liftObject] spawn SUPP_fnc_hook;
-	[_liftObject, "ColorGrey", _liftobj_name, true] spawn SUPP_fnc_tracker;
-	_air1 sidechat format ["Sling loading %1", _liftobj_name];
-	
-	//ropeUnwind [ _liftRope, 5, -35, true];
-	//waituntil { ropeLength _liftRope < 20 };
-	//_airliftgrp move _spawnmark;
-	[_airliftgrp,_spawnmark, 5, "UNHOOK", "CARELESS", "NORMAL", "WEDGE"] call SUPP_fnc_createwaypoint;
-	_air1 flyInHeight _flyheight;
-	_air1 sidechat format ["Returning to Base to Drop off %1", _liftobj_name];
-	deletemarker _liftpad_mark;
+	waituntil { (vectorMagnitude velocity _air1 <= 5) or !(alive _air1) or !(canmove _air1) or !(alive (driver _air1))};
+	//_liftRope = ropeCreate [_air1, [0,0,-2], _liftObject, [0,0,0], 45];
+	_liftObjectmass = getMass _liftObject;
+	if (_liftObjectmass > 3000) then {_liftObject setMass 3000;};
+};	
 
-	while { (alive _air1) and (canmove _air1) and (alive (driver _air1)) and (_spawnmark distance2D _air1 > 100) } do {
-		sleep 1;
-	};
+//waituntil { ((ropeAttachedTo _liftObject) == _air1) or !(alive _air1) or !(canmove _air1) or !(alive (driver _air1)) };
+waituntil {((getpos _air1) select 2 < 25) or (getSlingLoad _air1 == _liftObject) or (vectorMagnitude velocity _air1 <= 3) or !(alive _air1) or !(canmove _air1) or !(alive (driver _air1)) };
+_slinged = false;
+if(getSlingLoad _air1 == _liftObject) then {
+	_slinged = true;
+};
+//Attach in addition to sling loading because arma physics
+[_air1,_liftObject] spawn SUPP_fnc_hook;
+[_liftObject, "ColorGrey", _liftobj_name, true] spawn SUPP_fnc_tracker;
+_air1 sidechat format ["Sling loading %1", _liftobj_name];
 
-	//_air1 flyInHeight 30;
+//ropeUnwind [ _liftRope, 5, -35, true];
+//waituntil { ropeLength _liftRope < 20 };
+//_airliftgrp move _spawnmark;
+deleteWaypoint _wp;
+_wp = [_airliftgrp,_spawnmark, 5, "UNHOOK", "CARELESS", "NORMAL", "WEDGE"] call SUPP_fnc_createwaypoint;
+_air1 flyInHeight _flyheight;
+_air1 sidechat format ["Returning to Base to Drop off %1", _liftobj_name];
+deletemarker _liftpad_mark;
+
+while { (alive _air1) and (canmove _air1) and (alive (driver _air1)) and (_spawnmark distance2D _air1 > 100) } do {
+	sleep 1;
+};
+//_air1 flyInHeight 30;
+
+waituntil { (vectorMagnitude velocity _air1 <= 5)  or (_slinged and !(getSlingLoad _air1 == _liftObject)) or !(alive _air1) or !(canmove _air1) or !(alive (driver _air1))};//((getpos _air1) select 2 < 45)
+[_air1] spawn SUPP_fnc_unhook;
+
+if (!(alive _air1) or !(canmove _air1) or !(alive (driver _air1))) then {
+	player groupChat "We lost our airlift helicopter.";
+} else {
+	//ropeUnwind [ _liftRope, 5, 45, true];
+	//waituntil { ropeLength _liftRope > 40 };
+	_air1 sidechat format ["Dropped off %1", _liftobj_name];
+	deleteWaypoint _wp;
+	sleep 5;
 	
-	waituntil { !(getSlingLoad _air1 == _liftObject) or !(alive _air1) or !(canmove _air1) or !(alive (driver _air1))};//((getpos _air1) select 2 < 45)
-	[_air1] spawn SUPP_fnc_unhook;
-	
-	if (!(alive _air1) or !(canmove _air1) or !(alive (driver _air1))) then {
-		player groupChat "We lost our airlift helicopter.";
-	} else {
-		//ropeUnwind [ _liftRope, 5, 45, true];
-		//waituntil { ropeLength _liftRope > 40 };
-		_air1 sidechat format ["Dropped off %1", _liftobj_name];
-		
-		sleep 5;
-		
-		deletevehicle _air1;
-		{if !(isnil "_x") then {deletevehicle _x;};} foreach units _airliftgrp;
-		deletegroup _airliftgrp;
-		//_air1 ropeDetach _liftRope;
-		//ropeCut [ _liftRope, 5];
-	};
+	deletevehicle _air1;
+	{if !(isnil "_x") then {deletevehicle _x;};} foreach units _airliftgrp;
+	deletegroup _airliftgrp;
+	//_air1 ropeDetach _liftRope;
+	//ropeCut [ _liftRope, 5];
+};
 
 //waituntil { !(unitReady _air1) or !(alive _air1) or !(canmove _air1) or !(alive (driver _air1))};

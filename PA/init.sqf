@@ -119,6 +119,9 @@ private["_keyDown"];
 	_airlist = [] spawn SUPP_fnc_aircraftlist;
 	_boatlist = [] spawn SUPP_fnc_boatlist;
 	ghst_local_vehicles = [];
+	[player,"CARGO"] call BIS_fnc_addCommMenuItem;
 
+	[player,"Transport"] call BIS_fnc_addCommMenuItem;
 	systemChat "Personal arsenal loaded";
 };
+	

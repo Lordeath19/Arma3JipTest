@@ -143,6 +143,8 @@ class CfgFunctions {
 			class rtb_transport {};
 			class tracker {};
 			class map_click {};
+			class hook {};
+			class unhook {};
 
 
 		};

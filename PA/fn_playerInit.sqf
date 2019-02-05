@@ -46,6 +46,4 @@ player setVariable ["ControlPanelID",[
 	]
 ]];
 
-[player,"CARGO"] call BIS_fnc_addCommMenuItem;
-
-[player,"Transport"] call BIS_fnc_addCommMenuItem;
+																																																																																						
