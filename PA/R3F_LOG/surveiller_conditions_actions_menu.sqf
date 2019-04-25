@@ -263,18 +263,16 @@ while {true} do
 		{
 			_pas_de_hook = true;
 		};
-		
-		// Condition action heliporter
+		 
 		R3F_LOG_action_heliporter_valide = !(_vehicule_joueur getVariable "R3F_LOG_disabled") && _pas_de_hook &&
-			isNull (_vehicule_joueur getVariable "R3F_LOG_heliporte") && (vectorMagnitude velocity _vehicule_joueur < 6) &&
+		isNull (_vehicule_joueur getVariable "R3F_LOG_heliporte") && (vectorMagnitude velocity _vehicule_joueur < 6) &&
+		{
 			{
-				{
-					(_x getVariable ["R3F_LOG_fonctionnalites", R3F_LOG_CST_zero_log] select __can_be_lifted) &&
-					_x != _vehicule_joueur && !(_x getVariable "R3F_LOG_disabled") &&
-					((getPosASL _vehicule_joueur select 2) - (getPosASL _x select 2) > 2 && (getPosASL _vehicule_joueur select 2) - (getPosASL _x select 2) < 15)
-				} count (nearestObjects [_vehicule_joueur, ["All"], 15]) != 0
-			};
-		
+				(_x getVariable ["R3F_LOG_fonctionnalites", R3F_LOG_CST_zero_log] select __can_be_lifted) &&
+				_x != _vehicule_joueur && !(_x getVariable "R3F_LOG_disabled") &&
+				((getPosASL _vehicule_joueur select 2) - (getPosASL _x select 2) > 2 && (getPosASL _vehicule_joueur select 2) - (getPosASL _x select 2) < 15)
+			} count (nearestObjects [_vehicule_joueur, ["All"], 15]) != 0
+		};
 		// Condition action heliport_larguer
 		R3F_LOG_action_heliport_larguer_valide = !isNull (_vehicule_joueur getVariable "R3F_LOG_heliporte") && !(_vehicule_joueur getVariable "R3F_LOG_disabled") &&
 			(vectorMagnitude velocity _vehicule_joueur < 25) && ((getPosASL _vehicule_joueur select 2) - (0 max getTerrainHeightASL getPos _vehicule_joueur) < 40);

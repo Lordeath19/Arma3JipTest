@@ -67,52 +67,7 @@ private["_keyDown"];
 	player addEventhandler ["Respawn", {
 		[] call ASS_fnc_playerInit;
 	}];
-	
-	//Everytime the player gets inside a vehicle
-	//Add control panels to the vehicles (the tu-95 and the 9m79)
-	player addEventHandler ["GetInMan", {
-		params ["_vehicle", "_role", "_unit", "_turret"];
-		
-		_vehicle = vehicle player;
 
-		//Check if the vehicle already contains rhs missile launcher control panels
-		if(_vehicle getVariable ["ControlPanelID",-1] isEqualTo -1) then {
-		
-			_vehicle setVariable ["ControlPanelID",
-				//The tu-95's dialog
-				[_vehicle addAction  
-				[
-				   "Open control panel",  
-				   { 
-					params ["_target", "_caller", "_actionId", "_arguments"]; 
-					createDialog "tu95_main_dialog"; 
-				   }, 
-				   [], 
-				   7,  
-				   true,  
-				   true,  
-				   "", 
-				   "currentWeapon vehicle player isEqualTo 'rhs_weap_kh55sm_Launcher'" 
-				],
-				   
-				//The 9m79's dialog
-				_vehicle addAction  
-				[ 
-				   "Open control panel",  
-				   { 
-					params ["_target", "_caller", "_actionId", "_arguments"]; 
-					createDialog "ss21_main_dialog"; 
-				   }, 
-				   [], 
-				   7,  
-				   true,  
-				   true,  
-				   "", 
-				   "currentWeapon vehicle player isEqualTo 'RHS_9M79_1Launcher'" 
-				]]	   
-			];
-		};	
-	}];
 		
 	[] spawn SUPP_fnc_comm_menusub;
 	_vehlist = [] spawn SUPP_fnc_vehiclelist;

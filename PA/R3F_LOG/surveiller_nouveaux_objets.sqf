@@ -91,7 +91,7 @@ while {true} do
 			};
 			
 			// R�cup�ration des nouveaux v�hicules
-			_liste_nouveaux_objets = allPlayers + vehicles - _liste_vehicules_connus;
+			_liste_nouveaux_objets = allPlayers + allUnits + vehicles - _liste_vehicules_connus;
 			_liste_vehicules_connus = _liste_vehicules_connus + _liste_nouveaux_objets;
 		}
 		else
