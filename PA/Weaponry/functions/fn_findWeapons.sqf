@@ -6,7 +6,7 @@ waitUntil {count (missionNamespace getVariable ["allWeapons",[]]) > 0};
 
 _allWeapons = missionNamespace getVariable "allWeapons";
 
-_correctWeapons = _allWeapons select {_x find toLower(_weaponName) != -1};
+_correctWeapons = _allWeapons select {toLower(_x) find toLower(_weaponName) != -1};
 
 _correctWeapons sort true;
 
