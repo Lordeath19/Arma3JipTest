@@ -12,21 +12,21 @@ _airtype = _this select 2;// type of air to spawn i.e. "C130J_Cargo" or "I_Heli_
 _vehiclelist = _this select 3;//list of available vehicles
 _flyheight = _this select 4;
 
-if(_spawnmark isEqualTo [0,0,0]) then 
+if(_spawnmark isEqualTo [0,0,0]) then
 {
-	_spawnmark = ["Mark the base's location"] call SUPP_fnc_map_click;
-	if(_spawnmark isEqualTo [0,0,0]) exitwith {
-		hint "Cargo Drop Ready";
-	};
+    _spawnmark = ["Mark the base's location"] call SUPP_fnc_map_click;
+    if(_spawnmark isEqualTo [0,0,0]) exitwith {
+        hint "Cargo Drop Ready";
+    };
 };
 
 //_vehiclelist = ghst_vehiclelist2;
 
 {
-	if !(alive _x) then {//{if (!(alive _x) or (! canmove _x and count crew _x == 0)) then {
-		deletevehicle _x;
-		ghst_local_vehicles = ghst_local_vehicles - [_x];
-	};
+    if !(alive _x) then {//{if (!(alive _x) or (! canmove _x and count crew _x == 0)) then {
+        deletevehicle _x;
+        ghst_local_vehicles = ghst_local_vehicles - [_x];
+    };
 } foreach ghst_local_vehicles;
 
 
@@ -42,12 +42,12 @@ _ctrlList = findDisplay DLG_VEH_IDD displayCtrl DLG_VEH_LIST;
 private ["_index","_lstidx","_lstpos""_i"];
 
 for "_i" from 0 to (count _vehicleList)-1 do {
-	_vehicle = _vehicleList select _i;
-	lbAdd [DLG_VEH_LIST,format["%1",_vehicle select 1]];
-	lbSetPicture [DLG_VEH_LIST, _i, _vehicle select 2];
-	lbSetValue [DLG_VEH_LIST, _i, _i];
+    _vehicle = _vehicleList select _i;
+    lbAdd [DLG_VEH_LIST,format["%1",_vehicle select 1]];
+    lbSetPicture [DLG_VEH_LIST, _i, _vehicle select 2];
+    lbSetValue [DLG_VEH_LIST, _i, _i];
 };
-lbSort (findDisplay DLG_VEH_IDD displayCtrl DLG_VEH_LIST); 
+lbSort (findDisplay DLG_VEH_IDD displayCtrl DLG_VEH_LIST);
 
 // put the selection somewhat in the middle of the displayed listing
 _index = -1;
@@ -65,37 +65,37 @@ _lstidx = _index;
 _lstpos = -1;
 DLG_VEH_SELECTED = false;
 
-		while {ctrlVisible DLG_VEH_LIST} do {
-			_index = lbCurSel DLG_VEH_LIST;
-			_posidx = _index;
-		#ifdef VBS	
-			if !(isNil "DLG_VEH_SEL") then {
-				if (DLG_VEH_SEL select 3) then {
-					_posidx = _ctrlList lbPosIndex [DLG_VEH_SEL select 1,DLG_VEH_SEL select 2];
-				};
-			};
-		#endif	
-			if (DLG_VEH_SELECTED) then {
-				_VEHidx=lbValue [DLG_VEH_LIST, _index];
-				closeDialog DLG_VEH_IDD;
-			};
-			if (_posidx == -1) then {
-				_posidx = _index;
-			};
-			if (_lstpos != _posidx) then {
-				_lbidx = lbValue [DLG_VEH_LIST, _posidx];
-				_wDName = (_vehicleList select _lbidx) select 1;
-				_wPic = (_vehicleList select _lbidx) select 2;
-				_wDesc = (_vehicleList select _lbidx) select 3;
-				_ctrlPic ctrlSetText _wPic;
-				_ctrlName ctrlSetText _wDName;
-				_ctrlDesc ctrlSetStructuredText parseText (_wDesc);
-				_lstpos=_posidx;
-			};
-			sleep 0.1;
-		};
-	if (_lstidx == _index) exitWith {};
-	_VEHsel=(_vehicleList select _VEHidx) select 0;
+        while {ctrlVisible DLG_VEH_LIST} do {
+            _index = lbCurSel DLG_VEH_LIST;
+            _posidx = _index;
+        #ifdef VBS
+            if !(isNil "DLG_VEH_SEL") then {
+                if (DLG_VEH_SEL select 3) then {
+                    _posidx = _ctrlList lbPosIndex [DLG_VEH_SEL select 1,DLG_VEH_SEL select 2];
+                };
+            };
+        #endif
+            if (DLG_VEH_SELECTED) then {
+                _VEHidx=lbValue [DLG_VEH_LIST, _index];
+                closeDialog DLG_VEH_IDD;
+            };
+            if (_posidx == -1) then {
+                _posidx = _index;
+            };
+            if (_lstpos != _posidx) then {
+                _lbidx = lbValue [DLG_VEH_LIST, _posidx];
+                _wDName = (_vehicleList select _lbidx) select 1;
+                _wPic = (_vehicleList select _lbidx) select 2;
+                _wDesc = (_vehicleList select _lbidx) select 3;
+                _ctrlPic ctrlSetText _wPic;
+                _ctrlName ctrlSetText _wDName;
+                _ctrlDesc ctrlSetStructuredText parseText (_wDesc);
+                _lstpos=_posidx;
+            };
+            sleep 0.1;
+        };
+    if (_lstidx == _index) exitWith {};
+    _VEHsel=(_vehicleList select _VEHidx) select 0;
 
 if (isnil "ghst_vehsel") exitwith {player groupchat "Nothing Spawned";};
 if (ghst_vehsel != "none" && DLG_VEH_SELECTED) then {
@@ -111,8 +111,8 @@ onMapSingleClick "clickpos = _pos; mapclick = true; onMapSingleClick """";true;"
 
 waituntil {mapclick or !(visiblemap)};
 if (!visibleMap) exitwith {
-	hint "Air Drop Ready";
-	};
+    hint "Air Drop Ready";
+    };
 _pos = [clickpos select 0, clickpos select 1, _flyheight];
 
 sleep 1;
@@ -150,11 +150,11 @@ _wphome = _airgrp1 addWaypoint [_spawnmark, 0];
 _time_delay = time + 600;
 While {(alive _air1) and (canmove _air1)} do {// and (_air1 distance _pos) > 50
 
-	sleep 1;
-	//_air1 domove _pos;//[(_pos select 0) + (_flyheight + 100) * sin(_dir),(_pos select 1) + (_flyheight + 100) * cos(_dir)];
-	if ((_air1 distance2D _pos) < 100) exitwith {};
-	//if (ghst_dropcargo and ((_air1 distance _pos) < (_flyheight + 100))) exitwith {};
-	if (time >= (_time_delay)) exitwith {};
+    sleep 1;
+    //_air1 domove _pos;//[(_pos select 0) + (_flyheight + 100) * sin(_dir),(_pos select 1) + (_flyheight + 100) * cos(_dir)];
+    if ((_air1 distance2D _pos) < 100) exitwith {};
+    //if (ghst_dropcargo and ((_air1 distance _pos) < (_flyheight + 100))) exitwith {};
+    if (time >= (_time_delay)) exitwith {};
 };
 
 if (!(alive _air1) or !(canMove _air1) or (time >= (_time_delay))) then {player groupChat "Shit we lost air support";} else {
@@ -168,17 +168,17 @@ _ghst_drop = createVehicle [_vehsel,_pos, [], 0, "none"];
 ghst_local_vehicles pushback _ghst_drop;
 _ghst_drop attachTo [_chute1,[0,0,0]];
 
-[_ghst_drop,_veh_name] spawn { 
-	private ["_veh","_veh_name","_smoke"];
-	_veh = _this select 0;
-	_veh_name = _this select 1;
-	
-	waituntil {(getposatl _veh select 2) < 1.5}; 
-	detach _veh;
-	_veh setvelocity [0,0,0];
-	//_veh setposatl [(getposatl _veh select 0),(getposatl _veh select 1) + 5,0.2];		
-	[_veh, "ColorGrey", _veh_name] call SUPP_fnc_tracker;
-	//_smoke = "SmokeShellGreen" createVehicle (getPosatl _veh);
+[_ghst_drop,_veh_name] spawn {
+    private ["_veh","_veh_name","_smoke"];
+    _veh = _this select 0;
+    _veh_name = _this select 1;
+
+    waituntil {(getposatl _veh select 2) < 1.5};
+    detach _veh;
+    _veh setvelocity [0,0,0];
+    //_veh setposatl [(getposatl _veh select 0),(getposatl _veh select 1) + 5,0.2];
+    [_veh, "ColorGrey", _veh_name] call SUPP_fnc_tracker;
+    //_smoke = "SmokeShellGreen" createVehicle (getPosatl _veh);
 };
 
 _air1 sidechat "Air drop complete heading home";

@@ -11,13 +11,13 @@ _playerName = _playerList lbText (lbCurSel _playerList);
 
 if (_text isEqualTo "") exitWith
 {
-	hint "JEW: Console Error: No code to execute.";
+    hint "JEW: Console Error: No code to execute.";
 };
 [] call JEW_fnc_addStatement;
 _code = compile _text;
 
 {
-	if(name _x == _playerName) then {
-		_code remoteExec ["bis_fnc_call", _x, false];
-	};
+    if(name _x == _playerName) then {
+        _code remoteExec ["bis_fnc_call", _x, false];
+    };
 } foreach allPlayers;

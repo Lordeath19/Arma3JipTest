@@ -21,10 +21,10 @@ onMapSingleClick "clickpos = _pos; mapclick = true; onMapSingleClick """";true;"
 
 waituntil {mapclick or !(visiblemap)};
 
-	if !(visibleMap) exitwith {
-		player groupchat "New destination request cancelled";
-	};
-	
+    if !(visibleMap) exitwith {
+        player groupchat "New destination request cancelled";
+    };
+
 _pos = [clickpos select 0, clickpos select 1, (getposatl player) select 2];
 
 sleep 1;
@@ -51,17 +51,17 @@ waituntil { (_pos distance2D _air1 < 100) or !(alive _air1) or !(canmove _air1) 
 _air1 land "LAND";
 //_air1 flyInHeight 0;
 
-waituntil { (unitReady _air1) or !(alive _air1) or !(canmove _air1)};	
+waituntil { (unitReady _air1) or !(alive _air1) or !(canmove _air1)};
 _air1 flyInHeight 0;
 deletevehicle _lzpad;
 deletemarker _lzpad_mark;
 
 if (!(alive _air1) or !(canmove _air1) or !(alive (driver _air1))) then {
-	player groupChat "We lost our transport helicopter.";
-	{if !(isnil "_x") then {deletevehicle _x;};} foreach units _transportgrp;
-	{if !(isnil "_x") then {_x setfuel 0.2;};} foreach units _escortgrp;
-	deletevehicle _air1;
-	deletegroup _transportgrp;
+    player groupChat "We lost our transport helicopter.";
+    {if !(isnil "_x") then {deletevehicle _x;};} foreach units _transportgrp;
+    {if !(isnil "_x") then {_x setfuel 0.2;};} foreach units _escortgrp;
+    deletevehicle _air1;
+    deletegroup _transportgrp;
 } else {
-	_air1 sidechat "Awaiting orders";
+    _air1 sidechat "Awaiting orders";
 };

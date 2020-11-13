@@ -1,38 +1,44 @@
 params ["_H","_L"];
 
 openMap true;
-[_H,_L] onMapSingleClick { 
-	params ["_H","_L"];
-	
-	_tar = (driver (vehicle player));
-	
-	(vehicle _tar) flyInHeight _H;
+[_H,_L] onMapSingleClick {
+    params ["_H","_L"];
 
-	(group _tar) move _pos;
+    _veh = vehicle player;
+    _group = group player;
+    _pilot = driver _veh;
 
-	_tar = (group _tar);
-	if(waypointType [_tar,(currentWaypoint _tar)] isEqualTo "LOITER") then {
+    //Initialize the script, Set flight altitude, position, and hold fire (so the pilot won't try combat manouvers)
+    _veh flyInHeight _H;
+    _group move _pos;
+    _pilot disableAI "AUTOCOMBAT";
+    _pilot enableAttack false;
+    _pilot setCombatMode "BLUE";
+    _waypoint = [_group, currentWaypoint _group];
 
-		_tar = [_tar,currentWaypoint _tar];
-		_tar setWaypointPosition [_pos,0];
-		_tar setWaypointLoiterType "CIRCLE_L";
-		_tar setWaypointLoiterRadius _L ;
+    //If the waypoint already equals to LOITER, just change the loiter position for the waypoint
+    if(waypointType _waypoint isEqualTo "LOITER") then {
+        _waypoint setWaypointPosition [_pos,0];
+    }
 
-	}
-	else {
+    //Waypoint is something the group got from player commands
+    else {
+        //Add a new loiter waypoint
+        _waypoint = _group addwaypoint [_pos, 0];
+        _waypoint setWaypointType "LOITER";
 
-		_tar = _tar addwaypoint [_pos, 0];
-		_tar setWaypointType "LOITER";
-		_tar setWaypointLoiterType "CIRCLE_L";
-		_tar setWaypointLoiterRadius _L ; 
+    };
 
-	};
-	_tar setWaypointBehaviour "CARELESS";
-	_tar setWaypointCombatMode "BLUE";
-	_tar setWaypointForceBehaviour true;
-	
-	onMapSingleClick "";
-	
+    _waypoint setWaypointLoiterType "CIRCLE_L";
+    _waypoint setWaypointLoiterRadius _L;
+    _waypoint setWaypointBehaviour "CARELESS";
+    _waypoint setWaypointCombatMode "BLUE";
+    _waypoint setWaypointForceBehaviour true;
+
+    _group setCurrentWaypoint _waypoint;
+
+    onMapSingleClick "";
+
 };
 
 //Store the _H and _L for future use

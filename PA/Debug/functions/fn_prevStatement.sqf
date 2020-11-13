@@ -1,4 +1,4 @@
-disableSerialization;																																										
+disableSerialization;
 
 _debugDisplay = findDisplay 1728;
 

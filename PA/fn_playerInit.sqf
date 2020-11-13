@@ -6,44 +6,44 @@ player addAction ["Enable driver assist", {[] spawn ASS_fnc_enableDriverAssist;}
 player addAction ["Disable driver assist", {[] spawn ASS_fnc_disableDriverAssist;}, [], 0.5, false, true, "", "_driver = driver objectParent player; isAgent teamMember _driver && {(_driver getVariable ['A3W_driverAssistOwner', objNull]) in [player,objNull]}"];
 
 ["onMapTP", "onMapSingleClick", {
-	params ["_units","_pos","_alt","_shift"];
-	if(count _units == 0 && _alt && !_shift) then {
-		(vehicle player) setPos _pos;
-	};		
+    params ["_units","_pos","_alt","_shift"];
+    if(count _units == 0 && _alt && !_shift) then {
+        (vehicle player) setPos _pos;
+    };
 }] call BIS_fnc_addStackedEventHandler;
 
 player setVariable ["ControlPanelID",[
 
-	player addAction  
-	[ 
-		"Open control panel",  
-		{ 
-		params ["_target", "_caller", "_actionId", "_arguments"]; 
-		createDialog "tu95_main_dialog"; 
-		}, 
-		[], 
-		7,  
-		true,  
-		true,  
-		"", 
-		"currentWeapon vehicle player isEqualTo 'rhs_weap_kh55sm_Launcher'" 
-	],
+    player addAction
+    [
+        "Open control panel",
+        {
+        params ["_target", "_caller", "_actionId", "_arguments"];
+        createDialog "tu95_main_dialog";
+        },
+        [],
+        7,
+        true,
+        true,
+        "",
+        "currentWeapon vehicle player isEqualTo 'rhs_weap_kh55sm_Launcher'"
+    ],
 
 
-	player addAction  
-	[ 
-		"Open control panel",  
-		{ 
-		params ["_target", "_caller", "_actionId", "_arguments"]; 
-		createDialog "ss21_main_dialog"; 
-		}, 
-		[], 
-		7,  
-		true,  
-		true,  
-		"", 
-		"currentWeapon vehicle player isEqualTo 'RHS_9M79_1Launcher'" 
-	]
+    player addAction
+    [
+        "Open control panel",
+        {
+        params ["_target", "_caller", "_actionId", "_arguments"];
+        createDialog "ss21_main_dialog";
+        },
+        [],
+        7,
+        true,
+        true,
+        "",
+        "currentWeapon vehicle player isEqualTo 'RHS_9M79_1Launcher'"
+    ]
 ]];
 
-																																																																																						
+

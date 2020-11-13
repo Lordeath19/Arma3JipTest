@@ -12,17 +12,17 @@ private _prevStatements = profileNamespace getVariable ["DebugStatements", []];
 
 if !((_prevStatements param [0, ""]) isEqualTo _statement) then {
 
-	reverse _prevStatements;
-	_prevStatements pushBack _statement;
-	reverse _prevStatements;
+    reverse _prevStatements;
+    _prevStatements pushBack _statement;
+    reverse _prevStatements;
 
-	if (count _prevStatements > 50) then {
-		_prevStatements resize 50;
-	};
+    if (count _prevStatements > 50) then {
+        _prevStatements resize 50;
+    };
 
-	profileNamespace setVariable ["DebugStatementsIndex", 0];
-	profileNamespace setVariable ["DebugStatements", _prevStatements];
+    profileNamespace setVariable ["DebugStatementsIndex", 0];
+    profileNamespace setVariable ["DebugStatements", _prevStatements];
 
-	_prevButton ctrlEnable (count _prevStatements > 1);
-	_nextButton ctrlEnable false;
+    _prevButton ctrlEnable (count _prevStatements > 1);
+    _nextButton ctrlEnable false;
 };

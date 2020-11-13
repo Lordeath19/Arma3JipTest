@@ -1,8 +1,8 @@
 // ******************************************************************************************
 // * This project is licensed under the GNU Affero GPL v3. Copyright © 2017 A3Wasteland.com *
 // ******************************************************************************************
-//	@file Name: fn_disableDriverAssist.sqf
-//	@file Author: AgentRev
+//    @file Name: fn_disableDriverAssist.sqf
+//    @file Author: AgentRev
 
 private _veh = if (isNil "_veh") then { objectParent player } else { _veh };
 private _driver = driver _veh;

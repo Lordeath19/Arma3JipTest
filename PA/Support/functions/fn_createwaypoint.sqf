@@ -6,7 +6,7 @@ _type = param [3, "MOVE", [""]];
 _behave = param [4, "CARELESS", [""]];
 _speed = param [5, "NORMAL", [""]];
 _form = param [6, "WEDGE", [""]];
-	
+
 _wp =_grp addwaypoint [_wppos, _rad];
 _wp setWPPos _wppos;
 _wp setWaypointType _type;

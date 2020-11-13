@@ -7,7 +7,7 @@ _expression = _debugDisplay displayCtrl 5252;
 _text = ctrlText _expression;
 if (_text isEqualTo "") exitWith
 {
-	hint "No code to execute.";
+    hint "No code to execute.";
 };
 [] call JEW_fnc_addStatement;
 _code = compile _text;

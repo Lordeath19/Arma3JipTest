@@ -1,6 +1,6 @@
 /**
  * Initialise un véhicule transporteur
- * 
+ *
  * @param 0 le transporteur
  */
 
@@ -11,7 +11,7 @@ _transporteur = _this select 0;
 // Définition locale de la variable si elle n'est pas définie sur le réseau
 if (isNil {_transporteur getVariable "R3F_LOG_objets_charges"}) then
 {
-	_transporteur setVariable ["R3F_LOG_objets_charges", [], false];
+    _transporteur setVariable ["R3F_LOG_objets_charges", [], false];
 };
 
 _transporteur addAction [("<t color=""#dddd00"">" + STR_R3F_LOG_action_charger_deplace + "</t>"), {_this call R3F_LOG_FNCT_transporteur_charger_deplace}, nil, 8, true, true, "", "!R3F_LOG_mutex_local_verrou && R3F_LOG_objet_addAction == _target && R3F_LOG_joueur_deplace_objet != _target && R3F_LOG_action_charger_deplace_valide"];

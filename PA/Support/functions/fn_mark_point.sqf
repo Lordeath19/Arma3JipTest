@@ -9,7 +9,7 @@ _mshape = [_this, 5, "ICON", [""]] call BIS_fnc_param;
 _mbrush = [_this, 6, "Border", [""]] call BIS_fnc_param;
 
 _markname = "ghst_mark" + str (_markwps) + str (random 99999);
-_marker = createMarker [_markname, _markwps]; 
+_marker = createMarker [_markname, _markwps];
 _marker setMarkerShape _mshape;
 if !(_mshape == "ICON") then {_marker setMarkerBrush _mbrush;};
 _marker setmarkertype _mtype;

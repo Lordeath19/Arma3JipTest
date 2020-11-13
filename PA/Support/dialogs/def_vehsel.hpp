@@ -1,9 +1,9 @@
 //#define VBS
 
 #ifdef VBS
-	#define TXTSIZE 0.02
+    #define TXTSIZE 0.02
 #else
-	#define TXTSIZE 0.03
+    #define TXTSIZE 0.03
 #endif
 
 #define DLG_VEH_IDD 33060

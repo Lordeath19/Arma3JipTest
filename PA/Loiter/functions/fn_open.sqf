@@ -20,8 +20,8 @@ _type = "";
 
 switch (ctrlIDC _control) do
 {
-	case 1900: {_type = "Altitude"};
-	case 1901: {_type = "Radius"};
+    case 1900: {_type = "Altitude"};
+    case 1901: {_type = "Radius"};
 };
 
 _control sliderSetRange [500,4000];

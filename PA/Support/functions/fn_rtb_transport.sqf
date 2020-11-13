@@ -19,16 +19,16 @@ waituntil { (_spawnmark distance2D _air1 < 100) or !(alive _air1) or !(canmove _
 
 _air1 land "LAND";
 
-waituntil { (unitReady _air1) or !(alive _air1) or !(canmove _air1) or !(alive (driver _air1))};	
+waituntil { (unitReady _air1) or !(alive _air1) or !(canmove _air1) or !(alive (driver _air1))};
 
 _air1 flyInHeight 0;
 
 if (!(alive _air1) or !(canmove _air1) or !(alive (driver _air1))) then {
-	player groupChat "We lost our transport helicopter.";
+    player groupChat "We lost our transport helicopter.";
 } else {
-	_air1 sidechat "At Base";
+    _air1 sidechat "At Base";
 };
-	
+
 sleep 5;
 
 {if !(isnil "_x") then {deletevehicle _x;};} foreach units _transportgrp;

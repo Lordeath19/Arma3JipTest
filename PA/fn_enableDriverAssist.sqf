@@ -1,8 +1,8 @@
 // ******************************************************************************************
 // * This project is licensed under the GNU Affero GPL v3. Copyright © 2017 A3Wasteland.com *
 // ******************************************************************************************
-//	@file Name: fn_enableDriverAssist.sqf
-//	@file Author: AgentRev
+//    @file Name: fn_enableDriverAssist.sqf
+//    @file Author: AgentRev
 
 // This feature was inspired by Killzone Kid:  http://killzonekid.com/arma-scripting-tutorials-one-man-tank-operation/
 
@@ -20,13 +20,13 @@ _ai moveInDriver _veh;
 
 [_veh, _ai] spawn
 {
-	params ["_veh", "_ai"];
+    params ["_veh", "_ai"];
 
-	_time = time;
-	waitUntil {local _veh || time - _time > 3};
+    _time = time;
+    waitUntil {local _veh || time - _time > 3};
 
-	waitUntil {driver _veh != _ai};
-	
-	deleteVehicle _ai;
+    waitUntil {driver _veh != _ai};
+
+    deleteVehicle _ai;
 
 };

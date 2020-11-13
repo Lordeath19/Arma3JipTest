@@ -10,12 +10,12 @@ _spawnmark = _this select 2;
 _flyheight = _this select 3;
 _includeSupport = _this select 4;
 
-if(_spawnmark isEqualTo [0,0,0]) then 
+if(_spawnmark isEqualTo [0,0,0]) then
 {
-	_spawnmark = ["Mark the base's location"] call SUPP_fnc_map_click;
-	if(_spawnmark isEqualTo [0,0,0]) exitwith {
-		hint "Helicopter Transport Ready";
-	};
+    _spawnmark = ["Mark the base's location"] call SUPP_fnc_map_click;
+    if(_spawnmark isEqualTo [0,0,0]) exitwith {
+        hint "Helicopter Transport Ready";
+    };
 };
 
 private ["_lzpad","_lzpad2","_lzpad_mark","_lzpad2_mark","_wpgetout","_destact","_destrtb"];
@@ -30,9 +30,9 @@ onMapSingleClick "clickpos = _pos; mapclick = true; onMapSingleClick """";true;"
 
 waituntil {mapclick or !(visiblemap)};
 if (!visibleMap) exitwith {
-	hint "Helicopter Transport Ready";
+    hint "Helicopter Transport Ready";
 };
-	
+
 _pos = [clickpos select 0, clickpos select 1, (getposatl player) select 2];
 /*
 _pos = _clickpos findEmptyPosition[ 10 , 100 , _airtype ];
@@ -62,7 +62,7 @@ _air1 lockCargo [0, true];
 //_crewcount = count crew _air1;
 
 //escort helicopter 1
-_airtypesel = _escortarray call BIS_fnc_selectRandom;  
+_airtypesel = _escortarray call BIS_fnc_selectRandom;
 _air2_array = [[(_spawnmark select 0) + (cos _dir * 100), (_spawnmark select 1) - (sin _dir * 50), _flyheight + 50], _dir, _airtypesel, _escortgrp] call BIS_fnc_spawnVehicle;
 _air2 = _air2_array select 0;
 //_air2 setpos [getpos _air1 select 0, getpos _air1 select 1 -20, _flyheight];
@@ -70,7 +70,7 @@ _air2 setVelocity [55 * (sin _dir), 55 * (cos _dir), 0];
 _air2 flyInHeight _flyheight + 50;
 
 //escort helicopter 2
-_airtypesel2 = _escortarray call BIS_fnc_selectRandom;  
+_airtypesel2 = _escortarray call BIS_fnc_selectRandom;
 _air3_array = [[(_spawnmark select 0) + (cos _dir * 50), (_spawnmark select 1) - (sin _dir * 100), _flyheight + 50], _dir, _airtypesel2, _escortgrp] call BIS_fnc_spawnVehicle;
 _air3 = _air3_array select 0;
 //_air3 setpos [getpos _air1 select 0 -20, getpos _air1 select 1, _flyheight];
@@ -95,22 +95,22 @@ _trackname = format ["%1 Transport", name player];
 //waituntil {_pos distance2D _air1 < 400};
 
 while { ( (alive _air1) and (canmove _air1) and (alive (driver _air1)) and (_pos distance2D _air1 > 400) ) } do {
-	sleep 1;
+    sleep 1;
 };
 
 _smoke = "SmokeShellGreen" createVehicle _pos;
 
 if ((alive _air1) and (canmove _air1) and (alive (driver _air1))) then {
-	waituntil { (unitReady _air1) or !(alive _air1) or !(canmove _air1) or !(alive (driver _air1))};
-	player assignAsCargo _air1;
-	[player] orderGetIn true;
-	_air1 land "GET IN";
-	//_air1 flyInHeight 0;
-	
-	ghst_dest_transport = _air1 addAction ["<t size='1.5' shadow='2' color='#00FF00'>Helicopter Destination</t>", "call SUPP_fnc_dest_transport", [_air1,_flyheight,_escortgrp], 5, false, true, "","alive _target"];
-	//ghst_dest_transport = [_air1,["<t size='1.5' shadow='2' color='#00FF00'>Helicopter Destination</t>", "call SUPP_fnc_dest_transport", [_air1,_flyheight,_escortgrp], 5, false, true, "","alive _target"]] remoteExec ["addAction"]; 
-	ghst_rtb_transport = _air1 addAction ["<t size='1.5' shadow='2' color='#00FFFF'>Helicopter RTB</t>", "call SUPP_fnc_rtb_transport", [_air1,_flyheight,_spawnmark,_escortgrp,[_air1,_air2,_air3]], 5, false, true, "","alive _target"];
-	//ghst_rtb_transport = [_air1,["<t size='1.5' shadow='2' color='#00FFFF'>Helicopter RTB</t>", "call SUPP_fnc_rtb_transport", [_air1,_flyheight,_spawnmark,_escortgrp,[_air1,_air2,_air3]], 5, false, true, "","alive _target"]] remoteExec ["addAction"];
+    waituntil { (unitReady _air1) or !(alive _air1) or !(canmove _air1) or !(alive (driver _air1))};
+    player assignAsCargo _air1;
+    [player] orderGetIn true;
+    _air1 land "GET IN";
+    //_air1 flyInHeight 0;
+
+    ghst_dest_transport = _air1 addAction ["<t size='1.5' shadow='2' color='#00FF00'>Helicopter Destination</t>", "call SUPP_fnc_dest_transport", [_air1,_flyheight,_escortgrp], 5, false, true, "","alive _target"];
+    //ghst_dest_transport = [_air1,["<t size='1.5' shadow='2' color='#00FF00'>Helicopter Destination</t>", "call SUPP_fnc_dest_transport", [_air1,_flyheight,_escortgrp], 5, false, true, "","alive _target"]] remoteExec ["addAction"];
+    ghst_rtb_transport = _air1 addAction ["<t size='1.5' shadow='2' color='#00FFFF'>Helicopter RTB</t>", "call SUPP_fnc_rtb_transport", [_air1,_flyheight,_spawnmark,_escortgrp,[_air1,_air2,_air3]], 5, false, true, "","alive _target"];
+    //ghst_rtb_transport = [_air1,["<t size='1.5' shadow='2' color='#00FFFF'>Helicopter RTB</t>", "call SUPP_fnc_rtb_transport", [_air1,_flyheight,_spawnmark,_escortgrp,[_air1,_air2,_air3]], 5, false, true, "","alive _target"]] remoteExec ["addAction"];
 };
 
 waituntil { !(unitReady _air1) or !(alive _air1) or !(canmove _air1) or !(alive (driver _air1))};

@@ -23,6 +23,6 @@ if(typename _defaultAmount == typename 0) then { _defaultAmount = str _defaultAm
 ctrlSetText [1401,_defaultAmount];
 
 if(!(_defaultMagazine isEqualTo "")) then {
-	lbAdd[1501,_defaultMagazine];
-	lbSetCurSel [1501,0];
+    lbAdd[1501,_defaultMagazine];
+    lbSetCurSel [1501,0];
 };

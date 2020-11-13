@@ -9,7 +9,7 @@ _msize = [_this, 5, [1,1], [[]],[2]] call BIS_fnc_param;
 _mshape = [_this, 6, "ICON", [""]] call BIS_fnc_param;
 _mbrush = [_this, 7, "Border", [""]] call BIS_fnc_param;
 
-_marker = createMarkerlocal [_markname, _markwps]; 
+_marker = createMarkerlocal [_markname, _markwps];
 _marker setMarkerShapelocal _mshape;
 if !(_mshape == "ICON") then {_marker setMarkerBrushlocal _mbrush;};
 _marker setmarkertypelocal _mtype;
